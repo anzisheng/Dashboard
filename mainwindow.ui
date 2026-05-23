@@ -44,6 +44,31 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <widget class="QLabel" name="labelPressure">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>60</y>
+                 <width>241</width>
+                 <height>26</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>16</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: #4682B4;</string>
+               </property>
+               <property name="text">
+                <string>压力</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+              </widget>
              </widget>
             </item>
             <item>
@@ -81,6 +106,31 @@
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <widget class="QLabel" name="labelHydraulic">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>60</y>
+                 <width>271</width>
+                 <height>26</height>
+                </rect>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>16</pointsize>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">color: #64B464;</string>
+               </property>
+               <property name="text">
+                <string>液位</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignmentFlag::AlignCenter</set>
+               </property>
+              </widget>
              </widget>
             </item>
             <item>
