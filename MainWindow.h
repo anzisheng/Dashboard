@@ -101,6 +101,7 @@ private slots:
     void on_setPressureButton_clicked();
     void on_readLevelButton_clicked();
     void on_setLevelButton_clicked();
+    void onCheckBoxToggled(bool checked);
 
 private:
     Ui::MainWindow* ui;

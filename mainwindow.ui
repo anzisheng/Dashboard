@@ -21,10 +21,15 @@
        <property name="spacing">
         <number>5</number>
        </property>
-       <!-- 仪表盘组（水平排列） -->
+       <item>
+        <widget class="QCheckBox" name="checkBox">
+         <property name="text">
+          <string>定时读操作</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <layout class="QHBoxLayout" name="gaugesContainer">
-         <!-- 压力仪表盘组 -->
          <item>
           <widget class="QWidget" name="pressureGroup" native="true">
            <layout class="QVBoxLayout" name="pressureGroupLayout">
@@ -62,7 +67,6 @@
            </layout>
           </widget>
          </item>
-         <!-- 液位仪表盘组 -->
          <item>
           <widget class="QWidget" name="levelGroup" native="true">
            <layout class="QVBoxLayout" name="levelGroupLayout">
@@ -105,7 +109,6 @@
       </layout>
      </widget>
     </item>
-    <!-- 右侧区域保持不变 -->
     <item>
      <widget class="QWidget" name="rightWidget" native="true">
       <property name="minimumSize">
@@ -129,34 +132,33 @@
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
            <widget class="QLabel" name="labelSpeedTitle">
-            <property name="text">
-             <string>当前压力：</string>
-            </property>
             <property name="font">
              <font>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
+            </property>
+            <property name="text">
+             <string>当前压力：</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="speedValueLabel">
-            <property name="text">
-             <string>0 MPa</string>
-            </property>
             <property name="styleSheet">
              <string notr="true">font-size: 14px; color: #4682B4;</string>
+            </property>
+            <property name="text">
+             <string>0 MPa</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer name="verticalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::Policy::Fixed</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -168,34 +170,33 @@
           </item>
           <item>
            <widget class="QLabel" name="labelRpmTitle">
-            <property name="text">
-             <string>当前液位：</string>
-            </property>
             <property name="font">
              <font>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
+            </property>
+            <property name="text">
+             <string>当前液位：</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="rpmValueLabel">
-            <property name="text">
-             <string>0 MPa</string>
-            </property>
             <property name="styleSheet">
              <string notr="true">font-size: 14px; color: #64B464;</string>
+            </property>
+            <property name="text">
+             <string>0 MPa</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer name="verticalSpacer_3">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::Policy::Fixed</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -207,31 +208,30 @@
           </item>
           <item>
            <widget class="QLabel" name="labelStatusTitle">
-            <property name="text">
-             <string>运行状态：</string>
-            </property>
             <property name="font">
              <font>
-              <weight>75</weight>
               <bold>true</bold>
              </font>
+            </property>
+            <property name="text">
+             <string>运行状态：</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="statusLabel">
-            <property name="text">
-             <string>正常</string>
-            </property>
             <property name="styleSheet">
              <string notr="true">font-size: 14px; color: green;</string>
+            </property>
+            <property name="text">
+             <string>正常</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer name="verticalSpacer">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Orientation::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -262,7 +262,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>
