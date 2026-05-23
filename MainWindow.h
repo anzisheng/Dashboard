@@ -4,6 +4,13 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QTimer>
+// 在这里定义全局的变量、常量、函数
+#define DEFAULT_IP0		192
+#define DEFAULT_IP1		168
+#define DEFAULT_IP2		1
+#define DEFAULT_IP3		205
+
+#define  BUF_SZIE	 800
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,6 +23,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
+     bool InitInstance(); // 修正声明，确保与实现一致
 
 private slots:
     void on_updateButton_clicked();
