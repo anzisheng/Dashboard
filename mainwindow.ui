@@ -19,111 +19,85 @@
      <widget class="QWidget" name="leftWidget" native="true">
       <layout class="QVBoxLayout" name="verticalLayoutLeft">
        <property name="spacing">
-        <number>0</number>
+        <number>5</number>
        </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
+       <!-- 仪表盘组（水平排列） -->
        <item>
-        <layout class="QHBoxLayout" name="titleLayout"/>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="gaugeLayout">
+        <layout class="QHBoxLayout" name="gaugesContainer">
+         <!-- 压力仪表盘组 -->
          <item>
-          <widget class="GaugeWidget" name="gaugeSpeed" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <widget class="QLabel" name="labelPressure">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>80</y>
-              <width>304</width>
-              <height>26</height>
-             </rect>
+          <widget class="QWidget" name="pressureGroup" native="true">
+           <layout class="QVBoxLayout" name="pressureGroupLayout">
+            <property name="spacing">
+             <number>5</number>
             </property>
-            <property name="font">
-             <font>
-              <pointsize>16</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: #4682B4;</string>
-            </property>
-            <property name="text">
-             <string>压力</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-           </widget>
+            <item>
+             <widget class="GaugeWidget" name="gaugeSpeed" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="pressureButtonsLayout">
+              <item>
+               <widget class="QPushButton" name="readPressureButton">
+                <property name="text">
+                 <string>读取压力</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="setPressureButton">
+                <property name="text">
+                 <string>设置压力</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
          </item>
+         <!-- 液位仪表盘组 -->
          <item>
-          <widget class="GaugeWidget" name="gaugeRpm" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>1</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <widget class="QLabel" name="labelHydraulic">
-            <property name="geometry">
-             <rect>
-              <x>-30</x>
-              <y>80</y>
-              <width>331</width>
-              <height>26</height>
-             </rect>
+          <widget class="QWidget" name="levelGroup" native="true">
+           <layout class="QVBoxLayout" name="levelGroupLayout">
+            <property name="spacing">
+             <number>5</number>
             </property>
-            <property name="font">
-             <font>
-              <pointsize>16</pointsize>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">color: #64B464;</string>
-            </property>
-            <property name="text">
-             <string>液位</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-           </widget>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="buttonLayout">
-         <item>
-          <widget class="QPushButton" name="startStopButton">
-           <property name="text">
-            <string>启动/停止</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="stopCoastButton">
-           <property name="text">
-            <string>停机/回油</string>
-           </property>
+            <item>
+             <widget class="GaugeWidget" name="gaugeRpm" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="levelButtonsLayout">
+              <item>
+               <widget class="QPushButton" name="readLevelButton">
+                <property name="text">
+                 <string>读取液位</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="setLevelButton">
+                <property name="text">
+                 <string>设置液位</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>
@@ -131,6 +105,7 @@
       </layout>
      </widget>
     </item>
+    <!-- 右侧区域保持不变 -->
     <item>
      <widget class="QWidget" name="rightWidget" native="true">
       <property name="minimumSize">
@@ -154,33 +129,34 @@
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
            <widget class="QLabel" name="labelSpeedTitle">
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
             <property name="text">
              <string>当前压力：</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="speedValueLabel">
-            <property name="styleSheet">
-             <string notr="true">font-size: 14px; color: #4682B4;</string>
-            </property>
             <property name="text">
              <string>0 MPa</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font-size: 14px; color: #4682B4;</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer name="verticalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Orientation::Vertical</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
+             <enum>QSizePolicy::Fixed</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -192,33 +168,34 @@
           </item>
           <item>
            <widget class="QLabel" name="labelRpmTitle">
+            <property name="text">
+             <string>当前液位：</string>
+            </property>
             <property name="font">
              <font>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
-            </property>
-            <property name="text">
-             <string>当前液压：</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="rpmValueLabel">
-            <property name="styleSheet">
-             <string notr="true">font-size: 14px; color: #64B464;</string>
-            </property>
             <property name="text">
              <string>0 MPa</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font-size: 14px; color: #64B464;</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer name="verticalSpacer_3">
             <property name="orientation">
-             <enum>Qt::Orientation::Vertical</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
+             <enum>QSizePolicy::Fixed</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -230,30 +207,31 @@
           </item>
           <item>
            <widget class="QLabel" name="labelStatusTitle">
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
             <property name="text">
              <string>运行状态：</string>
+            </property>
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="statusLabel">
-            <property name="styleSheet">
-             <string notr="true">font-size: 14px; color: green;</string>
-            </property>
             <property name="text">
              <string>正常</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font-size: 14px; color: green;</string>
             </property>
            </widget>
           </item>
           <item>
            <spacer name="verticalSpacer">
             <property name="orientation">
-             <enum>Qt::Orientation::Vertical</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -284,7 +262,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
   </widget>

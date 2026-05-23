@@ -23,18 +23,20 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
-     bool InitInstance(); // 修正声明，确保与实现一致
+    void Rdpressworkpara();
 
 private slots:
     void on_updateButton_clicked();
     void updateInfo();
-    void on_startStopButton_clicked();   // 启动/停止按钮槽函数
-    void on_stopCoastButton_clicked();   // 停机/回油按钮槽函数
+    void on_readPressureButton_clicked();
+    void on_setPressureButton_clicked();
+    void on_readLevelButton_clicked();
+    void on_setLevelButton_clicked();
 
 private:
     Ui::MainWindow* ui;
     QTimer* m_timer;
-    bool m_timerRunning;   // 记录定时器状态
+    unsigned char PacketType;
 };
 
 #endif
