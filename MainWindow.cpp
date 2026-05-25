@@ -488,6 +488,76 @@ void MainWindow::on_readLevelButton_clicked()
         Rdywpara();
 }
 
+void MainWindow::Wrywpara()
+{
+    unsigned int i;
+    unsigned char t = 0;
+    BOOL flag = 0;
+
+    unsigned char temp = 0;
+
+    ZeroMemory(t_buf, BUF_SZIE);	//不包括12个空格的
+
+    //UpdateData(TRUE);
+
+    t_buf[0] = 'E';		//包头，四个字节
+    t_buf[1] = 'F';
+    t_buf[2] = 'H';
+    t_buf[3] = '1';
+
+    t_buf[4] = 0x01;		//CMD，设置液位参数
+
+    m_fYwAlmH = m_fltEditYwAlmH;
+    m_fYwAlmL = m_fltEditYwAlmL;
+    m_fYwWorkH = m_fltEditYwWorkH;
+    m_fYwWorkL = m_fltEditYwWorkL;
+
+    //液位高限报警阈值
+    Fconverter.f = m_fYwAlmH;
+    t_buf[5] = Fconverter.b[3];		//32位数据，四个字节浮点数
+    t_buf[6] = Fconverter.b[2];		//32位数据，四个字节浮点数
+    t_buf[7] = Fconverter.b[1];		//32位数据，四个字节浮点数
+    t_buf[8] = Fconverter.b[0];		//32位数据，四个字节浮点数
+
+    //液位低限报警阈值
+    Fconverter.f = m_fYwAlmL;
+    t_buf[9] = Fconverter.b[3];		//32位数据，四个字节浮点数
+    t_buf[10] = Fconverter.b[2];		//32位数据，四个字节浮点数
+    t_buf[11] = Fconverter.b[1];		//32位数据，四个字节浮点数
+    t_buf[12] = Fconverter.b[0];		//32位数据，四个字节浮点数
+
+    //液位高限停止值
+    Fconverter.f = m_fYwWorkH;
+    t_buf[13] = Fconverter.b[3];		//32位数据，四个字节浮点数
+    t_buf[14] = Fconverter.b[2];		//32位数据，四个字节浮点数
+    t_buf[15] = Fconverter.b[1];		//32位数据，四个字节浮点数
+    t_buf[16] = Fconverter.b[0];		//32位数据，四个字节浮点数
+
+    //液位低限启动值
+    Fconverter.f = m_fYwWorkL;
+    t_buf[17] = Fconverter.b[3];		//32位数据，四个字节浮点数
+    t_buf[18] = Fconverter.b[2];		//32位数据，四个字节浮点数
+    t_buf[19] = Fconverter.b[1];		//32位数据，四个字节浮点数
+    t_buf[20] = Fconverter.b[0];		//32位数据，四个字节浮点数
+
+    //定时补液的状态
+    t_buf[21] = m_bCheckAutoOilEnable;	//
+
+    t = 0;
+    for (i = 0; i < 22; i++)
+        t = t + t_buf[i];
+    t_buf[22] = t & 0xff;			//包校验
+
+    //只可以写单个模块的单个通道
+    CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
+
+    //发送
+    if (sendto(sss, t_buf, 23, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
+    {
+    }
+
+}
+
 //读取液位设置参数
 void MainWindow::Rdywpara()
 {
