@@ -481,7 +481,146 @@ void MainWindow::on_readLevelButton_clicked()
     double level = ui->gaugeRpm->value();
     QMessageBox::information(this, tr("液位读数"),
         tr("当前液位为 %1 MPa").arg(level, 0, 'f', 1));
+    // TODO: Add your control notification handler code here
+    if (m_bCheckTimer)
+        PacketType = 0x02;
+    else
+        Rdywpara();
 }
+
+//读取液位设置参数
+void MainWindow::Rdywpara()
+{
+    // TODO: Add your control notification handler code here
+    unsigned int i;
+    unsigned char t = 0;
+    BOOL flag = 0;
+    unsigned char cmd_r;
+
+    unsigned char temp = 0;
+
+    unsigned int r_len;		//接收函数的返回值
+
+    SOCKADDR_IN clientAddr;
+    int nClientLen = sizeof(clientAddr);
+
+    ZeroMemory(t_buf, BUF_SZIE);	//不包括12个空格的
+    ZeroMemory(buf, BUF_SZIE);		//包含12个空格的
+
+    t_buf[0] = 'E';		//包头，四个字节
+    t_buf[1] = 'F';
+    t_buf[2] = 'H';
+    t_buf[3] = '1';
+
+    t_buf[4] = 0x02;		//CMD，读取液位设置参数
+
+    t = 0;
+    for (i = 0; i < 5; i++)
+        t = t + t_buf[i];
+    t_buf[5] = t & 0xff;			//包校验
+
+    //只可以写单个模块的单个通道
+    CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
+
+    //发送
+    if (sendto(sss, t_buf, 6, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
+    {
+        //	printf("recvfrom() failed: %d\n", WSAGetLastError());
+        //	closesocket(sss);	//关闭套接字
+        //	WSACleanup();		//释放套接字资源
+        //	return 1;
+    }
+
+    Sleep(10);		//等待10毫秒，经过验证，延时1毫秒也工作正常
+
+    i = 0;
+    flag = 0;
+    do {
+        //BUF_SZIE是最大接收包长度，如果小于过来的数据包长度，会出错
+        //recvfrom好像是个阻塞的函数
+        i++;
+        r_len = recvfrom(sss, buf, BUF_SZIE, 0, (SOCKADDR*)&clientAddr, &nClientLen);
+        if (SOCKET_ERROR == r_len)
+        {
+            //	printf("recvfrom() failed: %d\n", WSAGetLastError());
+            //	closesocket(sss);	//关闭套接字
+            //	WSACleanup();	//释放套接字资源
+            //	return 1;
+        }
+        else
+        {
+            //不传递参数，用全局变量，简单
+            flag = 1;
+        }
+    } while ((i <= 10000) && (flag == 0));
+
+    if (flag)
+    {
+        ZeroMemory(r_buf, BUF_SZIE);		//清空
+
+        for (i = 0; i < r_len; i++)
+            r_buf[i] = buf[i];
+
+        t = 0;
+        for (i = 0; i < (r_len - 1); i++)  //计算校验 
+        {
+            t = t + r_buf[i];
+        }
+        temp = r_buf[r_len - 1];
+        cmd_r = r_buf[4];
+
+        if ((temp == t) && (cmd_r == 0x02))	//检验校验，命令代码正确
+        {
+            //液位部分，r_buf[7]-r_buf[10]是液位的传感器电流，不需要显示
+            Fconverter.b[3] = r_buf[5];		//32位数据，四个字节浮点数
+            Fconverter.b[2] = r_buf[6];		//32位数据，四个字节浮点数
+            Fconverter.b[1] = r_buf[7];		//32位数据，四个字节浮点数
+            Fconverter.b[0] = r_buf[8];		//32位数据，四个字节浮点数
+            m_fYwAlmH = Fconverter.f;
+
+            Fconverter.b[3] = r_buf[9];		//32位数据，四个字节浮点数
+            Fconverter.b[2] = r_buf[10];	//32位数据，四个字节浮点数
+            Fconverter.b[1] = r_buf[11];	//32位数据，四个字节浮点数
+            Fconverter.b[0] = r_buf[12];	//32位数据，四个字节浮点数
+            m_fYwAlmL = Fconverter.f;
+
+            Fconverter.b[3] = r_buf[13];	//32位数据，四个字节浮点数
+            Fconverter.b[2] = r_buf[14];	//32位数据，四个字节浮点数
+            Fconverter.b[1] = r_buf[15];	//32位数据，四个字节浮点数
+            Fconverter.b[0] = r_buf[16];	//32位数据，四个字节浮点数
+            m_fYwWorkH = Fconverter.f;
+
+            Fconverter.b[3] = r_buf[17];	//32位数据，四个字节浮点数
+            Fconverter.b[2] = r_buf[18];	//32位数据，四个字节浮点数
+            Fconverter.b[1] = r_buf[19];	//32位数据，四个字节浮点数
+            Fconverter.b[0] = r_buf[20];	//32位数据，四个字节浮点数
+            m_fYwWorkL = Fconverter.f;
+
+            m_fltEditYwAlmH = m_fYwAlmH;
+            m_fltEditYwAlmL = m_fYwAlmL;
+            m_fltEditYwWorkH = m_fYwWorkH;
+            m_fltEditYwWorkL = m_fYwWorkL;
+
+            if (r_buf[21])
+                m_bCheckAutoOilEnable = 1;
+            else
+                m_bCheckAutoOilEnable = 0;
+
+           //UpdateData(FALSE);
+        }
+        return;	//正确
+    }
+    else
+    {
+        //	CString str;
+        //	str.Format("下位机回应数据包超时！");
+        //	AfxMessageBox(str.GetBuffer(str.GetLength()));
+        //	m_intEditErr++;		//统计
+//        UpdateData(FALSE);
+        return;	//错误
+    }
+}
+
 
 void MainWindow::on_setLevelButton_clicked()
 {
@@ -511,4 +650,10 @@ void MainWindow::on_setLevelButton_clicked()
             }
         }
     }
+    // TODO: Add your control notification handler code here
+    if (m_bCheckTimer)
+        PacketType = 0x01;
+    else
+        Wrywpara();
+
 }
