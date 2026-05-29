@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+ï»¿#include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QRandomGenerator>
 #include <QMessageBox>
@@ -7,24 +7,24 @@
 #include <stdio.h>
 #include <atlstr.h>
 #include <winsock2.h>
-#pragma comment(lib, "ws2_32.lib") // Á´½Ó Winsock ¿â
+#pragma comment(lib, "ws2_32.lib") // é“¾æ¥ Winsock åº“
 
-SOCKET	sss;		//Ì×½Ó×Ö
+SOCKET	sss;		//å¥—æ¥å­—
 
-WSADATA		wsd;			//WSADATA±äÁ¿
-SOCKADDR_IN	CservAddr;		//ÏÂÎ»»ú·şÎñÆ÷µØÖ·
+WSADATA		wsd;			//WSADATAå˜é‡
+SOCKADDR_IN	CservAddr;		//ä¸‹ä½æœºæœåŠ¡å™¨åœ°å€
 int	nServAddlen;
-SOCKADDR_IN		servAddr;	//ÉÏÎ»»ú¼àÌı·şÎñÆ÷µØÖ·
+SOCKADDR_IN		servAddr;	//ä¸Šä½æœºç›‘å¬æœåŠ¡å™¨åœ°å€
 
-char	t_buf[BUF_SZIE];	//·¢ËÍÊı¾İ»º³åÇø
-char	buf[BUF_SZIE];		//·¢ËÍÊı¾İ»º³åÇø
-unsigned char r_buf[BUF_SZIE];	//½ÓÊÕÊı¾İ»º³åÇø
+char	t_buf[BUF_SZIE];	//å‘é€æ•°æ®ç¼“å†²åŒº
+char	buf[BUF_SZIE];		//å‘é€æ•°æ®ç¼“å†²åŒº
+unsigned char r_buf[BUF_SZIE];	//æ¥æ”¶æ•°æ®ç¼“å†²åŒº
 bool MainWindow::InitInstance()
 {
     // *********************************************************************** 
-// ÏÂÃæ¿ªÊ¼ÉèÖÃ¼àÌıÏÂÎ»»ú»Ø´«Êı¾İÓÃµÄÌ×½Ó×Ö
+// ä¸‹é¢å¼€å§‹è®¾ç½®ç›‘å¬ä¸‹ä½æœºå›ä¼ æ•°æ®ç”¨çš„å¥—æ¥å­—
 // *********************************************************************** 
-    //³õÊ¼»¯Ì×½á×Ö¶¯Ì¬¿â
+    //åˆå§‹åŒ–å¥—ç»“å­—åŠ¨æ€åº“
 
     if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0)
     {
@@ -32,94 +32,94 @@ bool MainWindow::InitInstance()
         return false;
     }
 
-    //ÉêÇëÌ×½Ó×Össs
+    //ç”³è¯·å¥—æ¥å­—sss
     sss = socket(AF_INET, SOCK_DGRAM, 0);
     if (sss == INVALID_SOCKET)
     {
         char temp[10];
-        CString str = "ÉêÇëÌ×½Ó×ÖÊ§°Ü£½";
+        CString str = "ç”³è¯·å¥—æ¥å­—å¤±è´¥ï¼";
 
         itoa(WSAGetLastError(), temp, 10);
         str = str + temp;
         //	MessageBox(str);
-        WSACleanup();//ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´
+        WSACleanup();//é‡Šæ”¾å¥—æ¥å­—èµ„æº
         return FALSE;
     }
 
-    int nErrCode;	//·µ»ØÖµ
-    int nBufLen;	//½ÓÊÕÊı¾İ»º³åÇø´óĞ¡
+    int nErrCode;	//è¿”å›å€¼
+    int nBufLen;	//æ¥æ”¶æ•°æ®ç¼“å†²åŒºå¤§å°
     int nOptlen = sizeof(nBufLen);
 
-    //»ñÈ¡½ÓÊÕÊı¾İ»º³åÇø´óĞ¡
+    //è·å–æ¥æ”¶æ•°æ®ç¼“å†²åŒºå¤§å°
     nErrCode = getsockopt(sss, SOL_SOCKET, SO_RCVBUF, (char*)&nBufLen, &nOptlen);
     if (SOCKET_ERROR == nErrCode)
     {
-        //´¦ÀíÊ§°Ü
+        //å¤„ç†å¤±è´¥
     }
 
-    //ÉèÖÃ½ÓÊÕÊı¾İ»º³åÇøÎªÔ­À´µÄ10±¶
+    //è®¾ç½®æ¥æ”¶æ•°æ®ç¼“å†²åŒºä¸ºåŸæ¥çš„10å€
     nBufLen *= 10;
     nErrCode = setsockopt(sss, SOL_SOCKET, SO_RCVBUF, (char*)&nBufLen, nOptlen);
     if (SOCKET_ERROR == nErrCode)
     {
-        //Ê§°Ü´¦Àí
+        //å¤±è´¥å¤„ç†
     }
 
-    //¼ì²éÉèÖÃÏµÍ³½ÓÊÕÊı¾İ»º³åÇøÊÇ·ñ³É¹¦
+    //æ£€æŸ¥è®¾ç½®ç³»ç»Ÿæ¥æ”¶æ•°æ®ç¼“å†²åŒºæ˜¯å¦æˆåŠŸ
     int uiNewRcvBuf;
     getsockopt(sss, SOL_SOCKET, SO_RCVBUF, (char*)&uiNewRcvBuf, &nOptlen);
     if (SOCKET_ERROR == nErrCode || uiNewRcvBuf != nBufLen)
     {
-        //Ê§°Ü´¦Àí
+        //å¤±è´¥å¤„ç†
     }
 
-    //·şÎñÆ÷µØÖ·
+    //æœåŠ¡å™¨åœ°å€
     servAddr.sin_family = AF_INET;
-    servAddr.sin_port = htons((short)5001);			//¶Ë¿Ú¶àÉÙºÏÊÊ£¿
+    servAddr.sin_port = htons((short)5001);			//ç«¯å£å¤šå°‘åˆé€‚ï¼Ÿ
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY);	//IP
 
-    //°ó¶¨
+    //ç»‘å®š
     if (bind(sss, (SOCKADDR*)&servAddr, sizeof(servAddr)) == SOCKET_ERROR)
     {
         char temp[10];
-        CString str = "°ï¶¨Ê§°Ü£½";
+        CString str = "å¸®å®šå¤±è´¥ï¼";
 
         itoa(WSAGetLastError(), temp, 10);
         str = str + temp;
         //	MessageBox(str);
 
-        closesocket(sss);	//¹Ø±ÕÌ×½Ó×Ö
-        WSACleanup();		//ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´
+        closesocket(sss);	//å…³é—­å¥—æ¥å­—
+        WSACleanup();		//é‡Šæ”¾å¥—æ¥å­—èµ„æº
         return false;
     }
 
-    //Éè¶¨Îª·Ç×èÈûÄ£Ê½£¬ÔÚUDPÏÂÍ¬ÑùÓĞĞ§
+    //è®¾å®šä¸ºéé˜»å¡æ¨¡å¼ï¼Œåœ¨UDPä¸‹åŒæ ·æœ‰æ•ˆ
     unsigned long ul = 1;
     int nRet = ioctlsocket(sss, FIONBIO, (unsigned long*)&ul);
     if (SOCKET_ERROR == nRet)
     {
         char temp[10];
-        CString str = "ÉèÖÃ·Ç×èÈûÊ§°Ü£½";
+        CString str = "è®¾ç½®éé˜»å¡å¤±è´¥ï¼";
 
         itoa(WSAGetLastError(), temp, 10);
         str = str + temp;
         //	MessageBox(str);
 
-        closesocket(sss);	//¹Ø±ÕÌ×½Ó×Ö
-        WSACleanup();		//ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´ 
+        closesocket(sss);	//å…³é—­å¥—æ¥å­—
+        WSACleanup();		//é‡Šæ”¾å¥—æ¥å­—èµ„æº 
         return FALSE;
     } /**/
     // *********************************************************************** 
-// ÏÂÃæ¿ªÊ¼ÉèÖÃÏòÏÂÎ»»ú·¢ËÍÊı¾İÓÃµÄÌ×½Ó×Ö
+// ä¸‹é¢å¼€å§‹è®¾ç½®å‘ä¸‹ä½æœºå‘é€æ•°æ®ç”¨çš„å¥—æ¥å­—
 // *********************************************************************** 
-    //ÏÂÎ»»ú·şÎñÆ÷µØÖ·
+    //ä¸‹ä½æœºæœåŠ¡å™¨åœ°å€
     CservAddr.sin_family = AF_INET;
     CservAddr.sin_addr.S_un.S_un_b.s_b1 = DEFAULT_IP0;
     CservAddr.sin_addr.S_un.S_un_b.s_b2 = DEFAULT_IP1;
     CservAddr.sin_addr.S_un.S_un_b.s_b3 = DEFAULT_IP2;
     CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
 
-    //¶ÔÓ¦·şÎñÆ÷µÄ¶Ë¿ÚºÅÂë£¬Í³Ò»Îª6000
+    //å¯¹åº”æœåŠ¡å™¨çš„ç«¯å£å·ç ï¼Œç»Ÿä¸€ä¸º6000
     CservAddr.sin_port = htons((short)6000);
     nServAddlen = sizeof(CservAddr);
     //	len=sizeof(SOCKADDR);
@@ -136,33 +136,33 @@ MainWindow::MainWindow(QWidget* parent)
     bool b = InitInstance();
 
 
-    // ³õÊ¼»¯Ñ¹Á¦±í£¨0-40 MPa£©
+    // åˆå§‹åŒ–å‹åŠ›è¡¨ï¼ˆ0-40 MPaï¼‰
     ui->gaugeSpeed->setRange(0, 40);
     ui->gaugeSpeed->setUnit("MPa");
     ui->gaugeSpeed->setGaugeColor(QColor(70, 130, 200));
     ui->gaugeSpeed->setNeedleColor(QColor(255, 80, 80));
 
-    // ³õÊ¼»¯ÒºÎ»±í£¨0-25 MPa£¬ÕâÀïµ¥Î»ÈÔÎªMPa£¬¿ÉÀí½âÎªÒºÎ»µ±Á¿£©
+    // åˆå§‹åŒ–æ¶²ä½è¡¨ï¼ˆ0-25 MPaï¼Œè¿™é‡Œå•ä½ä»ä¸ºMPaï¼Œå¯ç†è§£ä¸ºæ¶²ä½å½“é‡ï¼‰
     ui->gaugeRpm->setRange(0, 25);
     ui->gaugeRpm->setUnit("MPa");
     ui->gaugeRpm->setGaugeColor(QColor(100, 180, 100));
     ui->gaugeRpm->setNeedleColor(QColor(255, 120, 50));
 
-    // ³õÊ¼ÊıÖµ
+    // åˆå§‹æ•°å€¼
     ui->gaugeSpeed->setValue(0);
     ui->gaugeRpm->setValue(0);
     ui->speedValueLabel->setText("0 MPa");
     ui->rpmValueLabel->setText("0 MPa");
-    ui->statusLabel->setText("Õı³£");
+    ui->statusLabel->setText("æ­£å¸¸");
     ui->statusLabel->setStyleSheet("color: green;");
 
-    // Á¬½ÓÊÖ¶¯¸üĞÂ°´Å¥
+    // è¿æ¥æ‰‹åŠ¨æ›´æ–°æŒ‰é’®
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
     
     
     connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
 
-    // ÊÖ¶¯Á¬½Ó"¶ÁÈ¡ÒºÎ»"°´Å¥
+    // æ‰‹åŠ¨è¿æ¥"è¯»å–æ¶²ä½"æŒ‰é’®
    /* connect(ui->readLevelButton, &QPushButton::clicked,
        this, &MainWindow::on_readLevelButton_clicked);*/ 
     connect(ui->readPressureButton, &QPushButton::clicked,
@@ -170,7 +170,7 @@ MainWindow::MainWindow(QWidget* parent)
     //setPressureButton
     connect(ui->setPressureButton, &QPushButton::clicked,
             this, &MainWindow::on_setPressureButton_clicked);
-    // Æô¶¯¶¨Ê±Æ÷£¬Ã¿Ãë×Ô¶¯¸üĞÂËæ»úÊı¾İ
+    // å¯åŠ¨å®šæ—¶å™¨ï¼Œæ¯ç§’è‡ªåŠ¨æ›´æ–°éšæœºæ•°æ®
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
     m_timer->start(1000);
@@ -200,30 +200,30 @@ void MainWindow::updateInfo()
     ui->speedValueLabel->setText(QString("%1 MPa").arg(newPressure));
     ui->rpmValueLabel->setText(QString("%1 MPa").arg(newLevel));
 
-    // ¸ù¾İÑ¹Á¦¸üĞÂ×´Ì¬
+    // æ ¹æ®å‹åŠ›æ›´æ–°çŠ¶æ€
     if (newPressure > 35) {
-        ui->statusLabel->setText("³¬Ñ¹¾¯¸æ£¡");
+        ui->statusLabel->setText("è¶…å‹è­¦å‘Šï¼");
         ui->statusLabel->setStyleSheet("color: red; font-weight: bold;");
     }
     else if (newPressure > 25) {
-        ui->statusLabel->setText("¸ßÑ¹ÔËĞĞ");
+        ui->statusLabel->setText("é«˜å‹è¿è¡Œ");
         ui->statusLabel->setStyleSheet("color: orange;");
     }
     else if (newPressure == 0) {
-        ui->statusLabel->setText("ÎŞÑ¹Í£»ú");
+        ui->statusLabel->setText("æ— å‹åœæœº");
         ui->statusLabel->setStyleSheet("color: gray;");
     }
     else {
-        ui->statusLabel->setText("Õı³£ÔËĞĞ");
+        ui->statusLabel->setText("æ­£å¸¸è¿è¡Œ");
         ui->statusLabel->setStyleSheet("color: green;");
     }
 }
-//¶ÁÈ¡Ñ¹Á¦¹¤×÷²ÎÊı£¬°üÀ¨¸æ¾¯Öµ£¬PID²ÎÊı
+//è¯»å–å‹åŠ›å·¥ä½œå‚æ•°ï¼ŒåŒ…æ‹¬å‘Šè­¦å€¼ï¼ŒPIDå‚æ•°
 void MainWindow::on_readPressureButton_clicked()
 {
     double pressure = ui->gaugeSpeed->value();
-    QMessageBox::information(this, tr("Ñ¹Á¦¶ÁÊı"),
-        tr("µ±Ç°Ñ¹Á¦Îª %1 MPa").arg(pressure, 0, 'f', 1));
+    QMessageBox::information(this, tr("å‹åŠ›è¯»æ•°"),
+        tr("å½“å‰å‹åŠ›ä¸º %1 MPa").arg(pressure, 0, 'f', 1));
         // TODO: Add your control notification handler code here
    if (m_bCheckTimer)
         PacketType = 0x04;
@@ -243,79 +243,79 @@ void MainWindow::Rdpressworkpara()
 
 	unsigned char temp = 0;
 
-	unsigned int r_len;		//½ÓÊÕº¯ÊıµÄ·µ»ØÖµ
+	unsigned int r_len;		//æ¥æ”¶å‡½æ•°çš„è¿”å›å€¼
 
 	SOCKADDR_IN clientAddr;
 	int nClientLen = sizeof(clientAddr);
 
-	ZeroMemory(t_buf, BUF_SZIE);	//²»°üÀ¨12¸ö¿Õ¸ñµÄ
-	ZeroMemory(buf, BUF_SZIE);		//°üº¬12¸ö¿Õ¸ñµÄ
+	ZeroMemory(t_buf, BUF_SZIE);	//ä¸åŒ…æ‹¬12ä¸ªç©ºæ ¼çš„
+	ZeroMemory(buf, BUF_SZIE);		//åŒ…å«12ä¸ªç©ºæ ¼çš„
 
-	t_buf[0] = 'E';		//°üÍ·£¬ËÄ¸ö×Ö½Ú
+	t_buf[0] = 'E';		//åŒ…å¤´ï¼Œå››ä¸ªå­—èŠ‚
 	t_buf[1] = 'F';
 	t_buf[2] = 'H';
 	t_buf[3] = '1';
 
-	t_buf[4] = 0x04;		//CMD£¬¶ÁÈ¡Ñ¹Á¦¹¤×÷²ÎÊı
+	t_buf[4] = 0x04;		//CMDï¼Œè¯»å–å‹åŠ›å·¥ä½œå‚æ•°
 
 	t = 0;
 	for (i = 0; i < 5; i++)
 		t = t + t_buf[i];
-	t_buf[5] = t & 0xff;			//°üĞ£Ñé
+	t_buf[5] = t & 0xff;			//åŒ…æ ¡éªŒ
 
-	//Ö»¿ÉÒÔĞ´µ¥¸öÄ£¿éµÄµ¥¸öÍ¨µÀ
+	//åªå¯ä»¥å†™å•ä¸ªæ¨¡å—çš„å•ä¸ªé€šé“
 	CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
 
-	//·¢ËÍ
+	//å‘é€
 	if (sendto(sss, t_buf, 6, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
 	{
 		//	printf("recvfrom() failed: %d\n", WSAGetLastError());
-		//	closesocket(sss);	//¹Ø±ÕÌ×½Ó×Ö
-		//	WSACleanup();		//ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´
+		//	closesocket(sss);	//å…³é—­å¥—æ¥å­—
+		//	WSACleanup();		//é‡Šæ”¾å¥—æ¥å­—èµ„æº
 		//	return 1;
 	}
 
-	Sleep(10);		//µÈ´ı10ºÁÃë£¬¾­¹ıÑéÖ¤£¬ÑÓÊ±1ºÁÃëÒ²¹¤×÷Õı³£
+	Sleep(10);		//ç­‰å¾…10æ¯«ç§’ï¼Œç»è¿‡éªŒè¯ï¼Œå»¶æ—¶1æ¯«ç§’ä¹Ÿå·¥ä½œæ­£å¸¸
 
 	i = 0;
 	flag = 0;
 	do {
-		//BUF_SZIEÊÇ×î´ó½ÓÊÕ°ü³¤¶È£¬Èç¹ûĞ¡ÓÚ¹ıÀ´µÄÊı¾İ°ü³¤¶È£¬»á³ö´í
-		//recvfromºÃÏñÊÇ¸ö×èÈûµÄº¯Êı
+		//BUF_SZIEæ˜¯æœ€å¤§æ¥æ”¶åŒ…é•¿åº¦ï¼Œå¦‚æœå°äºè¿‡æ¥çš„æ•°æ®åŒ…é•¿åº¦ï¼Œä¼šå‡ºé”™
+		//recvfromå¥½åƒæ˜¯ä¸ªé˜»å¡çš„å‡½æ•°
 		i++;
 		r_len = recvfrom(sss, buf, BUF_SZIE, 0, (SOCKADDR*)&clientAddr, &nClientLen);
 		if (SOCKET_ERROR == r_len)
 		{
 			//	printf("recvfrom() failed: %d\n", WSAGetLastError());
-			//	closesocket(sss);	//¹Ø±ÕÌ×½Ó×Ö
-			//	WSACleanup();	//ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´
+			//	closesocket(sss);	//å…³é—­å¥—æ¥å­—
+			//	WSACleanup();	//é‡Šæ”¾å¥—æ¥å­—èµ„æº
 			//	return 1;
 		}
 		else
 		{
-			//²»´«µİ²ÎÊı£¬ÓÃÈ«¾Ö±äÁ¿£¬¼òµ¥
+			//ä¸ä¼ é€’å‚æ•°ï¼Œç”¨å…¨å±€å˜é‡ï¼Œç®€å•
 			flag = 1;
 		}
 	} while ((i <= 10000) && (flag == 0));
 
 	if (flag)
 	{
-		ZeroMemory(r_buf, BUF_SZIE);		//Çå¿Õ
+		ZeroMemory(r_buf, BUF_SZIE);		//æ¸…ç©º
 
 		for (i = 0; i < r_len; i++)
 			r_buf[i] = buf[i];
 
 		t = 0;
-		for (i = 0; i < (r_len - 1); i++)  //¼ÆËãĞ£Ñé 
+		for (i = 0; i < (r_len - 1); i++)  //è®¡ç®—æ ¡éªŒ 
 		{
 			t = t + r_buf[i];
 		}
 		temp = r_buf[r_len - 1];
 		cmd_r = r_buf[4];
 
-		if ((temp == t) && (cmd_r == 0x04))	//¼ìÑéĞ£Ñé£¬ÃüÁî´úÂëÕıÈ·
+		if ((temp == t) && (cmd_r == 0x04))	//æ£€éªŒæ ¡éªŒï¼Œå‘½ä»¤ä»£ç æ­£ç¡®
 		{
-			//»Ø¶ÁÑ¹Á¦¹¤×÷²ÎÊı
+			//å›è¯»å‹åŠ›å·¥ä½œå‚æ•°
 			Fconverter.b[3] = r_buf[5];
 			Fconverter.b[2] = r_buf[6];
 			Fconverter.b[1] = r_buf[7];
@@ -354,45 +354,45 @@ void MainWindow::Rdpressworkpara()
 			m_fltEditParaD = m_fPidParaD;
 			//UpdateData(FALSE);
 		}
-		return;	//ÕıÈ·
+		return;	//æ­£ç¡®
 	}
 	else
 	{
 		//	CString str;
-		//	str.Format("ÏÂÎ»»ú»ØÓ¦Êı¾İ°ü³¬Ê±£¡");
+		//	str.Format("ä¸‹ä½æœºå›åº”æ•°æ®åŒ…è¶…æ—¶ï¼");
 		//	AfxMessageBox(str.GetBuffer(str.GetLength()));
-		//	m_intEditErr++;		//Í³¼Æ
+		//	m_intEditErr++;		//ç»Ÿè®¡
 		//UpdateData(FALSE);
-		return;	//´íÎó
+		return;	//é”™è¯¯
 	}
 }
 
 void MainWindow::on_setPressureButton_clicked()
 {
     bool ok;
-    double newPressure = QInputDialog::getDouble(this, tr("ÉèÖÃÑ¹Á¦"),
-        tr("ÇëÊäÈëÑ¹Á¦Öµ (0-40 MPa):"),
+    double newPressure = QInputDialog::getDouble(this, tr("è®¾ç½®å‹åŠ›"),
+        tr("è¯·è¾“å…¥å‹åŠ›å€¼ (0-40 MPa):"),
         ui->gaugeSpeed->value(),
         0, 40, 1, &ok);
     if (ok) {
         ui->gaugeSpeed->setValue(newPressure);
         ui->speedValueLabel->setText(QString("%1 MPa").arg(newPressure, 0, 'f', 1));
 
-        // ¸üĞÂ×´Ì¬±êÇ©
+        // æ›´æ–°çŠ¶æ€æ ‡ç­¾
         if (newPressure > 35) {
-            ui->statusLabel->setText("³¬Ñ¹¾¯¸æ£¡");
+            ui->statusLabel->setText("è¶…å‹è­¦å‘Šï¼");
             ui->statusLabel->setStyleSheet("color: red; font-weight: bold;");
         }
         else if (newPressure > 25) {
-            ui->statusLabel->setText("¸ßÑ¹ÔËĞĞ");
+            ui->statusLabel->setText("é«˜å‹è¿è¡Œ");
             ui->statusLabel->setStyleSheet("color: orange;");
         }
         else if (newPressure == 0) {
-            ui->statusLabel->setText("ÎŞÑ¹Í£»ú");
+            ui->statusLabel->setText("æ— å‹åœæœº");
             ui->statusLabel->setStyleSheet("color: gray;");
         }
         else {
-            ui->statusLabel->setText("Õı³£ÔËĞĞ");
+            ui->statusLabel->setText("æ­£å¸¸è¿è¡Œ");
             ui->statusLabel->setStyleSheet("color: green;");
         }
     }
@@ -410,16 +410,16 @@ void MainWindow::Wrpressworkpara()
 
     unsigned char temp = 0;
 
-    ZeroMemory(t_buf, BUF_SZIE);	//²»°üÀ¨12¸ö¿Õ¸ñµÄ
+    ZeroMemory(t_buf, BUF_SZIE);	//ä¸åŒ…æ‹¬12ä¸ªç©ºæ ¼çš„
 
    // UpdateData(TRUE);
 
-    t_buf[0] = 'E';		//°üÍ·£¬ËÄ¸ö×Ö½Ú
+    t_buf[0] = 'E';		//åŒ…å¤´ï¼Œå››ä¸ªå­—èŠ‚
     t_buf[1] = 'F';
     t_buf[2] = 'H';
     t_buf[3] = '1';
 
-    t_buf[4] = 0x03;		//CMD£¬ÉèÖÃÑ¹Á¦¹¤×÷²ÎÊı
+    t_buf[4] = 0x03;		//CMDï¼Œè®¾ç½®å‹åŠ›å·¥ä½œå‚æ•°
 
     m_fPressAlmH = m_fltEditPressAlmH;
     m_fPressAlmL = m_fltEditPressAlmL;
@@ -428,50 +428,50 @@ void MainWindow::Wrpressworkpara()
     m_fPidParaI = m_fltEditParaI;
     m_fPidParaD = m_fltEditParaD;
 
-    //Ñ¹Á¦¸ßÏŞ±¨¾¯ãĞÖµ
+    //å‹åŠ›é«˜é™æŠ¥è­¦é˜ˆå€¼
     Fconverter.f = m_fPressAlmH;
-    t_buf[5] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[6] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[7] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[8] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[5] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[6] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[7] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[8] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
-    //Ñ¹Á¦µÍÏŞ±¨¾¯ãĞÖµ
+    //å‹åŠ›ä½é™æŠ¥è­¦é˜ˆå€¼
     Fconverter.f = m_fPressAlmL;
-    t_buf[9] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[10] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[11] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[12] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[9] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[10] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[11] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[12] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
     //PID-P
     Fconverter.f = m_fPidParaP;
-    t_buf[13] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[14] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[15] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[16] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[13] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[14] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[15] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[16] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
     //PID-I
     Fconverter.f = m_fPidParaI;
-    t_buf[17] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[18] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[19] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[20] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[17] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[18] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[19] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[20] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
     //PID-D
     Fconverter.f = m_fPidParaD;
-    t_buf[21] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[22] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[23] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[24] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[21] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[22] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[23] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[24] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
     t = 0;
     for (i = 0; i < 25; i++)
         t = t + t_buf[i];
-    t_buf[25] = t & 0xff;			//°üĞ£Ñé
+    t_buf[25] = t & 0xff;			//åŒ…æ ¡éªŒ
 
-    //Ö»¿ÉÒÔĞ´µ¥¸öÄ£¿éµÄµ¥¸öÍ¨µÀ
+    //åªå¯ä»¥å†™å•ä¸ªæ¨¡å—çš„å•ä¸ªé€šé“
     CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
 
-    //·¢ËÍ
+    //å‘é€
     if (sendto(sss, t_buf, 26, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
     {
     }
@@ -479,8 +479,8 @@ void MainWindow::Wrpressworkpara()
 void MainWindow::on_readLevelButton_clicked()
 {
     double level = ui->gaugeRpm->value();
-    QMessageBox::information(this, tr("ÒºÎ»¶ÁÊı"),
-        tr("µ±Ç°ÒºÎ»Îª %1 MPa").arg(level, 0, 'f', 1));
+    QMessageBox::information(this, tr("æ¶²ä½è¯»æ•°"),
+        tr("å½“å‰æ¶²ä½ä¸º %1 MPa").arg(level, 0, 'f', 1));
     // TODO: Add your control notification handler code here
     if (m_bCheckTimer)
         PacketType = 0x02;
@@ -496,69 +496,69 @@ void MainWindow::Wrywpara()
 
     unsigned char temp = 0;
 
-    ZeroMemory(t_buf, BUF_SZIE);	//²»°üÀ¨12¸ö¿Õ¸ñµÄ
+    ZeroMemory(t_buf, BUF_SZIE);	//ä¸åŒ…æ‹¬12ä¸ªç©ºæ ¼çš„
 
     //UpdateData(TRUE);
 
-    t_buf[0] = 'E';		//°üÍ·£¬ËÄ¸ö×Ö½Ú
+    t_buf[0] = 'E';		//åŒ…å¤´ï¼Œå››ä¸ªå­—èŠ‚
     t_buf[1] = 'F';
     t_buf[2] = 'H';
     t_buf[3] = '1';
 
-    t_buf[4] = 0x01;		//CMD£¬ÉèÖÃÒºÎ»²ÎÊı
+    t_buf[4] = 0x01;		//CMDï¼Œè®¾ç½®æ¶²ä½å‚æ•°
 
     m_fYwAlmH = m_fltEditYwAlmH;
     m_fYwAlmL = m_fltEditYwAlmL;
     m_fYwWorkH = m_fltEditYwWorkH;
     m_fYwWorkL = m_fltEditYwWorkL;
 
-    //ÒºÎ»¸ßÏŞ±¨¾¯ãĞÖµ
+    //æ¶²ä½é«˜é™æŠ¥è­¦é˜ˆå€¼
     Fconverter.f = m_fYwAlmH;
-    t_buf[5] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[6] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[7] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[8] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[5] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[6] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[7] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[8] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
-    //ÒºÎ»µÍÏŞ±¨¾¯ãĞÖµ
+    //æ¶²ä½ä½é™æŠ¥è­¦é˜ˆå€¼
     Fconverter.f = m_fYwAlmL;
-    t_buf[9] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[10] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[11] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[12] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[9] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[10] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[11] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[12] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
-    //ÒºÎ»¸ßÏŞÍ£Ö¹Öµ
+    //æ¶²ä½é«˜é™åœæ­¢å€¼
     Fconverter.f = m_fYwWorkH;
-    t_buf[13] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[14] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[15] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[16] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[13] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[14] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[15] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[16] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
-    //ÒºÎ»µÍÏŞÆô¶¯Öµ
+    //æ¶²ä½ä½é™å¯åŠ¨å€¼
     Fconverter.f = m_fYwWorkL;
-    t_buf[17] = Fconverter.b[3];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[18] = Fconverter.b[2];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[19] = Fconverter.b[1];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-    t_buf[20] = Fconverter.b[0];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+    t_buf[17] = Fconverter.b[3];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[18] = Fconverter.b[2];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[19] = Fconverter.b[1];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+    t_buf[20] = Fconverter.b[0];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
 
-    //¶¨Ê±²¹ÒºµÄ×´Ì¬
+    //å®šæ—¶è¡¥æ¶²çš„çŠ¶æ€
     t_buf[21] = m_bCheckAutoOilEnable;	//
 
     t = 0;
     for (i = 0; i < 22; i++)
         t = t + t_buf[i];
-    t_buf[22] = t & 0xff;			//°üĞ£Ñé
+    t_buf[22] = t & 0xff;			//åŒ…æ ¡éªŒ
 
-    //Ö»¿ÉÒÔĞ´µ¥¸öÄ£¿éµÄµ¥¸öÍ¨µÀ
+    //åªå¯ä»¥å†™å•ä¸ªæ¨¡å—çš„å•ä¸ªé€šé“
     CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
 
-    //·¢ËÍ
+    //å‘é€
     if (sendto(sss, t_buf, 23, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
     {
     }
 
 }
 
-//¶ÁÈ¡ÒºÎ»ÉèÖÃ²ÎÊı
+//è¯»å–æ¶²ä½è®¾ç½®å‚æ•°
 void MainWindow::Rdywpara()
 {
     // TODO: Add your control notification handler code here
@@ -569,101 +569,101 @@ void MainWindow::Rdywpara()
 
     unsigned char temp = 0;
 
-    unsigned int r_len;		//½ÓÊÕº¯ÊıµÄ·µ»ØÖµ
+    unsigned int r_len;		//æ¥æ”¶å‡½æ•°çš„è¿”å›å€¼
 
     SOCKADDR_IN clientAddr;
     int nClientLen = sizeof(clientAddr);
 
-    ZeroMemory(t_buf, BUF_SZIE);	//²»°üÀ¨12¸ö¿Õ¸ñµÄ
-    ZeroMemory(buf, BUF_SZIE);		//°üº¬12¸ö¿Õ¸ñµÄ
+    ZeroMemory(t_buf, BUF_SZIE);	//ä¸åŒ…æ‹¬12ä¸ªç©ºæ ¼çš„
+    ZeroMemory(buf, BUF_SZIE);		//åŒ…å«12ä¸ªç©ºæ ¼çš„
 
-    t_buf[0] = 'E';		//°üÍ·£¬ËÄ¸ö×Ö½Ú
+    t_buf[0] = 'E';		//åŒ…å¤´ï¼Œå››ä¸ªå­—èŠ‚
     t_buf[1] = 'F';
     t_buf[2] = 'H';
     t_buf[3] = '1';
 
-    t_buf[4] = 0x02;		//CMD£¬¶ÁÈ¡ÒºÎ»ÉèÖÃ²ÎÊı
+    t_buf[4] = 0x02;		//CMDï¼Œè¯»å–æ¶²ä½è®¾ç½®å‚æ•°
 
     t = 0;
     for (i = 0; i < 5; i++)
         t = t + t_buf[i];
-    t_buf[5] = t & 0xff;			//°üĞ£Ñé
+    t_buf[5] = t & 0xff;			//åŒ…æ ¡éªŒ
 
-    //Ö»¿ÉÒÔĞ´µ¥¸öÄ£¿éµÄµ¥¸öÍ¨µÀ
+    //åªå¯ä»¥å†™å•ä¸ªæ¨¡å—çš„å•ä¸ªé€šé“
     CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
 
-    //·¢ËÍ
+    //å‘é€
     if (sendto(sss, t_buf, 6, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
     {
         //	printf("recvfrom() failed: %d\n", WSAGetLastError());
-        //	closesocket(sss);	//¹Ø±ÕÌ×½Ó×Ö
-        //	WSACleanup();		//ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´
+        //	closesocket(sss);	//å…³é—­å¥—æ¥å­—
+        //	WSACleanup();		//é‡Šæ”¾å¥—æ¥å­—èµ„æº
         //	return 1;
     }
 
-    Sleep(10);		//µÈ´ı10ºÁÃë£¬¾­¹ıÑéÖ¤£¬ÑÓÊ±1ºÁÃëÒ²¹¤×÷Õı³£
+    Sleep(10);		//ç­‰å¾…10æ¯«ç§’ï¼Œç»è¿‡éªŒè¯ï¼Œå»¶æ—¶1æ¯«ç§’ä¹Ÿå·¥ä½œæ­£å¸¸
 
     i = 0;
     flag = 0;
     do {
-        //BUF_SZIEÊÇ×î´ó½ÓÊÕ°ü³¤¶È£¬Èç¹ûĞ¡ÓÚ¹ıÀ´µÄÊı¾İ°ü³¤¶È£¬»á³ö´í
-        //recvfromºÃÏñÊÇ¸ö×èÈûµÄº¯Êı
+        //BUF_SZIEæ˜¯æœ€å¤§æ¥æ”¶åŒ…é•¿åº¦ï¼Œå¦‚æœå°äºè¿‡æ¥çš„æ•°æ®åŒ…é•¿åº¦ï¼Œä¼šå‡ºé”™
+        //recvfromå¥½åƒæ˜¯ä¸ªé˜»å¡çš„å‡½æ•°
         i++;
         r_len = recvfrom(sss, buf, BUF_SZIE, 0, (SOCKADDR*)&clientAddr, &nClientLen);
         if (SOCKET_ERROR == r_len)
         {
             //	printf("recvfrom() failed: %d\n", WSAGetLastError());
-            //	closesocket(sss);	//¹Ø±ÕÌ×½Ó×Ö
-            //	WSACleanup();	//ÊÍ·ÅÌ×½Ó×Ö×ÊÔ´
+            //	closesocket(sss);	//å…³é—­å¥—æ¥å­—
+            //	WSACleanup();	//é‡Šæ”¾å¥—æ¥å­—èµ„æº
             //	return 1;
         }
         else
         {
-            //²»´«µİ²ÎÊı£¬ÓÃÈ«¾Ö±äÁ¿£¬¼òµ¥
+            //ä¸ä¼ é€’å‚æ•°ï¼Œç”¨å…¨å±€å˜é‡ï¼Œç®€å•
             flag = 1;
         }
     } while ((i <= 10000) && (flag == 0));
 
     if (flag)
     {
-        ZeroMemory(r_buf, BUF_SZIE);		//Çå¿Õ
+        ZeroMemory(r_buf, BUF_SZIE);		//æ¸…ç©º
 
         for (i = 0; i < r_len; i++)
             r_buf[i] = buf[i];
 
         t = 0;
-        for (i = 0; i < (r_len - 1); i++)  //¼ÆËãĞ£Ñé 
+        for (i = 0; i < (r_len - 1); i++)  //è®¡ç®—æ ¡éªŒ 
         {
             t = t + r_buf[i];
         }
         temp = r_buf[r_len - 1];
         cmd_r = r_buf[4];
 
-        if ((temp == t) && (cmd_r == 0x02))	//¼ìÑéĞ£Ñé£¬ÃüÁî´úÂëÕıÈ·
+        if ((temp == t) && (cmd_r == 0x02))	//æ£€éªŒæ ¡éªŒï¼Œå‘½ä»¤ä»£ç æ­£ç¡®
         {
-            //ÒºÎ»²¿·Ö£¬r_buf[7]-r_buf[10]ÊÇÒºÎ»µÄ´«¸ĞÆ÷µçÁ÷£¬²»ĞèÒªÏÔÊ¾
-            Fconverter.b[3] = r_buf[5];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[2] = r_buf[6];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[1] = r_buf[7];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[0] = r_buf[8];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+            //æ¶²ä½éƒ¨åˆ†ï¼Œr_buf[7]-r_buf[10]æ˜¯æ¶²ä½çš„ä¼ æ„Ÿå™¨ç”µæµï¼Œä¸éœ€è¦æ˜¾ç¤º
+            Fconverter.b[3] = r_buf[5];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[2] = r_buf[6];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[1] = r_buf[7];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[0] = r_buf[8];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
             m_fYwAlmH = Fconverter.f;
 
-            Fconverter.b[3] = r_buf[9];		//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[2] = r_buf[10];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[1] = r_buf[11];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[0] = r_buf[12];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+            Fconverter.b[3] = r_buf[9];		//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[2] = r_buf[10];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[1] = r_buf[11];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[0] = r_buf[12];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
             m_fYwAlmL = Fconverter.f;
 
-            Fconverter.b[3] = r_buf[13];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[2] = r_buf[14];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[1] = r_buf[15];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[0] = r_buf[16];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+            Fconverter.b[3] = r_buf[13];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[2] = r_buf[14];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[1] = r_buf[15];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[0] = r_buf[16];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
             m_fYwWorkH = Fconverter.f;
 
-            Fconverter.b[3] = r_buf[17];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[2] = r_buf[18];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[1] = r_buf[19];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
-            Fconverter.b[0] = r_buf[20];	//32Î»Êı¾İ£¬ËÄ¸ö×Ö½Ú¸¡µãÊı
+            Fconverter.b[3] = r_buf[17];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[2] = r_buf[18];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[1] = r_buf[19];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
+            Fconverter.b[0] = r_buf[20];	//32ä½æ•°æ®ï¼Œå››ä¸ªå­—èŠ‚æµ®ç‚¹æ•°
             m_fYwWorkL = Fconverter.f;
 
             m_fltEditYwAlmH = m_fYwAlmH;
@@ -678,16 +678,16 @@ void MainWindow::Rdywpara()
 
            //UpdateData(FALSE);
         }
-        return;	//ÕıÈ·
+        return;	//æ­£ç¡®
     }
     else
     {
         //	CString str;
-        //	str.Format("ÏÂÎ»»ú»ØÓ¦Êı¾İ°ü³¬Ê±£¡");
+        //	str.Format("ä¸‹ä½æœºå›åº”æ•°æ®åŒ…è¶…æ—¶ï¼");
         //	AfxMessageBox(str.GetBuffer(str.GetLength()));
-        //	m_intEditErr++;		//Í³¼Æ
+        //	m_intEditErr++;		//ç»Ÿè®¡
 //        UpdateData(FALSE);
-        return;	//´íÎó
+        return;	//é”™è¯¯
     }
 }
 
@@ -695,17 +695,17 @@ void MainWindow::Rdywpara()
 void MainWindow::on_setLevelButton_clicked()
 {
     bool ok;
-    double newLevel = QInputDialog::getDouble(this, tr("ÉèÖÃÒºÎ»"),
-        tr("ÇëÊäÈëÒºÎ»Öµ (0-25 MPa):"),
+    double newLevel = QInputDialog::getDouble(this, tr("è®¾ç½®æ¶²ä½"),
+        tr("è¯·è¾“å…¥æ¶²ä½å€¼ (0-25 MPa):"),
         ui->gaugeRpm->value(),
         0, 25, 1, &ok);
     if (ok) {
         ui->gaugeRpm->setValue(newLevel);
         ui->rpmValueLabel->setText(QString("%1 MPa").arg(newLevel, 0, 'f', 1));
 
-        // ÒºÎ»¹ı¸ßÌáĞÑ£¨¿ÉÑ¡£©
+        // æ¶²ä½è¿‡é«˜æé†’ï¼ˆå¯é€‰ï¼‰
         if (newLevel > 22) {
-            ui->statusLabel->setText("low£¡");
+            ui->statusLabel->setText("lowï¼");
             ui->statusLabel->setStyleSheet("color: red; font-weight: bold;");
         }
         else if (newLevel > 18) {
@@ -713,7 +713,7 @@ void MainWindow::on_setLevelButton_clicked()
             ui->statusLabel->setStyleSheet("color: orange;");
         }
         else {
-            // Èç¹ûÑ¹Á¦×´Ì¬¸üÖØÒª£¬¿ÉÒÔ¸ù¾İÑ¹Á¦×´Ì¬¸²¸Ç£¬ÕâÀï¼òµ¥´¦Àí
+            // å¦‚æœå‹åŠ›çŠ¶æ€æ›´é‡è¦ï¼Œå¯ä»¥æ ¹æ®å‹åŠ›çŠ¶æ€è¦†ç›–ï¼Œè¿™é‡Œç®€å•å¤„ç†
             if (ui->gaugeSpeed->value() > 0) {
                 ui->statusLabel->setText("ywzc");
                 ui->statusLabel->setStyleSheet("color: green;");
