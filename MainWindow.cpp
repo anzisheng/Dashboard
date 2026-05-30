@@ -156,6 +156,10 @@ MainWindow::MainWindow(QWidget* parent)
     ui->statusLabel->setText("正常");
     ui->statusLabel->setStyleSheet("color: green;");
 
+    m_fltEditPressAlmH = 10.0f;
+    ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
+//	ui->speedValueLabel_2->setText(QString("压力告警值: %1 MPa").arg(m_fltEditPressAlmH));
+
     // 连接手动更新按钮
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
     
@@ -347,12 +351,21 @@ void MainWindow::Rdpressworkpara()
 			m_fPidParaD = Fconverter.f;
 
 			m_fltEditPressAlmH = m_fPressAlmH;
+            ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
+            //speedValueLabel_2
 			m_fltEditPressAlmL = m_fPressAlmL;
+            ui->speedValueLabel_3->setText(QString("%1 MPa").arg(m_fltEditPressAlmL));
 
 			m_fltEditParaP = m_fPidParaP;
 			m_fltEditParaI = m_fPidParaI;
 			m_fltEditParaD = m_fPidParaD;
 			//UpdateData(FALSE);
+            //使用qt的setText() 给控件赋值
+           /* ui->pressureAlmHEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
+            ui->pressureAlmLEdit->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
+            ui->pidParaPEdit->setText(QString::number(m_fltEditParaP, 'f', 2));
+            ui->pidParaIEdit->setText(QString::number(m_fltEditParaI, 'f', 2));
+			ui->pidParaDEdit->setText(QString::number(m_fltEditParaD, 'f', 2));*/
 		}
 		return;	//正确
 	}

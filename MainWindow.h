@@ -92,7 +92,7 @@ public:
     float	m_fltEditParaP;
     CString	m_strEditPressureAlarmStatus;
     int		m_intRadioWorkStatus;
-/// </summary>
+    /// </summary>
 
 private slots:
     void on_updateButton_clicked();
