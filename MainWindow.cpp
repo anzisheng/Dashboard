@@ -151,7 +151,7 @@ MainWindow::MainWindow(QWidget* parent)
     // 初始数值
     ui->gaugeSpeed->setValue(0);
     ui->gaugeRpm->setValue(0);
-    ui->speedValueLabel->setText("0 MPa");
+    ui->speedValueLabel->setText("10 MPa");
     ui->rpmValueLabel->setText("0 MPa");
     ui->statusLabel->setText("正常");
     ui->statusLabel->setStyleSheet("color: green;");
@@ -159,6 +159,14 @@ MainWindow::MainWindow(QWidget* parent)
     m_fltEditPressAlmH = 10.0f;
     ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
 //	ui->speedValueLabel_2->setText(QString("压力告警值: %1 MPa").arg(m_fltEditPressAlmH));
+    m_fltEditYwWorkL = 20.0f;
+//    rpmValueLabel
+    ui->rpmValueLabel->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
+    
+	m_fYwAlmH = 15.0f;
+    ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
+	m_fYwAlmL = 0.0f;
+    ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
 
     // 连接手动更新按钮
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
@@ -660,12 +668,16 @@ void MainWindow::Rdywpara()
             Fconverter.b[1] = r_buf[7];		//32位数据，四个字节浮点数
             Fconverter.b[0] = r_buf[8];		//32位数据，四个字节浮点数
             m_fYwAlmH = Fconverter.f;
+            ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
+
+
 
             Fconverter.b[3] = r_buf[9];		//32位数据，四个字节浮点数
             Fconverter.b[2] = r_buf[10];	//32位数据，四个字节浮点数
             Fconverter.b[1] = r_buf[11];	//32位数据，四个字节浮点数
             Fconverter.b[0] = r_buf[12];	//32位数据，四个字节浮点数
             m_fYwAlmL = Fconverter.f;
+            ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
 
             Fconverter.b[3] = r_buf[13];	//32位数据，四个字节浮点数
             Fconverter.b[2] = r_buf[14];	//32位数据，四个字节浮点数
@@ -680,9 +692,12 @@ void MainWindow::Rdywpara()
             m_fYwWorkL = Fconverter.f;
 
             m_fltEditYwAlmH = m_fYwAlmH;
+            //ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
             m_fltEditYwAlmL = m_fYwAlmL;
             m_fltEditYwWorkH = m_fYwWorkH;
             m_fltEditYwWorkL = m_fYwWorkL;
+            ui->rpmValueLabel->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
+
 
             if (r_buf[21])
                 m_bCheckAutoOilEnable = 1;
