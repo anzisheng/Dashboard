@@ -222,8 +222,8 @@ void MainWindow::updateInfo()
 void MainWindow::on_readPressureButton_clicked()
 {
     double pressure = ui->gaugeSpeed->value();
-    QMessageBox::information(this, tr("压力读数"),
-        tr("当前压力为 %1 MPa").arg(pressure, 0, 'f', 1));
+   /* QMessageBox::information(this, tr("压力读数"),
+        tr("当前压力为 %1 MPa").arg(pressure, 0, 'f', 1));*/
         // TODO: Add your control notification handler code here
    if (m_bCheckTimer)
         PacketType = 0x04;
