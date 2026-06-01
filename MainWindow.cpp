@@ -233,6 +233,7 @@ void MainWindow::updateInfo()
 //读取压力工作参数，包括告警值，PID参数
 void MainWindow::on_readPressureButton_clicked()
 {
+    qDebug() << "enter into on_readPressureButton_clicked";
     double pressure = ui->gaugeSpeed->value();
    /* QMessageBox::information(this, tr("压力读数"),
         tr("当前压力为 %1 MPa").arg(pressure, 0, 'f', 1));*/
@@ -248,6 +249,7 @@ void MainWindow::on_readPressureButton_clicked()
 
 void MainWindow::Rdpressworkpara()
 {
+    qDebug()<<"enter into  Rdpressworkpara";
 	unsigned int i;
 	unsigned char t = 0;
 	bool flag = 0;
@@ -269,6 +271,7 @@ void MainWindow::Rdpressworkpara()
 	t_buf[3] = '1';
 
 	t_buf[4] = 0x04;		//CMD，读取压力工作参数
+    qDebug()<<"Rdpressworkpara   00000";
 
 	t = 0;
 	for (i = 0; i < 5; i++)
@@ -285,7 +288,10 @@ void MainWindow::Rdpressworkpara()
 		//	closesocket(sss);	//关闭套接字
 		//	WSACleanup();		//释放套接字资源
 		//	return 1;
+        qDebug()<<"Rdpressworkpara   发送成功";
+
 	}
+    qDebug()<<"Rdpressworkpara   11111";
 
 	Sleep(10);		//等待10毫秒，经过验证，延时1毫秒也工作正常
 
@@ -296,19 +302,23 @@ void MainWindow::Rdpressworkpara()
 		//recvfrom好像是个阻塞的函数
 		i++;
 		r_len = recvfrom(sss, buf, BUF_SZIE, 0, (SOCKADDR*)&clientAddr, &nClientLen);
+        qDebug()<<"Rdpressworkpara  r_len:"<<r_len;
+        qDebug()<<"Rdpressworkpara  SOCKET_ERROR:"<<SOCKET_ERROR;
 		if (SOCKET_ERROR == r_len)
 		{
 			//	printf("recvfrom() failed: %d\n", WSAGetLastError());
 			//	closesocket(sss);	//关闭套接字
 			//	WSACleanup();	//释放套接字资源
 			//	return 1;
-		}
+        }
 		else
 		{
 			//不传递参数，用全局变量，简单
 			flag = 1;
 		}
-	} while ((i <= 10000) && (flag == 0));
+    } while ((i <= 10000) && (flag == 0)); //收到的数据10000也没有错误，就是flag也没有变成1
+
+    qDebug()<<"Rdpressworkpara   22222, i is： AND flag is: " <<i << flag;
 
 	if (flag)
 	{
@@ -377,14 +387,14 @@ void MainWindow::Rdpressworkpara()
 		}
 		return;	//正确
 	}
-	else
+    else //收不到下位机的数据
 	{
-		//	CString str;
-		//	str.Format("下位机回应数据包超时！");
-		//	AfxMessageBox(str.GetBuffer(str.GetLength()));
-		//	m_intEditErr++;		//统计
+        //	CString str;
+        //	str.Format("下位机回应数据包超时！");
+        //	AfxMessageBox(str.GetBuffer(str.GetLength()));
+        //	m_intEditErr++;		//统计
 		//UpdateData(FALSE);
-		return;	//错误
+        return;	//错误
 	}
 }
 
