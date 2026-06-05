@@ -370,7 +370,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
-    m_timer->start(1000);
+    //m_timer->start(1000);
 }
 void MainWindow::updateTime()
 {
@@ -409,6 +409,12 @@ void MainWindow::updateTime()
 void MainWindow::onCheckBoxToggled(bool checked)
 {
     m_bCheckTimer = checked;
+    if(m_bCheckTimer)
+        m_timer->start(1000);
+    else
+    {
+        m_timer->stop();
+    }
 }
 MainWindow::~MainWindow()
 {
