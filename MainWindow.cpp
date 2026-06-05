@@ -127,6 +127,190 @@ bool MainWindow::InitInstance()
     return true;
 }
 
+//void MainWindow::ReadData()
+//{
+//}
+void MainWindow::SetPressWorkStatus()
+{
+}
+void MainWindow::ReadData()
+{
+    
+    // TODO: Add your control notification handler code here
+    unsigned int i;
+    unsigned char t = 0;
+    BOOL flag = 0;
+    unsigned char cmd_r;
+
+    unsigned char temp = 0;
+
+    unsigned int r_len;		//接收函数的返回值
+
+    SOCKADDR_IN clientAddr;
+    int nClientLen = sizeof(clientAddr);
+
+    unsigned char DiTemp = 0;
+    unsigned char DoTemp = 0;
+
+    ZeroMemory(t_buf, BUF_SZIE);	//不包括12个空格的
+    ZeroMemory(buf, BUF_SZIE);		//包含12个空格的
+
+    t_buf[0] = 'E';		//包头，四个字节
+    t_buf[1] = 'F';
+    t_buf[2] = 'H';
+    t_buf[3] = '1';
+
+    t_buf[4] = 0x00;		//CMD，读取一次当前状态数据，DIDO、AI、压力液位、运行状态、变频器设置和当前频率，补液状态
+
+    t = 0;
+    for (i = 0; i < 5; i++)
+        t = t + t_buf[i];
+    t_buf[5] = t & 0xff;			//包校验
+
+    //只可以写单个模块的单个通道
+    CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
+
+    //发送
+    if (sendto(sss, t_buf, 6, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
+    {
+        //	printf("recvfrom() failed: %d\n", WSAGetLastError());
+        //	closesocket(sss);	//关闭套接字
+        //	WSACleanup();		//释放套接字资源
+        //	return 1;
+    }
+
+   // Sleep(10);		//等待10毫秒，经过验证，延时1毫秒也工作正常
+
+    i = 0;
+    flag = 0;
+    do {
+        //BUF_SZIE是最大接收包长度，如果小于过来的数据包长度，会出错
+        //recvfrom好像是个阻塞的函数
+        i++;
+        r_len = recvfrom(sss, buf, BUF_SZIE, 0, (SOCKADDR*)&clientAddr, &nClientLen);
+        if (SOCKET_ERROR == r_len)
+        {
+            //	printf("recvfrom() failed: %d\n", WSAGetLastError());
+            //	closesocket(sss);	//关闭套接字
+            //	WSACleanup();	//释放套接字资源
+            //	return 1;
+        }
+        else
+        {
+            //不传递参数，用全局变量，简单
+            flag = 1;
+        }
+    } while ((i <= 10000) && (flag == 0));
+
+    if (flag)
+    {
+        ZeroMemory(r_buf, BUF_SZIE);		//清空
+
+        for (i = 0; i < r_len; i++)
+            r_buf[i] = buf[i];
+
+        t = 0;
+        for (i = 0; i < (r_len - 1); i++)  //计算校验 
+        {
+            t = t + r_buf[i];
+        }
+        temp = r_buf[r_len - 1];
+        cmd_r = r_buf[4];
+
+        if ((temp == t) && (cmd_r == 0x00))	//检验校验，命令代码正确
+        {
+            //DI部分
+            DiTemp = r_buf[5];
+            if (0x01 == (DiTemp & 0x01))	//急停输入
+                m_bCheckStopIn = 1;
+            else
+                m_bCheckStopIn = 0;
+
+            if (0x02 == (DiTemp & 0x02))	//过压开关输入
+                m_bCheckOverPressure = 1;
+            else
+                m_bCheckOverPressure = 0;
+
+            //DO部分
+            DoTemp = r_buf[6];
+            if (0x01 == (DoTemp & 0x01))	//泄压阀
+                m_bCheckRelief = 1;
+            else
+                m_bCheckRelief = 0;
+
+            if (0x02 == (DoTemp & 0x02))	//BEEP报警器
+                m_bCheckBeep = 1;
+            else
+                m_bCheckBeep = 0;
+
+            if (0x04 == (DoTemp & 0x04))	//补油泵
+                m_bCheckPump = 1;
+            else
+                m_bCheckPump = 0;
+
+            //液位部分，r_buf[7]-r_buf[10]是液位的传感器电流，不需要显示
+            Fconverter.b[3] = r_buf[11];		//32位数据，四个字节浮点数
+            Fconverter.b[2] = r_buf[12];		//32位数据，四个字节浮点数
+            Fconverter.b[1] = r_buf[13];		//32位数据，四个字节浮点数
+            Fconverter.b[0] = r_buf[14];		//32位数据，四个字节浮点数
+            m_fltEditYwCurr = Fconverter.f;
+
+            if (r_buf[15])
+                m_strEditYwStatus = "补油中";
+            else
+                m_strEditYwStatus = "";
+
+            //压力部分，r_buf[16]-r_buf[19]是压力的传感器电流，不需要显示
+            Fconverter.b[3] = r_buf[20];		//32位数据，四个字节浮点数
+            Fconverter.b[2] = r_buf[21];		//32位数据，四个字节浮点数
+            Fconverter.b[1] = r_buf[22];		//32位数据，四个字节浮点数
+            Fconverter.b[0] = r_buf[23];		//32位数据，四个字节浮点数
+            m_fltEditPressureCurr = Fconverter.f;
+
+            switch (r_buf[24])
+            {
+            case 0:
+                m_intRadioWorkStatus = 0;		//待机
+                break;
+            case 1:
+                m_intRadioWorkStatus = 1;		//工作
+                break;
+            case 2:
+                m_intRadioWorkStatus = 2;		//泄压
+                break;
+            }
+
+            switch (r_buf[25])
+            {
+            case 0:
+                m_strEditPressureAlarmStatus = "";
+                break;
+            case 1:
+                m_strEditPressureAlarmStatus = "压力欠压告警";
+                break;
+            case 2:
+                m_strEditPressureAlarmStatus = "压力过压告警";
+                break;
+            }
+
+            //UpdateData(FALSE);
+        }
+        return;	//正确
+    }
+    else
+    {
+        //	CString str;
+        //	str.Format("下位机回应数据包超时！");
+        //	AfxMessageBox(str.GetBuffer(str.GetLength()));
+        //	m_intEditErr++;		//统计
+        //UpdateData(FALSE);
+        return;	//错误
+    }
+    
+}
+
+
+
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -185,7 +369,42 @@ MainWindow::MainWindow(QWidget* parent)
     // 启动定时器，每秒自动更新随机数据
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
+    connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
     m_timer->start(1000);
+}
+void MainWindow::updateTime()
+{
+    qDebug() << "定时器触发！";
+    if (PacketType)
+    {
+        switch (PacketType)
+        {
+        case 0x01:
+            Wrywpara();		//写液位设置参数
+            break;
+
+        case 0x02:
+            Rdywpara();		//读液位设置参数
+            break;
+
+        case 0x03:			//写压力设置参数
+            Wrpressworkpara();
+            break;
+
+        case 0x04:			//读压力设置参数
+            Rdpressworkpara();
+            break;
+
+        case 0x05:
+            SetPressWorkStatus();	//设定压力工作状态
+        }
+
+        PacketType = 0;
+    }
+    else
+        ReadData();
+    
+    // 在这里添加你需要周期性执行的任务，例如刷新界面
 }
 void MainWindow::onCheckBoxToggled(bool checked)
 {

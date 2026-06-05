@@ -27,6 +27,8 @@ public:
     //void Rdpressworkpara();
     bool InitInstance();
 
+    void ReadData();
+
     union {
         float f;
         unsigned char b[4];
@@ -102,6 +104,7 @@ private slots:
     void on_readLevelButton_clicked();
     void on_setLevelButton_clicked();
     void onCheckBoxToggled(bool checked);
+    void updateTime(); // 定时器要执行的槽函数
 
 private:
     Ui::MainWindow* ui;
