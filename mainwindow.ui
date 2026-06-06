@@ -22,13 +22,6 @@
         <number>5</number>
        </property>
        <item>
-        <widget class="QCheckBox" name="checkBox">
-         <property name="text">
-          <string>定时读操作</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <layout class="QHBoxLayout" name="gaugesContainer">
          <item>
           <widget class="QWidget" name="pressureGroup" native="true">

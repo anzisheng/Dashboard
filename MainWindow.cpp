@@ -318,6 +318,7 @@ MainWindow::MainWindow(QWidget* parent)
 {
     ui->setupUi(this);
     bool b = InitInstance();
+    m_bCheckTimer = true;
 
 
     // 初始化压力表（0-40 MPa）
@@ -356,7 +357,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
     
     
-    connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
+    //connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
 
     // 手动连接"读取液位"按钮
    /* connect(ui->readLevelButton, &QPushButton::clicked,
@@ -370,7 +371,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
-    //m_timer->start(1000);
+    m_timer->start(1000);
 }
 void MainWindow::updateTime()
 {
@@ -406,16 +407,16 @@ void MainWindow::updateTime()
     
     // 在这里添加你需要周期性执行的任务，例如刷新界面
 }
-void MainWindow::onCheckBoxToggled(bool checked)
-{
-    m_bCheckTimer = checked;
-    if(m_bCheckTimer)
-        m_timer->start(1000);
-    else
-    {
-        m_timer->stop();
-    }
-}
+//void MainWindow::onCheckBoxToggled(bool checked)
+//{
+//    m_bCheckTimer = checked;
+//    if(m_bCheckTimer)
+//        m_timer->start(1000);
+//    else
+//    {
+//        m_timer->stop();
+//    }
+//}
 MainWindow::~MainWindow()
 {
     delete ui;

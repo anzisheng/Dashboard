@@ -103,7 +103,7 @@ private slots:
     void on_setPressureButton_clicked();
     void on_readLevelButton_clicked();
     void on_setLevelButton_clicked();
-    void onCheckBoxToggled(bool checked);
+    //void onCheckBoxToggled(bool checked);
     void updateTime(); // 定时器要执行的槽函数
 
 private:
