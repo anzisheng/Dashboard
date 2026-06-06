@@ -199,6 +199,32 @@
                 </property>
                </widget>
               </widget>
+              <widget class="QPushButton" name="start_stop">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>450</y>
+                 <width>80</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>油泵启动/停止</string>
+               </property>
+              </widget>
+              <widget class="QPushButton" name="StopLoopoil">
+               <property name="geometry">
+                <rect>
+                 <x>150</x>
+                 <y>450</y>
+                 <width>80</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>停机/回油</string>
+               </property>
+              </widget>
              </widget>
             </item>
             <item>

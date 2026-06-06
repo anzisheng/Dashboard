@@ -367,6 +367,10 @@ MainWindow::MainWindow(QWidget* parent)
     //setPressureButton
     connect(ui->setPressureButton, &QPushButton::clicked,
             this, &MainWindow::on_setPressureButton_clicked);
+    connect(ui->start_stop,&QPushButton::clicked, this, &MainWindow::on_start_stopButton_clicked);
+
+    //connect(ui->stopLoopoil,&QPushButton::clicked, this, &MainWindow::on_start_stopButton_clicked);
+    connect(ui->StopLoopoil,&QPushButton::clicked, this, &MainWindow::on_StopLoopoilButton_clicked);
     // 启动定时器，每秒自动更新随机数据
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
@@ -622,6 +626,66 @@ void MainWindow::Rdpressworkpara()
 		//UpdateData(FALSE);
         return;	//错误
 	}
+}
+void MainWindow::on_StopLoopoilButton_clicked()
+{
+    if (ui->StopLoopoil->text() == "停止补油")
+    {
+        ui->StopLoopoil->setText("启动补油");
+        // 停止补油相关操作
+    }
+    else
+    {
+        ui->StopLoopoil->setText("停止补油");
+        // 启动补油相关操作
+    }
+    // TODO: Add your control notification handler code here
+    switch (WorkCmd)
+    {
+    case 0:		//当前待机状态
+    case 1:		//当前工作状态
+        WorkCmd = 2;		//进入泄压状态
+        break;
+
+    case 2:		//当前泄压状态
+        WorkCmd = 0;		//进入待机状态
+        break;
+    }
+
+    if (m_bCheckTimer)
+        PacketType = 0x05;
+    else
+        SetPressWorkStatus();
+}
+void MainWindow::on_start_stopButton_clicked()
+{
+    if (ui->start_stop->text() == "启动")
+    {
+        ui->start_stop->setText("停止");
+        // 启动相关操作
+    }
+    else
+    {
+        ui->start_stop->setText("启动");
+        // 停止相关操作
+	}
+
+    switch (WorkCmd)
+    {
+    case 0:		//当前待机状态
+        WorkCmd = 1;		//进入工作状态
+        break;
+
+    case 1:		//当前工作状态
+    case 2:		//当前泄压状态
+        WorkCmd = 0;		//进入待机状态
+        break;
+    }
+
+    if (m_bCheckTimer)
+        PacketType = 0x05;
+    else
+        SetPressWorkStatus();
 }
 
 void MainWindow::on_setPressureButton_clicked()

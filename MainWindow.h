@@ -101,6 +101,8 @@ private slots:
     void updateInfo();
     void on_readPressureButton_clicked();
     void on_setPressureButton_clicked();
+    void on_start_stopButton_clicked();
+    void on_StopLoopoilButton_clicked();
     void on_readLevelButton_clicked();
     void on_setLevelButton_clicked();
     //void onCheckBoxToggled(bool checked);
