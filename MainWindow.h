@@ -80,6 +80,7 @@ public:
     int		m_intEditDmxIn3;
     float	m_fltEditPressureCurr;
     float	m_fltEditPressureSet;
+    //float   m_fPressureSet;	//压力设定值
     CString	m_strEditStatus;
     float	m_fltEditYwAlmH;
     float	m_fltEditYwAlmL;

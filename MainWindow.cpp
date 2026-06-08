@@ -132,6 +132,52 @@ bool MainWindow::InitInstance()
 //}
 void MainWindow::SetPressWorkStatus()
 {
+    unsigned int i;
+    unsigned char t = 0;
+    BOOL flag = 0;
+
+    unsigned char temp = 0;
+
+    ZeroMemory(t_buf, BUF_SZIE);
+
+    //UpdateData(TRUE);
+    //m_fltEditPressureSet得到编辑框内的值 
+    m_fltEditPressureSet;
+    QString Number_Two = ui->lineEdit_5->text();
+    m_fPressureSet = Number_Two.toFloat();
+
+
+    t_buf[0] = 'E';		//包头，四个字节
+    t_buf[1] = 'F';
+    t_buf[2] = 'H';
+    t_buf[3] = '1';
+
+    t_buf[4] = 0x05;		//CMD，设置压力工作状态
+
+   // m_fPressureSet = m_fltEditPressureSet.get_float();
+    //设定当前工作压力
+    Fconverter.f = m_fPressureSet;
+    t_buf[5] = Fconverter.b[3];		//32位数据，四个字节浮点数
+    t_buf[6] = Fconverter.b[2];		//32位数据，四个字节浮点数
+    t_buf[7] = Fconverter.b[1];		//32位数据，四个字节浮点数
+    t_buf[8] = Fconverter.b[0];		//32位数据，四个字节浮点数
+
+    t_buf[9] = WorkCmd;			//工作状态
+
+    t = 0;
+    for (i = 0; i < 10; i++)
+        t = t + t_buf[i];
+    t_buf[10] = t & 0xff;			//包校验
+
+    //只可以写单个模块的单个通道
+    CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
+    //发送
+    int result = sendto(sss, t_buf, 11, 0, (SOCKADDR*)&CservAddr, nServAddlen);
+    if (result == SOCKET_ERROR)
+    {
+        qDebug() << "发送错误";
+    }
+
 }
 void MainWindow::ReadData()
 {
