@@ -34,6 +34,11 @@ bool MainWindow::InitInstance()
 
     //申请套接字sss
     sss = socket(AF_INET, SOCK_DGRAM, 0);
+    //if (sss == INVALID_SOCKET) 
+    {
+        int error_code = WSAGetLastError();
+        printf("socket failed with error: %d\n", error_code);
+    }
     if (sss == INVALID_SOCKET)
     {
         char temp[10];
