@@ -3,6 +3,7 @@
 #include <QRandomGenerator>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QDebug>
 //#include <MyDialog.h>
 #include "MyDialog.h"
 
@@ -1114,6 +1115,8 @@ void MainWindow::on_setLevelButton_clicked()
         // 可选：获取对话框数据
         // 这里不做额外处理，仅演示对话框的显示
     }
+	qDebug() << dialog.m_nameLabel->text().toFloat();
+
     // TODO: Add your control notification handler code here
     if (m_bCheckTimer)
         PacketType = 0x01;

@@ -23,11 +23,19 @@ private slots:
 
 private:
     void setupUI();
+public:
 
     // 控件成员
     QLabel *m_nameLabel;
+    QLabel *m_nameLabel2;
     QLineEdit *m_nameEdit;
-    
+    QLineEdit *m_nameEdit2;
+
+    QLabel* m_nameLabel3;
+    QLabel* m_nameLabel4;
+    QLineEdit* m_nameEdit3;
+    QLineEdit* m_nameEdit4;
+
     QLabel *m_ageLabel;
     QSpinBox *m_ageSpinBox;
     
