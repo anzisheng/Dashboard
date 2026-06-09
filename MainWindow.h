@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPushButton>
 #include <QLabel>
 #include <QTimer>
 #include <atlstr.h>
@@ -111,6 +112,7 @@ private slots:
 
 private:
     Ui::MainWindow* ui;
+    QPushButton* m_openButton;
     QTimer* m_timer;
     //unsigned char PacketType;
 };

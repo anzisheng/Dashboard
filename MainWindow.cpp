@@ -3,6 +3,8 @@
 #include <QRandomGenerator>
 #include <QMessageBox>
 #include <QInputDialog>
+//#include <MyDialog.h>
+#include "MyDialog.h"
 
 #include <stdio.h>
 #include <atlstr.h>
@@ -426,6 +428,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
+    m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
 void MainWindow::updateTime()
@@ -1080,7 +1083,7 @@ void MainWindow::Rdywpara()
 
 void MainWindow::on_setLevelButton_clicked()
 {
-    bool ok;
+   /* bool ok;
     double newLevel = QInputDialog::getDouble(this, tr("设置液位"),
         tr("请输入液位值 (0-25 MPa):"),
         ui->gaugeRpm->value(),
@@ -1105,6 +1108,11 @@ void MainWindow::on_setLevelButton_clicked()
                 ui->statusLabel->setStyleSheet("color: green;");
             }
         }
+    }*/
+    MyDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        // 可选：获取对话框数据
+        // 这里不做额外处理，仅演示对话框的显示
     }
     // TODO: Add your control notification handler code here
     if (m_bCheckTimer)
