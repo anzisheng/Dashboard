@@ -391,7 +391,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui->rpmValueLabel->setText("0 MPa");
     ui->statusLabel->setText("正常");
     ui->statusLabel->setStyleSheet("color: green;");
-
+    m_bCheckAutoOilEnable = false;
     m_fltEditPressAlmH = 10.0f;
     ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
 //	ui->speedValueLabel_2->setText(QString("压力告警值: %1 MPa").arg(m_fltEditPressAlmH));
@@ -1020,6 +1020,7 @@ void MainWindow::Rdywpara()
             Fconverter.b[0] = r_buf[8];		//32位数据，四个字节浮点数
             m_fYwAlmH = Fconverter.f;
             ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
+            //根据此数值，确定表的指针摆幅范围。
 
 
 
@@ -1051,9 +1052,15 @@ void MainWindow::Rdywpara()
 
 
             if (r_buf[21])
-                m_bCheckAutoOilEnable = 1;
+            {
+                m_bCheckAutoOilEnable = 1;                
+                ui->checkBox->setChecked(true);
+            }
             else
+            {
                 m_bCheckAutoOilEnable = 0;
+                ui->checkBox->setChecked(true);
+            }
 
            //UpdateData(FALSE);
         }
