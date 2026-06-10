@@ -22,6 +22,8 @@ add_executable(DashboardApp
     GaugeWidget.h
     MyDialog.cpp
     MyDialog.h
+    MyDialog_press.cpp
+    MyDialog_press.h
 )
 
 target_link_libraries(DashboardApp PRIVATE Qt6::Widgets)

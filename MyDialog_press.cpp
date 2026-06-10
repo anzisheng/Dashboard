@@ -1,40 +1,44 @@
-#include "MyDialog.h"
+#include "MyDialog_press.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
 #include <QMessageBox>
 
-MyDialog::MyDialog(QWidget* parent)
+MyDialog_press::MyDialog_press(QWidget* parent)
     : QDialog(parent)
 {
     setupUI();
-    setWindowTitle("液位参数输入对话框");
+    setWindowTitle("输入压力工作参数：");
     setModal(true);  // 设置为模态对话框
     resize(350, 250);
 }
 
-MyDialog::~MyDialog()
+MyDialog_press::~MyDialog_press()
 {
 }
 
-void MyDialog::setupUI()
+void MyDialog_press::setupUI()
 {
     // 创建控件
-    m_nameLabel = new QLabel("液位高限报警阈值:", this);
+    m_nameLabel = new QLabel("压力告警高限:", this);
     m_nameEdit = new QLineEdit(this);
-    m_nameEdit->setPlaceholderText("请输入高限报警阈值");
+    m_nameEdit->setPlaceholderText("请输入压力告警高限值");
 
-    m_nameLabel2 = new QLabel("液位低限报警阈值:", this);
+    m_nameLabel2 = new QLabel("压力告警低限:", this);
     m_nameEdit2 = new QLineEdit(this);
-    m_nameEdit2->setPlaceholderText("请输入低限报警阈值");
+    m_nameEdit2->setPlaceholderText("请输入压力告警低限");
 
-    m_nameLabel3 = new QLabel("液位高限停止值:", this);
-    m_nameEdit3 = new QLineEdit(this);
-    m_nameEdit3->setPlaceholderText("请输入液位高限停止值");
+    PID_P = new QLabel("P参数:", this);
+    m_nameEditP = new QLineEdit(this);
+    m_nameEditP->setPlaceholderText("0.0");
 
-    m_nameLabel4 = new QLabel("液位低限启动值:", this);
-    m_nameEdit4 = new QLineEdit(this);
-    m_nameEdit4->setPlaceholderText("请输入液位低限启动值");
+    PID_I = new QLabel("I参数:", this);
+    m_nameEditI = new QLineEdit(this);
+    m_nameEditI->setPlaceholderText("0.0");
+
+    PID_D = new QLabel("D参数:", this);
+    m_nameEditD = new QLineEdit(this);
+    m_nameEditD->setPlaceholderText("0.0");
 
    /* m_ageLabel = new QLabel("年龄:", this);
     m_ageSpinBox = new QSpinBox(this);
@@ -54,8 +58,9 @@ void MyDialog::setupUI()
     QFormLayout* formLayout = new QFormLayout;
     formLayout->addRow(m_nameLabel, m_nameEdit);
     formLayout->addRow(m_nameLabel2, m_nameEdit2);
-    formLayout->addRow(m_nameLabel3, m_nameEdit3);
-    formLayout->addRow(m_nameLabel4, m_nameEdit4);
+    formLayout->addRow(PID_P, m_nameEditP);
+    formLayout->addRow(PID_I, m_nameEditI);
+    formLayout->addRow(PID_D, m_nameEditD);
    /* formLayout->addRow(m_ageLabel, m_ageSpinBox);
     formLayout->addRow(m_genderLabel, m_genderCombo);
     formLayout->addRow(m_subscribeCheckBox);*/
@@ -75,11 +80,11 @@ void MyDialog::setupUI()
     setLayout(mainLayout);
 
     // 连接信号槽
-    connect(m_okButton, &QPushButton::clicked, this, &MyDialog::onOkClicked);
-    connect(m_cancelButton, &QPushButton::clicked, this, &MyDialog::onCancelClicked);
+    connect(m_okButton, &QPushButton::clicked, this, &MyDialog_press::onOkClicked);
+    connect(m_cancelButton, &QPushButton::clicked, this, &MyDialog_press::onCancelClicked);
 }
 
-void MyDialog::onOkClicked()
+void MyDialog_press::onOkClicked()
 {
     //// 简单验证
     //if (m_nameEdit->text().trimmed().isEmpty()) {
@@ -101,7 +106,7 @@ void MyDialog::onOkClicked()
     accept(); // 关闭对话框并返回 QDialog::Accepted
 }
 
-void MyDialog::onCancelClicked()
+void MyDialog_press::onCancelClicked()
 {
     reject(); // 关闭对话框并返回 QDialog::Rejected
 }

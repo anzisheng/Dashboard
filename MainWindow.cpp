@@ -6,6 +6,7 @@
 #include <QDebug>
 //#include <MyDialog.h>
 #include "MyDialog.h"
+#include "MyDialog_press.h"
 
 #include <stdio.h>
 #include <atlstr.h>
@@ -429,7 +430,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
-    m_openButton = new QPushButton("设置液位参数", this);
+    //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
 void MainWindow::updateTime()
@@ -745,6 +746,7 @@ void MainWindow::on_start_stopButton_clicked()
 
 void MainWindow::on_setPressureButton_clicked()
 {
+    /*
     bool ok;
     double newPressure = QInputDialog::getDouble(this, tr("设置压力"),
         tr("请输入压力值 (0-40 MPa):"),
@@ -771,6 +773,12 @@ void MainWindow::on_setPressureButton_clicked()
             ui->statusLabel->setText("正常运行");
             ui->statusLabel->setStyleSheet("color: green;");
         }
+    }
+    */
+    MyDialog_press dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        // 可选：获取对话框数据
+        // 这里不做额外处理，仅演示对话框的显示
     }
     if (m_bCheckTimer)
         PacketType = 0x03;
@@ -883,10 +891,10 @@ void MainWindow::Wrywpara()
 
     t_buf[4] = 0x01;		//CMD，设置液位参数
 
-    m_fYwAlmH = m_fltEditYwAlmH;
+ /*   m_fYwAlmH = m_fltEditYwAlmH;
     m_fYwAlmL = m_fltEditYwAlmL;
     m_fYwWorkH = m_fltEditYwWorkH;
-    m_fYwWorkL = m_fltEditYwWorkL;
+    m_fYwWorkL = m_fltEditYwWorkL;*/
 
     //液位高限报警阈值
     Fconverter.f = m_fYwAlmH;
@@ -1116,6 +1124,17 @@ void MainWindow::on_setLevelButton_clicked()
         // 这里不做额外处理，仅演示对话框的显示
     }
 	qDebug() << dialog.m_nameLabel->text().toFloat();
+    m_fYwAlmH = dialog.m_nameEdit->text().toFloat();
+    m_fYwAlmL = dialog.m_nameEdit2->text().toFloat();
+
+    m_fYwWorkH = dialog.m_nameEdit3->text().toFloat();
+    m_fYwWorkL = dialog.m_nameEdit4->text().toFloat();
+
+
+
+
+
+
 
     // TODO: Add your control notification handler code here
     if (m_bCheckTimer)
