@@ -27,6 +27,8 @@ public:
     ~MainWindow();
     //void Rdpressworkpara();
     bool InitInstance();
+    unsigned char RandomCount;
+    unsigned char RandomNum;
 
     void ReadData();
 

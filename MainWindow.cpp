@@ -151,7 +151,7 @@ void MainWindow::SetPressWorkStatus()
 
     //UpdateData(TRUE);
     //m_fltEditPressureSet得到编辑框内的值 
-    m_fltEditPressureSet;
+    //m_fltEditPressureSet;
     QString Number_Two = ui->lineEdit_5->text();
     m_fPressureSet = Number_Two.toFloat();
 
@@ -374,21 +374,25 @@ MainWindow::MainWindow(QWidget* parent)
     ui->setupUi(this);
     bool b = InitInstance();
     m_bCheckTimer = true;
+    PacketType = 0X00;
 
+    RandomNum = 10;
+
+    WorkCmd = 0;		//进入待机状态
 
     // 压力表：范围 0-100，单位 MPa
     // 您可以自由调整角度范围：setAngleRange(起始角, 结束角) 顺时针方向
     // 例如：0在6点（270°），100在9点（180°）顺时针跨度为 270°（270->540）
     ui->gaugeSpeed->setAngleRange(270.0 - 45, 180.0-45);   // 注意：结束角小于起始角时会自动计算顺时针跨过0°的差值
     //ui->gaugeSpeed->setAngleRange(270.0, 450.0);
-    ui->gaugeSpeed->setRange(0, 100);
+    ui->gaugeSpeed->setRange(0, 25);
     ui->gaugeSpeed->setUnit("MPa");
     ui->gaugeSpeed->setGaugeColor(QColor(70, 130, 200));
     ui->gaugeSpeed->setNeedleColor(QColor(255, 80, 80));
 
     // 液位表，同样设置
     ui->gaugeRpm->setAngleRange(270.0 - 45, 180.0 - 45);
-    ui->gaugeRpm->setRange(0, 100);
+    ui->gaugeRpm->setRange(0, 25);
     ui->gaugeRpm->setUnit("MPa");
     ui->gaugeRpm->setGaugeColor(QColor(100, 180, 100));
     ui->gaugeRpm->setNeedleColor(QColor(255, 120, 50));
@@ -719,16 +723,16 @@ void MainWindow::on_StopLoopoilButton_clicked()
 }
 void MainWindow::on_start_stopButton_clicked()
 {
-    if (ui->start_stop->text() == "启动")
-    {
-        ui->start_stop->setText("停止");
-        // 启动相关操作
-    }
-    else
-    {
-        ui->start_stop->setText("启动");
-        // 停止相关操作
-	}
+ //   if (ui->start_stop->text() == "启动")
+ //   {
+ //       ui->start_stop->setText("停止");
+ //       // 启动相关操作
+ //   }
+ //   else
+ //   {
+ //       ui->start_stop->setText("启动");
+ //       // 停止相关操作
+	//}
 
     switch (WorkCmd)
     {
@@ -869,10 +873,28 @@ void MainWindow::on_readLevelButton_clicked()
     QMessageBox::information(this, tr("液位读数"),
         tr("当前液位为 %1 MPa").arg(level, 0, 'f', 1));*/
     // TODO: Add your control notification handler code here
+   
+
     if (m_bCheckTimer)
         PacketType = 0x02;
     else
         Rdywpara();
+    MyDialog dialog(this);
+    if (dialog.exec() == QDialog::Accepted) {
+        // 可选：获取对话框数据
+        // 这里不做额外处理，仅演示对话框的显示
+        dialog.m_nameEdit->setText(QString::number(m_fYwAlmH));// .toFloat();
+        dialog.m_nameEdit2->setText(QString::number(m_fYwAlmL)); // .toFloat();
+
+        //m_fYwWorkH = dialog.m_nameEdit3->text().toFloat();
+        dialog.m_nameEdit3->setText(QString::number(m_fYwWorkH));// .toFloat();
+        //m_fYwWorkL = dialog.m_nameEdit4->text().toFloat();
+        dialog.m_nameEdit4->setText(QString::number(m_fYwWorkL));// .toFloat();
+
+    }
+    
+
+
 }
 
 void MainWindow::Wrywpara()
@@ -939,7 +961,8 @@ void MainWindow::Wrywpara()
     CservAddr.sin_addr.S_un.S_un_b.s_b4 = DEFAULT_IP3;
 
     //发送
-    if (sendto(sss, t_buf, 23, 0, (SOCKADDR*)&CservAddr, nServAddlen) == SOCKET_ERROR)
+    int result = sendto(sss, t_buf, 23, 0, (SOCKADDR*)&CservAddr, nServAddlen);
+    if (result == SOCKET_ERROR)
     {
     }
 
@@ -1036,7 +1059,7 @@ void MainWindow::Rdywpara()
             m_fYwAlmH = Fconverter.f;
             ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
             //根据此数值，确定表的指针摆幅范围。
-
+            //仪表盘的告警高限
 
 
             Fconverter.b[3] = r_buf[9];		//32位数据，四个字节浮点数
@@ -1045,6 +1068,7 @@ void MainWindow::Rdywpara()
             Fconverter.b[0] = r_buf[12];	//32位数据，四个字节浮点数
             m_fYwAlmL = Fconverter.f;
             ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
+
 
             Fconverter.b[3] = r_buf[13];	//32位数据，四个字节浮点数
             Fconverter.b[2] = r_buf[14];	//32位数据，四个字节浮点数
@@ -1059,7 +1083,7 @@ void MainWindow::Rdywpara()
             m_fYwWorkL = Fconverter.f;
 
             m_fltEditYwAlmH = m_fYwAlmH;
-            //ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
+            ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
             m_fltEditYwAlmL = m_fYwAlmL;
             m_fltEditYwWorkH = m_fYwWorkH;
             m_fltEditYwWorkL = m_fYwWorkL;
@@ -1126,7 +1150,7 @@ void MainWindow::on_setLevelButton_clicked()
         // 可选：获取对话框数据
         // 这里不做额外处理，仅演示对话框的显示
     }
-	qDebug() << dialog.m_nameLabel->text().toFloat();
+	//qDebug() << dialog.m_nameLabel->text().toFloat();
     m_fYwAlmH = dialog.m_nameEdit->text().toFloat();
     m_fYwAlmL = dialog.m_nameEdit2->text().toFloat();
 
