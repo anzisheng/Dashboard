@@ -376,19 +376,14 @@ MainWindow::MainWindow(QWidget* parent)
     m_bCheckTimer = true;
 
 
-    // 压力表：范围 0-100，单位 MPa
-    // 您可以自由调整角度范围：setAngleRange(起始角, 结束角) 顺时针方向
-    // 例如：0在6点（270°），100在9点（180°）顺时针跨度为 270°（270->540）
-    ui->gaugeSpeed->setAngleRange(270.0 - 45, 180.0-45);   // 注意：结束角小于起始角时会自动计算顺时针跨过0°的差值
-    //ui->gaugeSpeed->setAngleRange(270.0, 450.0);
-    ui->gaugeSpeed->setRange(0, 100);
+    // 初始化压力表（0-40 MPa）
+    ui->gaugeSpeed->setRange(0, 40);
     ui->gaugeSpeed->setUnit("MPa");
     ui->gaugeSpeed->setGaugeColor(QColor(70, 130, 200));
     ui->gaugeSpeed->setNeedleColor(QColor(255, 80, 80));
 
-    // 液位表，同样设置
-    ui->gaugeRpm->setAngleRange(270.0 - 45, 180.0 - 45);
-    ui->gaugeRpm->setRange(0, 100);
+    // 初始化液位表（0-25 MPa，这里单位仍为MPa，可理解为液位当量）
+    ui->gaugeRpm->setRange(0, 25);
     ui->gaugeRpm->setUnit("MPa");
     ui->gaugeRpm->setGaugeColor(QColor(100, 180, 100));
     ui->gaugeRpm->setNeedleColor(QColor(255, 120, 50));
@@ -396,7 +391,7 @@ MainWindow::MainWindow(QWidget* parent)
     // 初始数值
     ui->gaugeSpeed->setValue(0);
     ui->gaugeRpm->setValue(0);
-    ui->speedValueLabel->setText("0 MPa");
+    ui->speedValueLabel->setText("10 MPa");
     ui->rpmValueLabel->setText("0 MPa");
     ui->statusLabel->setText("正常");
     ui->statusLabel->setStyleSheet("color: green;");
@@ -494,8 +489,8 @@ void MainWindow::on_updateButton_clicked()
 
 void MainWindow::updateInfo()
 {
-    int newPressure = QRandomGenerator::global()->bounded(0, 101);
-    int newLevel = QRandomGenerator::global()->bounded(0, 101);
+    int newPressure = QRandomGenerator::global()->bounded(0, 41);   // 0-40
+    int newLevel = QRandomGenerator::global()->bounded(0, 26);   // 0-25
 
     ui->gaugeSpeed->setValue(newPressure);
     ui->gaugeRpm->setValue(newLevel);
@@ -503,11 +498,12 @@ void MainWindow::updateInfo()
     ui->speedValueLabel->setText(QString("%1 MPa").arg(newPressure));
     ui->rpmValueLabel->setText(QString("%1 MPa").arg(newLevel));
 
-    if (newPressure > 85) {
+    // 根据压力更新状态
+    if (newPressure > 35) {
         ui->statusLabel->setText("超压警告！");
         ui->statusLabel->setStyleSheet("color: red; font-weight: bold;");
     }
-    else if (newPressure > 70) {
+    else if (newPressure > 25) {
         ui->statusLabel->setText("高压运行");
         ui->statusLabel->setStyleSheet("color: orange;");
     }
@@ -760,11 +756,12 @@ void MainWindow::on_setPressureButton_clicked()
         ui->gaugeSpeed->setValue(newPressure);
         ui->speedValueLabel->setText(QString("%1 MPa").arg(newPressure, 0, 'f', 1));
 
-        if (newPressure > 85) {
+        // 更新状态标签
+        if (newPressure > 35) {
             ui->statusLabel->setText("超压警告！");
             ui->statusLabel->setStyleSheet("color: red; font-weight: bold;");
         }
-        else if (newPressure > 70) {
+        else if (newPressure > 25) {
             ui->statusLabel->setText("高压运行");
             ui->statusLabel->setStyleSheet("color: orange;");
         }
@@ -1097,9 +1094,9 @@ void MainWindow::on_setLevelButton_clicked()
 {
    /* bool ok;
     double newLevel = QInputDialog::getDouble(this, tr("设置液位"),
-        tr("请输入液位值 (0-100 MPa):"),
+        tr("请输入液位值 (0-25 MPa):"),
         ui->gaugeRpm->value(),
-        0, 100, 1, &ok);
+        0, 25, 1, &ok);
     if (ok) {
         ui->gaugeRpm->setValue(newLevel);
         ui->rpmValueLabel->setText(QString("%1 MPa").arg(newLevel, 0, 'f', 1));

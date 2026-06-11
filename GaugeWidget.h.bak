@@ -32,9 +32,6 @@ public:
     void setGaugeColor(const QColor& color);
     void setNeedleColor(const QColor& color);
 
-    // 角度范围设置（顺时针方向）
-    void setAngleRange(double startAngle, double endAngle);
-
 protected:
     void paintEvent(QPaintEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
@@ -58,8 +55,8 @@ private:
     int m_radius;
     QPointF m_center;
 
-    double m_startAngle;   // 最小值对应的角度（度）
-    double m_spanAngle;    // 顺时针角度跨度（度）
+    static constexpr double START_ANGLE = 225.0;
+    static constexpr double SPAN_ANGLE = 270.0;
 
     QColor m_backgroundColor;
     QColor m_gaugeColor;

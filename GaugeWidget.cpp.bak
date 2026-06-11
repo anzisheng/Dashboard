@@ -9,8 +9,6 @@ GaugeWidget::GaugeWidget(QWidget* parent)
     , m_value(0.0)
     , m_unit("")
     , m_radius(0)
-    , m_startAngle(270.0)
-    , m_spanAngle(90.0)
     , m_backgroundColor(30, 30, 35)
     , m_gaugeColor(70, 130, 200)
     , m_needleColor(255, 80, 80)
@@ -77,15 +75,6 @@ void GaugeWidget::setNeedleColor(const QColor& color)
     update();
 }
 
-void GaugeWidget::setAngleRange(double startAngle, double endAngle)
-{
-    double diff = fmod(endAngle - startAngle, 360.0);
-    if (diff < 0) diff += 360.0;
-    m_startAngle = startAngle;
-    m_spanAngle = diff;
-    update();
-}
-
 void GaugeWidget::resizeEvent(QResizeEvent* event)
 {
     Q_UNUSED(event);
@@ -123,21 +112,17 @@ void GaugeWidget::drawBackground(QPainter* painter)
 
 double GaugeWidget::valueToAngle(double value) const
 {
-    double clamped = qBound(m_minValue, value, m_maxValue);
-    double ratio = (clamped - m_minValue) / (m_maxValue - m_minValue);
-    double angle = m_startAngle + ratio * m_spanAngle;
-    angle = fmod(angle, 360.0);
-    if (angle < 0) angle += 360.0;
-    return angle;
+    double ratio = (value - m_minValue) / (m_maxValue - m_minValue);
+    return START_ANGLE + ratio * SPAN_ANGLE;
 }
 
 void GaugeWidget::drawScale(QPainter* painter)
 {
     painter->save();
     painter->translate(m_center);
-    painter->rotate(m_startAngle - 90);
+    painter->rotate(START_ANGLE - 90);
 
-    double angleStep = m_spanAngle / m_majorTickCount;
+    double angleStep = SPAN_ANGLE / m_majorTickCount;
     double minorStep = angleStep / (m_minorTickCount + 1);
 
     QPen majorPen(m_textColor);
@@ -150,7 +135,7 @@ void GaugeWidget::drawScale(QPainter* painter)
     for (int i = 0; i <= total; ++i)
     {
         double angle = i * minorStep;
-        if (angle > m_spanAngle + 0.1) break;
+        if (angle > SPAN_ANGLE + 0.1) break;
 
         painter->save();
         painter->rotate(angle);
@@ -175,24 +160,19 @@ void GaugeWidget::drawScaleNumbers(QPainter* painter)
 {
     painter->save();
     painter->setPen(m_textColor);
-    QFont font("Arial", m_radius / 12, QFont::Bold);
-    painter->setFont(font);
+    painter->setFont(QFont("Arial", m_radius / 12, QFont::Bold));
 
-    double angleStep = m_spanAngle / m_majorTickCount;
+    double angleStep = SPAN_ANGLE / m_majorTickCount;
 
     for (int i = 0; i <= m_majorTickCount; ++i)
     {
-        double angle = m_startAngle + i * angleStep;
-        double rad = qDegreesToRadians(angle+90);
+        double angle = START_ANGLE + i * angleStep;
+        double rad = qDegreesToRadians(angle);
 
-        // 修正：刻度值应与 valueToAngle 完全一致，线性递增
-        double value = m_minValue + (m_maxValue - m_minValue) * i / (double)m_majorTickCount;
-        value = m_maxValue - value;
-        int tickValue = qRound(value);
+        int tickValue = m_minValue + (m_maxValue - m_minValue) * i / m_majorTickCount;
         QString label = QString::number(tickValue);
 
-        // 数字紧贴刻度线外侧（偏移2像素）
-        int labelRadius = m_radius - 15;// 2 + 2;
+        int labelRadius = m_radius - 18;
         double x = m_center.x() + labelRadius * qCos(rad);
         double y = m_center.y() - labelRadius * qSin(rad);
 
@@ -208,9 +188,10 @@ void GaugeWidget::drawNeedle(QPainter* painter)
     painter->translate(m_center);
     painter->rotate(valueToAngle(m_value) - 90);
 
-    QPolygon needlePoly;
     int needleLength = m_radius - 18;
     int needleWidthBase = 6;
+
+    QPolygon needlePoly;
     needlePoly << QPoint(needleLength, 0)
         << QPoint(-needleWidthBase, needleWidthBase / 2)
         << QPoint(-needleWidthBase / 2, 0)
