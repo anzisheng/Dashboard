@@ -865,9 +865,9 @@ void MainWindow::Wrpressworkpara()
 }
 void MainWindow::on_readLevelButton_clicked()
 {
-    double level = ui->gaugeRpm->value();
+   /* double level = ui->gaugeRpm->value();
     QMessageBox::information(this, tr("液位读数"),
-        tr("当前液位为 %1 MPa").arg(level, 0, 'f', 1));
+        tr("当前液位为 %1 MPa").arg(level, 0, 'f', 1));*/
     // TODO: Add your control notification handler code here
     if (m_bCheckTimer)
         PacketType = 0x02;
