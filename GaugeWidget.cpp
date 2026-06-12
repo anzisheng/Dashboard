@@ -229,14 +229,14 @@ void GaugeWidget::drawScaleNumbers(QPainter* painter)
         double value = m_minValue + (m_maxValue - m_minValue) * i / (double)m_majorTickCount;
         value = m_maxValue - value;
         float tickValue = (value);
-        QString label = QString::number(tickValue,'f',1);
+        QString label = QString::number(tickValue,'f',2);
 
         // Êý×Ö½ôÌù¿Ì¶ÈÏßÍâ²à£¨Æ«ÒÆ2ÏñËØ£©
         int labelRadius = m_radius - 15;// 2 + 2;
         double x = m_center.x() + labelRadius * qCos(rad);
         double y = m_center.y() - labelRadius * qSin(rad);
 
-        QRectF rect(x - 12, y - 8, 24, 16);
+        QRectF rect(x - 12, y - 8, 26, 16);
         painter->drawText(rect, Qt::AlignCenter, label);
     }
     painter->restore();

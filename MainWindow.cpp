@@ -405,17 +405,17 @@ MainWindow::MainWindow(QWidget* parent)
     ui->statusLabel->setText("正常");
     ui->statusLabel->setStyleSheet("color: green;");
     m_bCheckAutoOilEnable = false;
-    m_fltEditPressAlmH = 10.0f;
-    ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
-//	ui->speedValueLabel_2->setText(QString("压力告警值: %1 MPa").arg(m_fltEditPressAlmH));
-    m_fltEditYwWorkL = 20.0f;
+    m_fltEditPressAlmH = 0.0f;
+    //ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
+    //ui->speedValueLabel_2->setText(QString("压力告警值: %1 MPa").arg(m_fltEditPressAlmH));
+    //m_fltEditYwWorkL = 20.0f;
 //    rpmValueLabel
     //ui->rpmValueLabel->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
     
-	m_fYwAlmH = 15.0f;
-    ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
-	m_fYwAlmL = 0.0f;
-    ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
+	//m_fYwAlmH = 15.0f;
+ //   ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
+	//m_fYwAlmL = 0.0f;
+ //   ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
 
     // 连接手动更新按钮
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
@@ -539,6 +539,25 @@ void MainWindow::on_readPressureButton_clicked()
         PacketType = 0x04;
     else
         Rdpressworkpara();
+   MyDialog_press dialog(this);
+   /*ui->pidParaPEdit->setText(QString::number(m_fltEditParaP, 'f', 2));
+   ui->pidParaIEdit->setText(QString::number(m_fltEditParaI, 'f', 2));
+   ui->pidParaDEdit->setText(QString::number(m_fltEditParaD, 'f', 2))*/
+   /* ui->pressureAlmHEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
+            ui->pressureAlmLEdit->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
+            ui->pidParaPEdit->setText(QString::number(m_fltEditParaP, 'f', 2));
+            ui->pidParaIEdit->setText(QString::number(m_fltEditParaI, 'f', 2));
+            ui->pidParaDEdit->setText(QString::number(m_fltEditParaD, 'f', 2));*/
+   dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
+   dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
+   dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
+
+
+   if (dialog.exec() == QDialog::Accepted) {
+       // 可选：获取对话框数据
+       // 这里不做额外处理，仅演示对话框的显示
+   }
+
 
 }
 
@@ -785,16 +804,12 @@ void MainWindow::on_setPressureButton_clicked()
         }
     }
     */
-    MyDialog_press dialog(this);
-    if (dialog.exec() == QDialog::Accepted) {
-        // 可选：获取对话框数据
-        // 这里不做额外处理，仅演示对话框的显示
-    }
+    
     if (m_bCheckTimer)
         PacketType = 0x03;
     else
         Wrpressworkpara();
-    ui->gaugeSpeed->setValue(6);// = m_fPressureSet;
+    //ui->gaugeSpeed->setValue(6);// = m_fPressureSet;
   }
 
 void MainWindow::Wrpressworkpara()
