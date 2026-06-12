@@ -498,8 +498,8 @@ void MainWindow::on_updateButton_clicked()
 
 void MainWindow::updateInfo()
 {
-    int newPressure = QRandomGenerator::global()->bounded(0, 101);
-    int newLevel = QRandomGenerator::global()->bounded(0, 101);
+    double newPressure = QRandomGenerator::global()->bounded(2.5);
+    double newLevel = QRandomGenerator::global()->bounded(2.5);
 
     ui->gaugeSpeed->setValue(newPressure);
     ui->gaugeRpm->setValue(newLevel);
@@ -507,7 +507,7 @@ void MainWindow::updateInfo()
     ui->speedValueLabel->setText(QString("%1 MPa").arg(newPressure));
     ui->rpmValueLabel->setText(QString("%1 MPa").arg(newLevel));
 
-    if (newPressure > 85) {
+   /* if (newPressure > 85) {
         ui->statusLabel->setText("超压警告！");
         ui->statusLabel->setStyleSheet("color: red; font-weight: bold;");
     }
@@ -522,7 +522,7 @@ void MainWindow::updateInfo()
     else {
         ui->statusLabel->setText("正常运行");
         ui->statusLabel->setStyleSheet("color: green;");
-    }
+    }*/
 }
 //读取压力工作参数，包括告警值，PID参数
 void MainWindow::on_readPressureButton_clicked()
@@ -875,24 +875,29 @@ void MainWindow::on_readLevelButton_clicked()
     // TODO: Add your control notification handler code here
    
 
-    if (m_bCheckTimer)
-        PacketType = 0x02;
-    else
+    //if (m_bCheckTimer)
+    //    PacketType = 0x02;
+    //else
         Rdywpara();
-    MyDialog dialog(this);
-    dialog.m_nameEdit->setText(QString::number(m_fYwAlmH));// .toFloat();
-    dialog.m_nameEdit2->setText(QString::number(m_fYwAlmL)); // .toFloat();
 
-    //m_fYwWorkH = dialog.m_nameEdit3->text().toFloat();
-    dialog.m_nameEdit3->setText(QString::number(m_fYwWorkH));// .toFloat();
-    //m_fYwWorkL = dialog.m_nameEdit4->text().toFloat();
-    dialog.m_nameEdit4->setText(QString::number(m_fYwWorkL));// .toFloat();
+    ui->gaugeRpm->m_warningLow = m_fYwAlmL;  // 0.2 默认警告低限 20
+    ui->gaugeRpm->m_alarmHigh = m_fYwAlmH;// (1.8)    // 默认警报高限 80
 
-    if (dialog.exec() == QDialog::Accepted) {
-        // 可选：获取对话框数据
-        // 这里不做额外处理，仅演示对话框的显示
-        
-    }
+    //MyDialog dialog(this);
+    //dialog.m_nameEdit->setText(QString::number(m_fYwAlmH));// .toFloat();
+    //dialog.m_nameEdit2->setText(QString::number(m_fYwAlmL)); // .toFloat();
+
+    ////m_fYwWorkH = dialog.m_nameEdit3->text().toFloat();
+    //dialog.m_nameEdit3->setText(QString::number(m_fYwWorkH));// .toFloat();
+    ////m_fYwWorkL = dialog.m_nameEdit4->text().toFloat();
+    //dialog.m_nameEdit4->setText(QString::number(m_fYwWorkL));// .toFloat();
+
+    //if (dialog.exec() == QDialog::Accepted) {
+    //    // 可选：获取对话框数据
+    //    // 这里不做额外处理，仅演示对话框的显示
+    //    
+    //}
+
     
 
 
