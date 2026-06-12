@@ -425,28 +425,6 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
-           <widget class="QLabel" name="labelSpeedTitle">
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>当前压力：</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="speedValueLabel">
-            <property name="styleSheet">
-             <string notr="true">font-size: 14px; color: #4682B4;</string>
-            </property>
-            <property name="text">
-             <string>0 MPa</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QLabel" name="labelSpeedTitle_2">
             <property name="font">
              <font>
@@ -505,28 +483,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="labelRpmTitle">
-            <property name="font">
-             <font>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="text">
-             <string>当前液位：</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="rpmValueLabel">
-            <property name="styleSheet">
-             <string notr="true">font-size: 14px; color: #64B464;</string>
-            </property>
-            <property name="text">
-             <string>0 MPa</string>
-            </property>
-           </widget>
           </item>
           <item>
            <widget class="QLabel" name="labelRpmTitle_2">

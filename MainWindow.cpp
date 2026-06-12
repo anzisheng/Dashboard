@@ -393,15 +393,15 @@ MainWindow::MainWindow(QWidget* parent)
     // 液位表，同样设置
     ui->gaugeRpm->setAngleRange(270.0 - 45, 180.0 - 45);
     ui->gaugeRpm->setRange(0, 2.5);
-    ui->gaugeRpm->setUnit("MPa");
+    ui->gaugeRpm->setUnit("%");
     ui->gaugeRpm->setGaugeColor(QColor(100, 180, 100));
     ui->gaugeRpm->setNeedleColor(QColor(255, 120, 50));
 
     // 初始数值
     ui->gaugeSpeed->setValue(0);
     ui->gaugeRpm->setValue(0);
-    ui->speedValueLabel->setText("0 MPa");
-    ui->rpmValueLabel->setText("0 MPa");
+    //ui->speedValueLabel->setText("0 MPa");
+    //ui->rpmValueLabel->setText("0 MPa");
     ui->statusLabel->setText("正常");
     ui->statusLabel->setStyleSheet("color: green;");
     m_bCheckAutoOilEnable = false;
@@ -410,7 +410,7 @@ MainWindow::MainWindow(QWidget* parent)
 //	ui->speedValueLabel_2->setText(QString("压力告警值: %1 MPa").arg(m_fltEditPressAlmH));
     m_fltEditYwWorkL = 20.0f;
 //    rpmValueLabel
-    ui->rpmValueLabel->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
+    //ui->rpmValueLabel->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
     
 	m_fYwAlmH = 15.0f;
     ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
@@ -473,9 +473,12 @@ void MainWindow::updateTime()
     }
     else
         ReadData();
+    ui->gaugeSpeed->setValue(m_fltEditPressureCurr);
+    ui->gaugeRpm->setValue(m_fltEditYwCurr);
     
     // 在这里添加你需要周期性执行的任务，例如刷新界面
 }
+//ui->gaugeSpeed->setValue(m_fltEditPressureCurr);
 //void MainWindow::onCheckBoxToggled(bool checked)
 //{
 //    m_bCheckTimer = checked;
@@ -504,8 +507,8 @@ void MainWindow::updateInfo()
     ui->gaugeSpeed->setValue(newPressure);
     ui->gaugeRpm->setValue(newLevel);
 
-    ui->speedValueLabel->setText(QString("%1 MPa").arg(newPressure));
-    ui->rpmValueLabel->setText(QString("%1 MPa").arg(newLevel));
+//    ui->speedValueLabel->setText(QString("%1 MPa").arg(newPressure));
+//    ui->rpmValueLabel->setText(QString("%1 MPa").arg(newLevel));
 
    /* if (newPressure > 85) {
         ui->statusLabel->setText("超压警告！");
@@ -791,7 +794,8 @@ void MainWindow::on_setPressureButton_clicked()
         PacketType = 0x03;
     else
         Wrpressworkpara();
-}
+    ui->gaugeSpeed->setValue(6);// = m_fPressureSet;
+  }
 
 void MainWindow::Wrpressworkpara()
 {
@@ -1093,7 +1097,7 @@ void MainWindow::Rdywpara()
             m_fltEditYwAlmL = m_fYwAlmL;
             m_fltEditYwWorkH = m_fYwWorkH;
             m_fltEditYwWorkL = m_fYwWorkL;
-            ui->rpmValueLabel->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
+//            ui->rpmValueLabel->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
 
 
             if (r_buf[21])
