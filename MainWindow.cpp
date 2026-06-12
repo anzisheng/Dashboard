@@ -880,17 +880,18 @@ void MainWindow::on_readLevelButton_clicked()
     else
         Rdywpara();
     MyDialog dialog(this);
+    dialog.m_nameEdit->setText(QString::number(m_fYwAlmH));// .toFloat();
+    dialog.m_nameEdit2->setText(QString::number(m_fYwAlmL)); // .toFloat();
+
+    //m_fYwWorkH = dialog.m_nameEdit3->text().toFloat();
+    dialog.m_nameEdit3->setText(QString::number(m_fYwWorkH));// .toFloat();
+    //m_fYwWorkL = dialog.m_nameEdit4->text().toFloat();
+    dialog.m_nameEdit4->setText(QString::number(m_fYwWorkL));// .toFloat();
+
     if (dialog.exec() == QDialog::Accepted) {
         // 可选：获取对话框数据
         // 这里不做额外处理，仅演示对话框的显示
-        dialog.m_nameEdit->setText(QString::number(m_fYwAlmH));// .toFloat();
-        dialog.m_nameEdit2->setText(QString::number(m_fYwAlmL)); // .toFloat();
-
-        //m_fYwWorkH = dialog.m_nameEdit3->text().toFloat();
-        dialog.m_nameEdit3->setText(QString::number(m_fYwWorkH));// .toFloat();
-        //m_fYwWorkL = dialog.m_nameEdit4->text().toFloat();
-        dialog.m_nameEdit4->setText(QString::number(m_fYwWorkL));// .toFloat();
-
+        
     }
     
 
