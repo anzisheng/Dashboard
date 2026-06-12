@@ -23,6 +23,10 @@ public:
     void setMaxValue(double max);
     void setRange(double min, double max);
 
+    double m_warningLow;
+    double m_alarmHigh;
+    void drawZoneRing(QPainter* painter);
+
     double value() const { return m_value; }
     void setValue(double value);
 

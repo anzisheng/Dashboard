@@ -17,6 +17,9 @@ GaugeWidget::GaugeWidget(QWidget* parent)
     , m_textColor(220, 220, 220)
     , m_majorTickCount(10)
     , m_minorTickCount(4)
+    , m_warningLow(20.0)   // 默认警告低限 20
+    , m_alarmHigh(80.0)    // 默认警报高限 80
+
 {
     setMinimumSize(100, 100);
     setBackgroundRole(QPalette::Window);
@@ -76,7 +79,43 @@ void GaugeWidget::setNeedleColor(const QColor& color)
     m_needleColor = color;
     update();
 }
+void GaugeWidget::drawZoneRing(QPainter* painter)
+{
+    // 绘制外圈彩色圆环，表示三个区域
+    int ringRadius = m_radius + 2;  // 外圈半径
+    int ringWidth = 8;              // 圆环宽度
 
+    // 计算每个区域对应的角度范围（顺时针）
+    double angleLowStart = m_startAngle;
+    double valueLowEnd = m_warningLow;
+    double ratioLow = (valueLowEnd - m_minValue) / (m_maxValue - m_minValue);
+    double angleLowEnd = m_startAngle + ratioLow * m_spanAngle;
+
+    double angleNormalStart = angleLowEnd;
+    double valueNormalEnd = m_alarmHigh;
+    double ratioNormal = (valueNormalEnd - m_minValue) / (m_maxValue - m_minValue);
+    double angleNormalEnd = m_startAngle + ratioNormal * m_spanAngle;
+
+    double angleHighStart = angleNormalEnd;
+    double angleHighEnd = m_startAngle + m_spanAngle;
+
+    // 绘制低区（蓝色）
+    QRectF rect(m_center.x() - ringRadius, m_center.y() - ringRadius,
+        ringRadius * 2, ringRadius * 2);
+    QPen pen(Qt::blue, ringWidth);
+    painter->setPen(pen);
+    painter->drawArc(rect, (int)(angleLowStart * 16), (int)((angleLowEnd - angleLowStart) * 16));
+
+    // 正常区（绿色）
+    pen.setColor(Qt::green);
+    painter->setPen(pen);
+    painter->drawArc(rect, (int)(angleNormalStart * 16), (int)((angleNormalEnd - angleNormalStart) * 16));
+
+    // 高区（红色）
+    pen.setColor(Qt::red);
+    painter->setPen(pen);
+    painter->drawArc(rect, (int)(angleHighStart * 16), (int)((angleHighEnd - angleHighStart) * 16));
+}
 void GaugeWidget::setAngleRange(double startAngle, double endAngle)
 {
     double diff = fmod(endAngle - startAngle, 360.0);
@@ -101,6 +140,7 @@ void GaugeWidget::paintEvent(QPaintEvent* event)
     painter.setRenderHint(QPainter::Antialiasing, true);
 
     drawBackground(&painter);
+    drawZoneRing(&painter);
     drawScale(&painter);
     drawScaleNumbers(&painter);
     drawNeedle(&painter);
