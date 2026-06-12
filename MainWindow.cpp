@@ -385,14 +385,14 @@ MainWindow::MainWindow(QWidget* parent)
     // 例如：0在6点（270°），100在9点（180°）顺时针跨度为 270°（270->540）
     ui->gaugeSpeed->setAngleRange(270.0 - 45, 180.0-45);   // 注意：结束角小于起始角时会自动计算顺时针跨过0°的差值
     //ui->gaugeSpeed->setAngleRange(270.0, 450.0);
-    ui->gaugeSpeed->setRange(0, 100);
+    ui->gaugeSpeed->setRange(0, 2.5);
     ui->gaugeSpeed->setUnit("MPa");
     ui->gaugeSpeed->setGaugeColor(QColor(70, 130, 200));
     ui->gaugeSpeed->setNeedleColor(QColor(255, 80, 80));
 
     // 液位表，同样设置
     ui->gaugeRpm->setAngleRange(270.0 - 45, 180.0 - 45);
-    ui->gaugeRpm->setRange(0, 100);
+    ui->gaugeRpm->setRange(0, 2.5);
     ui->gaugeRpm->setUnit("MPa");
     ui->gaugeRpm->setGaugeColor(QColor(100, 180, 100));
     ui->gaugeRpm->setNeedleColor(QColor(255, 120, 50));

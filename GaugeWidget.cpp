@@ -17,8 +17,8 @@ GaugeWidget::GaugeWidget(QWidget* parent)
     , m_textColor(220, 220, 220)
     , m_majorTickCount(10)
     , m_minorTickCount(4)
-    , m_warningLow(20.0)   // 默认警告低限 20
-    , m_alarmHigh(80.0)    // 默认警报高限 80
+    , m_warningLow(0.2)   // 默认警告低限 20
+    , m_alarmHigh(1.8)    // 默认警报高限 80
 
 {
     setMinimumSize(100, 100);
@@ -228,8 +228,8 @@ void GaugeWidget::drawScaleNumbers(QPainter* painter)
         // 修正：刻度值应与 valueToAngle 完全一致，线性递增
         double value = m_minValue + (m_maxValue - m_minValue) * i / (double)m_majorTickCount;
         value = m_maxValue - value;
-        int tickValue = qRound(value);
-        QString label = QString::number(tickValue);
+        float tickValue = (value);
+        QString label = QString::number(tickValue,'f',1);
 
         // 数字紧贴刻度线外侧（偏移2像素）
         int labelRadius = m_radius - 15;// 2 + 2;
