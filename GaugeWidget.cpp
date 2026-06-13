@@ -17,8 +17,8 @@ GaugeWidget::GaugeWidget(QWidget* parent)
     , m_textColor(220, 220, 220)
     , m_majorTickCount(10)
     , m_minorTickCount(4)
-    , m_warningLow(0.2)   // 默认警告低限 20
-    , m_alarmHigh(1.8)    // 默认警报高限 80
+    , m_warningLow(0.6)   // 默认警告低限 20
+    , m_alarmHigh(2.2)    // 默认警报高限 80
 
 {
     setMinimumSize(100, 100);
@@ -89,32 +89,34 @@ void GaugeWidget::drawZoneRing(QPainter* painter)
     double angleLowStart = m_startAngle;
     double valueLowEnd = m_warningLow;
     double ratioLow = (valueLowEnd - m_minValue) / (m_maxValue - m_minValue);
-    double angleLowEnd = m_startAngle + ratioLow * m_spanAngle;
+    double angleLowEnd = m_startAngle - ratioLow * m_spanAngle;
 
-    double angleNormalStart = angleLowEnd - 47;
-    double valueNormalEnd = m_alarmHigh;
-    double ratioNormal = (valueNormalEnd - m_minValue) / (m_maxValue - m_minValue);
-    double angleNormalEnd = m_startAngle + ratioNormal * m_spanAngle ;
+    double angleNormalStart = angleLowEnd;
+    double valueNormalEnd = m_warningLow;
+    double ratioNormal = (m_alarmHigh - m_warningLow) / (m_maxValue - m_minValue);
+    double angleNormalEnd = angleNormalStart -  ratioNormal * m_spanAngle ;
 
     double angleHighStart = angleNormalEnd ;
-    double angleHighEnd = m_startAngle + m_spanAngle;
+    double ratioHigh = (m_maxValue - m_alarmHigh) / (m_maxValue - m_minValue);
+    double angleHighEnd = angleHighStart + ratioHigh *m_spanAngle;
 
     // 绘制低区（蓝色）
     QRectF rect(m_center.x() - ringRadius, m_center.y() - ringRadius,
         ringRadius * 2, ringRadius * 2);
     QPen pen(Qt::blue, ringWidth);
     painter->setPen(pen);
-    painter->drawArc(rect, (int)(angleLowStart * 16), -(int)((angleLowEnd - angleLowStart) * 16));
-
+    painter->drawArc(rect, (int)(angleLowStart * 16), (int)((angleLowEnd - angleLowStart) * 16));
+    
+    //return;
     // 正常区（绿色）
     pen.setColor(Qt::green);
     painter->setPen(pen);
-    painter->drawArc(rect, (int)(angleNormalStart * 16), -(int)((angleNormalEnd - angleNormalStart ) * 16));
-
+    painter->drawArc(rect, (int)(angleNormalStart * 16), (int)((angleNormalEnd - angleNormalStart ) * 16));
+   //return;
     // 高区（红色）
     pen.setColor(Qt::red);
     painter->setPen(pen);
-    painter->drawArc(rect, ((int)(angleHighStart - 26.5) * 16), -(int)((angleHighEnd - angleHighStart) * 16));
+    painter->drawArc(rect, ((int)(angleHighStart) * 16), -(int)((angleHighEnd - angleHighStart) * 16));
 }
 void GaugeWidget::setAngleRange(double startAngle, double endAngle)
 {
