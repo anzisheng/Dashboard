@@ -322,6 +322,9 @@ void MainWindow::ReadData()
             Fconverter.b[0] = r_buf[23];		//32位数据，四个字节浮点数
             m_fltEditPressureCurr = Fconverter.f;
 
+            m_fPressureSet = dialog1.m_pressSetEdit->text().toFloat();
+            m_fltEditPressureCurr = m_fPressureSet;
+
             switch (r_buf[24])
             {
             case 0:
@@ -379,6 +382,9 @@ MainWindow::MainWindow(QWidget* parent)
     RandomNum = 10;
 
     WorkCmd = 0;		//进入待机状态
+
+    //dialog = new MyDialog(this);
+    //dialog1 = new MyDialog_press(this);
 
     // 压力表：范围 0-100，单位 MPa
     // 您可以自由调整角度范围：setAngleRange(起始角, 结束角) 顺时针方向
@@ -836,6 +842,9 @@ void MainWindow::on_setPressureButton_clicked()
         dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
         dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));*/
     }
+    m_fPressureSet = dialog1.m_pressSetEdit->text().toFloat();
+	m_fltEditPressureCurr = m_fPressureSet;
+    ui->gaugeSpeed->setValue(m_fltEditPressureCurr);
 
   }
 

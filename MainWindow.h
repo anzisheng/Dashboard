@@ -6,6 +6,8 @@
 #include <QLabel>
 #include <QTimer>
 #include <atlstr.h>
+#include "MyDialog.h"
+#include "MyDialog_press.h"
 // 在这里定义全局的变量、常量、函数
 #define DEFAULT_IP0		192
 #define DEFAULT_IP1		168
@@ -29,6 +31,9 @@ public:
     bool InitInstance();
     unsigned char RandomCount;
     unsigned char RandomNum;
+    
+    MyDialog dialog;// (this);
+    MyDialog_press dialog1;// (this);
 
     void ReadData();
 

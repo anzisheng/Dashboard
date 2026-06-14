@@ -31,6 +31,11 @@ MyDialog_press::~MyDialog_press()
 void MyDialog_press::setupUI()
 {
     // 创建控件
+    m_pressSetLabel = new QLabel("输出压力设定:", this);
+	m_pressSetEdit = new QLineEdit(this);
+	m_pressSetEdit->setPlaceholderText("请输入输出压力设定值");
+
+    //QLineEdit* m_pressSetEdit;
     m_nameLabel = new QLabel("压力告警高限:", this);
     m_nameEdit = new QLineEdit(this);
     m_nameEdit->setPlaceholderText("请输入压力告警高限值");
@@ -67,6 +72,7 @@ void MyDialog_press::setupUI()
 
     // 使用表单布局排列标签和输入控件
     QFormLayout* formLayout = new QFormLayout;
+    formLayout->addRow(m_pressSetLabel, m_pressSetEdit);
     formLayout->addRow(m_nameLabel, m_nameEdit);
     formLayout->addRow(m_nameLabel2, m_nameEdit2);
     formLayout->addRow(PID_P, m_nameEditP);

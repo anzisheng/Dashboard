@@ -26,6 +26,8 @@ private:
 public:
 
     // 控件成员
+    QLabel *m_pressSetLabel;
+	QLineEdit* m_pressSetEdit;
     QLabel *m_nameLabel;
     QLabel *m_nameLabel2;
     QLineEdit *m_nameEdit;
