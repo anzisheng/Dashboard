@@ -8,7 +8,7 @@ MyDialog::MyDialog(QWidget* parent)
     : QDialog(parent)
 {
     setupUI();
-    setWindowTitle("液位参数输入对话框");
+    setWindowTitle("液位参数对话框");
     setModal(true);  // 设置为模态对话框
     resize(350, 250);
 }

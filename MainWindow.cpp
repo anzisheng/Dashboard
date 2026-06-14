@@ -426,8 +426,8 @@ MainWindow::MainWindow(QWidget* parent)
     // 手动连接"读取液位"按钮
    /* connect(ui->readLevelButton, &QPushButton::clicked,
        this, &MainWindow::on_readLevelButton_clicked);*/ 
-    connect(ui->readPressureButton, &QPushButton::clicked,
-        this, &MainWindow::on_readPressureButton_clicked);
+    /*connect(ui->readPressureButton, &QPushButton::clicked,
+        this, &MainWindow::on_readPressureButton_clicked);*/
     //setPressureButton
     connect(ui->setPressureButton, &QPushButton::clicked,
             this, &MainWindow::on_setPressureButton_clicked);
@@ -539,7 +539,7 @@ void MainWindow::on_readPressureButton_clicked()
         PacketType = 0x04;
     else
         Rdpressworkpara();
-   MyDialog_press dialog(this);
+  // MyDialog_press dialog(this);
    /*ui->pidParaPEdit->setText(QString::number(m_fltEditParaP, 'f', 2));
    ui->pidParaIEdit->setText(QString::number(m_fltEditParaI, 'f', 2));
    ui->pidParaDEdit->setText(QString::number(m_fltEditParaD, 'f', 2))*/
@@ -548,15 +548,25 @@ void MainWindow::on_readPressureButton_clicked()
             ui->pidParaPEdit->setText(QString::number(m_fltEditParaP, 'f', 2));
             ui->pidParaIEdit->setText(QString::number(m_fltEditParaI, 'f', 2));
             ui->pidParaDEdit->setText(QString::number(m_fltEditParaD, 'f', 2));*/
-   dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
+ 
+   /*dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
    dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
    dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
+   dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
+   dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));*/
 
 
-   if (dialog.exec() == QDialog::Accepted) {
+
+
+  // if (dialog.exec() == QDialog::Accepted) {
        // 可选：获取对话框数据
        // 这里不做额外处理，仅演示对话框的显示
-   }
+   /*    dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
+       dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
+       dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
+       dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
+       dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));*/
+  // }
 
 
 }
@@ -809,7 +819,24 @@ void MainWindow::on_setPressureButton_clicked()
         PacketType = 0x03;
     else
         Wrpressworkpara();
-    //ui->gaugeSpeed->setValue(6);// = m_fPressureSet;
+
+   // ui->gaugeSpeed->setValue(6);// = m_fPressureSet;
+	MyDialog_press dialog1(this);
+
+    //dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
+    //dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
+    //dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
+    //dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
+    //dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));
+
+    if (dialog1.exec() == QDialog::Accepted) {
+    /*    dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
+        dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
+        dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
+        dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
+        dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));*/
+    }
+
   }
 
 void MainWindow::Wrpressworkpara()
@@ -902,20 +929,20 @@ void MainWindow::on_readLevelButton_clicked()
     ui->gaugeRpm->m_warningLow = m_fYwAlmL;  // 0.2 默认警告低限 20
     ui->gaugeRpm->m_alarmHigh = m_fYwAlmH;// (1.8)    // 默认警报高限 80
 
-    //MyDialog dialog(this);
-    //dialog.m_nameEdit->setText(QString::number(m_fYwAlmH));// .toFloat();
-    //dialog.m_nameEdit2->setText(QString::number(m_fYwAlmL)); // .toFloat();
+    MyDialog dialog(this);
+    dialog.m_nameEdit->setText(QString::number(m_fYwAlmH));// .toFloat();
+    dialog.m_nameEdit2->setText(QString::number(m_fYwAlmL)); // .toFloat();
 
     ////m_fYwWorkH = dialog.m_nameEdit3->text().toFloat();
-    //dialog.m_nameEdit3->setText(QString::number(m_fYwWorkH));// .toFloat();
+    dialog.m_nameEdit3->setText(QString::number(m_fYwWorkH));// .toFloat();
     ////m_fYwWorkL = dialog.m_nameEdit4->text().toFloat();
-    //dialog.m_nameEdit4->setText(QString::number(m_fYwWorkL));// .toFloat();
+    dialog.m_nameEdit4->setText(QString::number(m_fYwWorkL));// .toFloat();
 
-    //if (dialog.exec() == QDialog::Accepted) {
-    //    // 可选：获取对话框数据
-    //    // 这里不做额外处理，仅演示对话框的显示
-    //    
-    //}
+    if (dialog.exec() == QDialog::Accepted) {
+        // 可选：获取对话框数据
+        // 这里不做额外处理，仅演示对话框的显示
+        
+    }
 
     
 

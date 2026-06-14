@@ -8,13 +8,24 @@ MyDialog_press::MyDialog_press(QWidget* parent)
     : QDialog(parent)
 {
     setupUI();
-    setWindowTitle("输入压力工作参数：");
+    setWindowTitle("压力工作参数：");
     setModal(true);  // 设置为模态对话框
     resize(350, 250);
 }
 
 MyDialog_press::~MyDialog_press()
 {
+ /*   delete m_nameLabel;
+	delete m_nameEdit;
+
+    delete m_nameLabel2;
+    delete m_nameEdit2;
+    delete PID_P;
+	delete m_nameEditP;
+    delete PID_I;
+    delete m_nameEditI;
+    delete PID_D;
+    delete m_nameEditD;*/
 }
 
 void MyDialog_press::setupUI()
