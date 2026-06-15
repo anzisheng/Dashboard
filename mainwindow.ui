@@ -72,20 +72,7 @@
                 </rect>
                </property>
                <property name="text">
-                <string>参数设置</string>
-               </property>
-              </widget>
-              <widget class="QPushButton" name="pushButton_3">
-               <property name="geometry">
-                <rect>
-                 <x>130</x>
-                 <y>0</y>
-                 <width>80</width>
-                 <height>23</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>故障记录</string>
+                <string>压力设置</string>
                </property>
               </widget>
               <widget class="QGroupBox" name="groupBox_3">
@@ -144,9 +131,9 @@
                <property name="geometry">
                 <rect>
                  <x>10</x>
-                 <y>470</y>
+                 <y>450</y>
                  <width>101</width>
-                 <height>31</height>
+                 <height>51</height>
                 </rect>
                </property>
                <property name="text">
@@ -156,10 +143,10 @@
               <widget class="QPushButton" name="StopLoopoil">
                <property name="geometry">
                 <rect>
-                 <x>150</x>
-                 <y>470</y>
-                 <width>91</width>
-                 <height>31</height>
+                 <x>140</x>
+                 <y>450</y>
+                 <width>101</width>
+                 <height>51</height>
                 </rect>
                </property>
                <property name="text">
@@ -215,6 +202,19 @@
                 <string>更新</string>
                </property>
               </widget>
+              <widget class="QPushButton" name="pushButton_5">
+               <property name="geometry">
+                <rect>
+                 <x>170</x>
+                 <y>0</y>
+                 <width>80</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>液位设置</string>
+               </property>
+              </widget>
              </widget>
             </item>
            </layout>
@@ -262,27 +262,14 @@
               <widget class="QPushButton" name="pushButton_4">
                <property name="geometry">
                 <rect>
-                 <x>20</x>
+                 <x>40</x>
                  <y>0</y>
                  <width>80</width>
                  <height>23</height>
                 </rect>
                </property>
                <property name="text">
-                <string>压力控制曲线</string>
-               </property>
-              </widget>
-              <widget class="QPushButton" name="pushButton_5">
-               <property name="geometry">
-                <rect>
-                 <x>150</x>
-                 <y>0</y>
-                 <width>80</width>
-                 <height>23</height>
-                </rect>
-               </property>
-               <property name="text">
-                <string>液位控制曲线</string>
+                <string>MMX参数</string>
                </property>
               </widget>
               <widget class="QGroupBox" name="groupBox">
@@ -310,6 +297,19 @@
                  <string>自动补油使能</string>
                 </property>
                </widget>
+              </widget>
+              <widget class="QPushButton" name="pushButton_3">
+               <property name="geometry">
+                <rect>
+                 <x>200</x>
+                 <y>0</y>
+                 <width>80</width>
+                 <height>23</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>故障记录</string>
+               </property>
               </widget>
              </widget>
             </item>
@@ -503,7 +503,7 @@
        <item>
         <widget class="QPushButton" name="updateButton">
          <property name="text">
-          <string>手动更新数据</string>
+          <string>清除</string>
          </property>
         </widget>
        </item>

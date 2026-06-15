@@ -329,12 +329,22 @@ void MainWindow::ReadData()
             {
             case 0:
                 m_intRadioWorkStatus = 0;		//待机
+                ui->radioButton->setChecked(true);
+                ui->radioButton_2->setChecked(false);
+                ui->radioButton_3->setChecked(false);
+
                 break;
             case 1:
                 m_intRadioWorkStatus = 1;		//工作
+                ui->radioButton_2->setChecked(true);
+                ui->radioButton->setChecked(false);
+                ui->radioButton_3->setChecked(false);
                 break;
             case 2:
                 m_intRadioWorkStatus = 2;		//泄压
+                ui->radioButton_3->setChecked(true);
+                ui->radioButton->setChecked(false);
+                ui->radioButton_2->setChecked(false);
                 break;
             }
 
@@ -457,8 +467,6 @@ void MainWindow::on_pressUpdateButton_clicked()
     //m_fPressureSet = Number_Two.toFloat();
     m_fltEditPressureCurr = Number_Two.toFloat();
     ui->gaugeSpeed->setValue(m_fltEditPressureCurr);// = m_fPressureSet;
-    SetPressWorkStatus();
-
 
 }
 void MainWindow::updateTime()
@@ -513,9 +521,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void clearLayout(QLayout* layout) {
+    if (!layout) return;
+    while (QLayoutItem* item = layout->takeAt(0)) {
+        if (item->widget()) {
+            delete item->widget();
+        }
+        else if (item->layout()) {
+            clearLayout(item->layout());
+        }
+        delete item;
+    }
+}
+
 void MainWindow::on_updateButton_clicked()
 {
-    updateInfo();
+    //updateInfo();
+    //QLayout* layout = &infoGroup.layout();
+    //clearLayout(&infoGroup);
 }
 
 void MainWindow::updateInfo()
