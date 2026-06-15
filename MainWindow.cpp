@@ -435,8 +435,8 @@ MainWindow::MainWindow(QWidget* parent)
     /*connect(ui->readPressureButton, &QPushButton::clicked,
         this, &MainWindow::on_readPressureButton_clicked);*/
     //setPressureButton
-    connect(ui->setPressureButton, &QPushButton::clicked,
-            this, &MainWindow::on_setPressureButton_clicked);
+   /* connect(ui->setPressureButton, &QPushButton::clicked,
+            this, &MainWindow::on_setPressureButton_clicked);*/
     connect(ui->start_stop,&QPushButton::clicked, this, &MainWindow::on_start_stopButton_clicked);
 
     //connect(ui->stopLoopoil,&QPushButton::clicked, this, &MainWindow::on_start_stopButton_clicked);
