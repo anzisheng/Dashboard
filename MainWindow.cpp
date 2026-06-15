@@ -457,6 +457,8 @@ void MainWindow::on_pressUpdateButton_clicked()
     //m_fPressureSet = Number_Two.toFloat();
     m_fltEditPressureCurr = Number_Two.toFloat();
     ui->gaugeSpeed->setValue(m_fltEditPressureCurr);// = m_fPressureSet;
+    SetPressWorkStatus();
+
 
 }
 void MainWindow::updateTime()
