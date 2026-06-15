@@ -114,6 +114,7 @@ private slots:
     void on_StopLoopoilButton_clicked();
     void on_readLevelButton_clicked();
     void on_setLevelButton_clicked();
+    void on_pressUpdateButton_clicked();
     //void onCheckBoxToggled(bool checked);
     void updateTime(); // 定时器要执行的槽函数
 

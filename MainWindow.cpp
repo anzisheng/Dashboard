@@ -152,8 +152,8 @@ void MainWindow::SetPressWorkStatus()
     //UpdateData(TRUE);
     //m_fltEditPressureSet得到编辑框内的值 
     //m_fltEditPressureSet;
-    /*QString Number_Two = ui->lineEdit_5->text();
-    m_fPressureSet = Number_Two.toFloat();*/
+    QString Number_Two = ui->lineEdit_5->text();
+    m_fPressureSet = Number_Two.toFloat();
 
 
     t_buf[0] = 'E';		//包头，四个字节
@@ -322,8 +322,8 @@ void MainWindow::ReadData()
             Fconverter.b[0] = r_buf[23];		//32位数据，四个字节浮点数
             m_fltEditPressureCurr = Fconverter.f;
 
-            m_fPressureSet = dialog1.m_pressSetEdit->text().toFloat();
-            m_fltEditPressureCurr = m_fPressureSet;
+         /*   m_fPressureSet = dialog1.m_pressSetEdit->text().toFloat();
+            m_fltEditPressureCurr = m_fPressureSet;*/
 
             switch (r_buf[24])
             {
@@ -425,6 +425,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     // 连接手动更新按钮
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
+    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_pressUpdateButton_clicked);
     
     
     //connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
@@ -447,6 +448,16 @@ MainWindow::MainWindow(QWidget* parent)
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
+}
+void MainWindow::on_pressUpdateButton_clicked()
+{
+
+    qDebug() << "on_pressUpdateButton_clicked";
+    QString Number_Two = ui->lineEdit_5->text();
+    //m_fPressureSet = Number_Two.toFloat();
+    m_fltEditPressureCurr = Number_Two.toFloat();
+    ui->gaugeSpeed->setValue(m_fltEditPressureCurr);// = m_fPressureSet;
+
 }
 void MainWindow::updateTime()
 {
@@ -827,23 +838,23 @@ void MainWindow::on_setPressureButton_clicked()
         Wrpressworkpara();
 
    // ui->gaugeSpeed->setValue(6);// = m_fPressureSet;
-	MyDialog_press dialog1(this);
+	//MyDialog_press dialog1(this);
+	MyDialog dialog(this);
 
     //dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
     //dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
     //dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
     //dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
     //dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));
-    dialog1.exec();
-    //if (dialog1.exec() == QDialog::Accepted) 
-    //{
+
+    if (dialog1.exec() == QDialog::Accepted) {
     /*    dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
         dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
         dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
         dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
         dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));*/
-    //}
-    m_fPressureSet = dialog1.m_pressSetEdit->text().toFloat();
+    }
+    //m_fPressureSet = dialog.m_pressSetEdit->text().toFloat();
 	m_fltEditPressureCurr = m_fPressureSet;
     ui->gaugeSpeed->setValue(m_fltEditPressureCurr);
 
