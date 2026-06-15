@@ -152,8 +152,8 @@ void MainWindow::SetPressWorkStatus()
     //UpdateData(TRUE);
     //m_fltEditPressureSet得到编辑框内的值 
     //m_fltEditPressureSet;
-    QString Number_Two = ui->lineEdit_5->text();
-    m_fPressureSet = Number_Two.toFloat();
+    /*QString Number_Two = ui->lineEdit_5->text();
+    m_fPressureSet = Number_Two.toFloat();*/
 
 
     t_buf[0] = 'E';		//包头，四个字节
@@ -834,14 +834,15 @@ void MainWindow::on_setPressureButton_clicked()
     //dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
     //dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
     //dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));
-
-    if (dialog1.exec() == QDialog::Accepted) {
+    dialog1.exec();
+    //if (dialog1.exec() == QDialog::Accepted) 
+    //{
     /*    dialog.m_nameEdit->setText(QString::number(m_fltEditPressAlmH, 'f', 2));
         dialog.m_nameEdit2->setText(QString::number(m_fltEditPressAlmL, 'f', 2));
         dialog.m_nameEditP->setText(QString::number(m_fltEditParaP, 'f', 2));
         dialog.m_nameEditI->setText(QString::number(m_fltEditParaI, 'f', 2));
         dialog.m_nameEditD->setText(QString::number(m_fltEditParaD, 'f', 2));*/
-    }
+    //}
     m_fPressureSet = dialog1.m_pressSetEdit->text().toFloat();
 	m_fltEditPressureCurr = m_fPressureSet;
     ui->gaugeSpeed->setValue(m_fltEditPressureCurr);
