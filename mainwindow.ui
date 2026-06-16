@@ -269,7 +269,7 @@
                 </rect>
                </property>
                <property name="text">
-                <string>MMX参数</string>
+                <string>DMX参数</string>
                </property>
               </widget>
               <widget class="QGroupBox" name="groupBox">

@@ -9,12 +9,12 @@
 Dialog3::Dialog3(QWidget* parent)
     : QDialog(parent)
 {
-    setWindowTitle(QStringLiteral("MMX 输入"));
+    setWindowTitle(QStringLiteral("DMX 输入"));
     setMinimumSize(300, 250);
 
     auto* layout = new QVBoxLayout(this);
 
-    auto* label = new QLabel(QStringLiteral("请选择MMX输入"), this);
+    auto* label = new QLabel(QStringLiteral("请选择DMX输入"), this);
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label);
 
