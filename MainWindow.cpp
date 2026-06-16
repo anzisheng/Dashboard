@@ -7,6 +7,7 @@
 //#include <MyDialog.h>
 #include "MyDialog.h"
 #include "MyDialog_press.h"
+#include "Dialog1.h"
 
 #include <stdio.h>
 #include <atlstr.h>
@@ -436,6 +437,8 @@ MainWindow::MainWindow(QWidget* parent)
     // 连接手动更新按钮
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_pressUpdateButton_clicked);
+    connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_pressParaButton_2_clicked);
+    //void on_pressParaButton_2_clicked();//pushButton_2
     
     
     //connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
@@ -458,6 +461,13 @@ MainWindow::MainWindow(QWidget* parent)
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
+}
+
+void MainWindow::on_pressParaButton_2_clicked()
+{
+	Dialog1 dialog1(this);
+	dialog1.exec();
+
 }
 void MainWindow::on_pressUpdateButton_clicked()
 {

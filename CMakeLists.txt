@@ -20,6 +20,10 @@ add_executable(DashboardApp
     MainWindow.ui
     GaugeWidget.cpp
     GaugeWidget.h
+
+    Dialog1.h
+    Dialog1.cpp
+
     MyDialog.cpp
     MyDialog.h
     MyDialog_press.cpp
