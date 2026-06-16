@@ -18,7 +18,11 @@ private slots:
     void onOkClicked();
 
 private:
-    QLineEdit* m_lineEdit = nullptr;
+public:
+    QLineEdit* m_fltEditYwAlmH = nullptr;
+    QLineEdit* m_fltEditYwAlmL = nullptr;
+    QLineEdit* m_fltEditYwWorkH = nullptr;
+    QLineEdit* m_fltEditYwWorkL = nullptr;
     QPushButton* m_okButton = nullptr;
 };
 
