@@ -8,7 +8,7 @@
 #include "MyDialog.h"
 #include "MyDialog_press.h"
 #include "Dialog1.h"
-
+#include "Dialog2.h"
 #include <stdio.h>
 #include <atlstr.h>
 #include <winsock2.h>
@@ -439,7 +439,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_pressUpdateButton_clicked);
     connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_pressParaButton_2_clicked);
     //void on_pressParaButton_2_clicked();//pushButton_2
-    
+    connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::on_ywParaButton_5_clicked);
     
     //connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
 
@@ -461,6 +461,12 @@ MainWindow::MainWindow(QWidget* parent)
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
+}
+
+void MainWindow::on_ywParaButton_5_clicked()
+{
+    Dialog2 dialog2(this);
+    dialog2.exec();
 }
 
 void MainWindow::on_pressParaButton_2_clicked()
