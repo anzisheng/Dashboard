@@ -436,6 +436,10 @@ MainWindow::MainWindow(QWidget* parent)
     // 连接手动更新按钮
     connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_pressUpdateButton_clicked);
+
+	connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_pressParaButton_clicked);
+	connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::on_ywParaButton_clicked);
+    //void on_pressParaButton_clicked();//pushButton_2
     
     
     //connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
@@ -459,6 +463,26 @@ MainWindow::MainWindow(QWidget* parent)
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
+#include "Dialog1.h"
+#include "Dialog2.h"
+
+void MainWindow::on_ywParaButton_clicked()
+{
+    Dialog2 dlg(this);
+    dlg.exec();
+
+}
+
+void MainWindow::on_pressParaButton_clicked()
+{
+    Dialog1 dlg(this);
+    dlg.exec();
+
+
+    return;
+
+}
+
 void MainWindow::on_pressUpdateButton_clicked()
 {
 
