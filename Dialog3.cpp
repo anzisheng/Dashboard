@@ -9,12 +9,12 @@
 Dialog3::Dialog3(QWidget* parent)
     : QDialog(parent)
 {
-    setWindowTitle(QStringLiteral("对话框 1"));
+    setWindowTitle(QStringLiteral("对话框 3"));
     setMinimumSize(300, 150);
 
     auto* layout = new QVBoxLayout(this);
 
-    auto* label = new QLabel(QStringLiteral("这是第一个对话框"), this);
+    auto* label = new QLabel(QStringLiteral("这是第三个对话框"), this);
     label->setAlignment(Qt::AlignCenter);
     layout->addWidget(label);
 

@@ -118,7 +118,8 @@ private slots:
     
 	void on_pressParaButton_2_clicked();//pushButton_2
     void on_ywParaButton_5_clicked();//pushButton_5
-    // 
+    
+    void on_MMXParaButton_4_clicked();//pushButton_4
     //void onCheckBoxToggled(bool checked);
     void updateTime(); // 定时器要执行的槽函数
 

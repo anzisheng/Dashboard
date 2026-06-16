@@ -9,6 +9,7 @@
 #include "MyDialog_press.h"
 #include "Dialog1.h"
 #include "Dialog2.h"
+#include "Dialog3.h"
 #include <stdio.h>
 #include <atlstr.h>
 #include <winsock2.h>
@@ -455,6 +456,11 @@ MainWindow::MainWindow(QWidget* parent)
 
     //connect(ui->stopLoopoil,&QPushButton::clicked, this, &MainWindow::on_start_stopButton_clicked);
     connect(ui->StopLoopoil,&QPushButton::clicked, this, &MainWindow::on_StopLoopoilButton_clicked);
+
+    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::on_MMXParaButton_4_clicked);
+
+    //void on_MMXParaButton_4_clicked();//pushButton_4
+    
     // 启动定时器，每秒自动更新随机数据
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
@@ -462,7 +468,13 @@ MainWindow::MainWindow(QWidget* parent)
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
+void MainWindow::on_MMXParaButton_4_clicked()
+{
+	qDebug() << "on_MMXParaButton_4_clicked";
+    Dialog3 dialog3(this);
+	dialog3.exec();
 
+}
 void MainWindow::on_ywParaButton_5_clicked()
 {
     Dialog2 dialog2(this);
