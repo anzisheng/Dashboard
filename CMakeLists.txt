@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
+set(CMAKE_DISABLE_PRECOMPILE_HEADERS ON)
 
 # 解决 MSVC 中文编译错误
 if(MSVC)
@@ -35,10 +36,16 @@ add_executable(DashboardApp
     MyDialog.h
     MyDialog_press.cpp
     MyDialog_press.h
+    numpad.cpp
+    numpad.h
+    numpaddialog.cpp
+    numpaddialog.h
+    
 )
+target_compile_features(DashboardApp PRIVATE cxx_std_17)
 
 target_link_libraries(DashboardApp PRIVATE Qt6::Widgets)
 
 if(WIN32)
     set_target_properties(DashboardApp PROPERTIES WIN32_EXECUTABLE TRUE)
-endif()
+endif() 
