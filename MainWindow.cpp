@@ -441,6 +441,8 @@ MainWindow::MainWindow(QWidget* parent)
     connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_pressParaButton_2_clicked);
     //void on_pressParaButton_2_clicked();//pushButton_2
     connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::on_ywParaButton_5_clicked);
+
+    ui->lineEdit_5->installEventFilter(this);
     
     //connect(ui->checkBox, &QCheckBox::toggled, this, &MainWindow::onCheckBoxToggled);
 
@@ -467,6 +469,38 @@ MainWindow::MainWindow(QWidget* parent)
     connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
+}
+
+bool MainWindow::eventFilter(QObject* obj, QEvent* event)
+{
+    // 当 lineEdit 收到鼠标按下事件时，弹出数字键盘对话框
+    if (obj == ui->lineEdit_5 && event->type() == QEvent::MouseButtonPress) {
+        onLineEditClicked();
+        return true;  // 事件已处理，不再传递（避免焦点变化）
+    }
+    return QMainWindow::eventFilter(obj, event);
+}
+
+void MainWindow::onLineEditClicked()
+{
+    // 如果对话框还未创建，则创建；否则重复使用
+    if (!m_dialog) {
+        m_dialog = new NumPadDialog(this);
+        // 连接对话框的 accepted 信号
+        connect(m_dialog, &QDialog::accepted, this, &MainWindow::onDialogAccepted);
+    }
+
+    // 将当前输入框的内容设置为对话框的初始文本
+    m_dialog->setText(ui->lineEdit_5->text());
+
+    // 显示模态对话框
+    m_dialog->exec();
+}
+void MainWindow::onDialogAccepted()
+{
+    // 对话框确认后，获取输入的新文本并设置到主编辑框
+    QString newText = m_dialog->getText();
+    ui->lineEdit_5->setText(newText);
 }
 void MainWindow::on_MMXParaButton_4_clicked()
 {

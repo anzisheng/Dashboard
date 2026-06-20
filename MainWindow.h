@@ -8,6 +8,9 @@
 #include <atlstr.h>
 #include "MyDialog.h"
 #include "MyDialog_press.h"
+#include "numpaddialog.h"
+class NumPadDialog;
+
 // 在这里定义全局的变量、常量、函数
 #define DEFAULT_IP0		192
 #define DEFAULT_IP1		168
@@ -104,8 +107,12 @@ public:
     CString	m_strEditPressureAlarmStatus;
     int		m_intRadioWorkStatus;
     /// </summary>
-
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;
 private slots:
+    void onLineEditClicked();          // 处理编辑框点击事件
+    void onDialogAccepted();           // 对话框确认时更新输入框
+    //void onDialogAccepted();           // 对话框确认时更新输入框
     void on_updateButton_clicked();
     void updateInfo();
     void on_readPressureButton_clicked();
@@ -127,6 +134,7 @@ private:
     Ui::MainWindow* ui;
     QPushButton* m_openButton;
     QTimer* m_timer;
+    NumPadDialog* m_dialog = nullptr;  // 数字键盘对话框
     //unsigned char PacketType;
 };
 
