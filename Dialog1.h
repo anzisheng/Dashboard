@@ -31,6 +31,8 @@ private slots:
 	QLineEdit* m_fltEditParaD = nullptr;
     QPushButton* m_okButton = nullptr;
     NumPadDialog* m_dialog = nullptr; // 数字键盘对话框指针
+    QLineEdit* m_currentEdit = nullptr;
 };
+
 
 #endif // DIALOG1_H
