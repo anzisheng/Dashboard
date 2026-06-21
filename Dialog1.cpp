@@ -31,17 +31,28 @@ Dialog1::Dialog1(QWidget* parent)
     layout->addWidget(m_fltEditPressAlmL);
     m_fltEditPressAlmL->installEventFilter(this);
 
+    //QLineEdit* m_fltEditParaP = nullptr;
+    //QLineEdit* m_fltEditParaI = nullptr;
+    //QLineEdit* m_fltEditParaD = nullptr;
+
     
     m_fltEditParaP = new QLineEdit(this);
     m_fltEditParaP->setPlaceholderText(QStringLiteral("P参数"));
     layout->addWidget(m_fltEditParaP);
+    m_fltEditParaP->installEventFilter(this);
 
     m_fltEditParaI = new QLineEdit(this);
     m_fltEditParaI->setPlaceholderText(QStringLiteral("I参数"));
     layout->addWidget(m_fltEditParaI);
+    m_fltEditParaI->installEventFilter(this);
+    m_fltEditParaI->installEventFilter(this);
+
     m_fltEditParaD = new QLineEdit(this);
     m_fltEditParaD->setPlaceholderText(QStringLiteral("D参数"));
     layout->addWidget(m_fltEditParaD);
+    m_fltEditParaD->installEventFilter(this);
+    m_fltEditParaD->installEventFilter(this);
+
     m_okButton = new QPushButton(QStringLiteral("确定"), this);
     layout->addWidget(m_okButton);
 
@@ -54,7 +65,8 @@ bool Dialog1::eventFilter(QObject* obj, QEvent* event)
 
     if (event->type() == QEvent::MouseButtonPress) {
         // 判断点击的是否是我们关心的编辑框
-        if (obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL) {
+        if (obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL|| obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD)
+        {
             m_currentEdit = qobject_cast<QLineEdit*>(obj);  // 记录当前编辑框
             onLineEditClicked();
             return true;   // 事件已处理，阻止默认行为（焦点移动）
