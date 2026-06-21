@@ -5,6 +5,9 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QEvent>
+#include <QMouseEvent>
+#include "NumpadDialog.h"
 
 Dialog1::Dialog1(QWidget* parent)
     : QDialog(parent)
@@ -21,6 +24,8 @@ Dialog1::Dialog1(QWidget* parent)
     m_fltEditPressAlmH = new QLineEdit(this);
     m_fltEditPressAlmH->setPlaceholderText(QStringLiteral("压力告警高限"));
     layout->addWidget(m_fltEditPressAlmH);
+    m_fltEditPressAlmH->installEventFilter(this);
+
     m_fltEditPressAlmL = new QLineEdit(this);
     m_fltEditPressAlmL->setPlaceholderText(QStringLiteral("压力告警低限"));
     layout->addWidget(m_fltEditPressAlmL);
@@ -39,6 +44,37 @@ Dialog1::Dialog1(QWidget* parent)
     layout->addWidget(m_okButton);
 
     connect(m_okButton, &QPushButton::clicked, this, &Dialog1::onOkClicked);
+}
+bool Dialog1::eventFilter(QObject* obj, QEvent* event)
+{
+    // 捕获目标编辑框的鼠标点击事件
+    if (obj == m_fltEditPressAlmH && event->type() == QEvent::MouseButtonPress) {
+        onLineEditClicked();
+        return true;   // 事件已处理，不再传递（避免焦点变化）
+    }
+    return QDialog::eventFilter(obj, event);
+}
+
+void Dialog1::onLineEditClicked()
+{
+    // 延迟创建对话框（只创建一次）
+    if (!m_dialog) {
+        m_dialog = new NumPadDialog(this);
+        connect(m_dialog, &QDialog::accepted, this, &Dialog1::onDialogAccepted);
+    }
+
+    // 将当前编辑框的内容作为初始文本
+    m_dialog->setText(m_fltEditPressAlmH->text());
+
+    // 模态弹出数字键盘
+    m_dialog->exec();
+}
+
+void Dialog1::onDialogAccepted()
+{
+    // 从对话框获取输入结果，回填到编辑框
+    QString newText = m_dialog->getText();
+    m_fltEditPressAlmH->setText(newText);
 }
 
 void Dialog1::onOkClicked()
