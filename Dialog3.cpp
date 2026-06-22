@@ -42,6 +42,6 @@ Dialog3::Dialog3(QWidget* parent)
 
 void Dialog3::onOkClicked()
 {
-    qDebug() << "对话框1 输入内容:" << m_lineEdit->text();
+    //qDebug() << "对话框1 输入内容:" << m_lineEdit->text();
     accept();
 }
