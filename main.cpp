@@ -1,14 +1,14 @@
-#include <QApplication>
+ï»¿#include <QApplication>
 #include "MainWindow.h"
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
     MainWindow window;
-    window.resize(800, 600);
-    window.setWindowTitle("»ğÖ÷»ú¿ØÖÆÏµÍ³");
+    //window.resize(800, 600);
+    window.setWindowTitle("ç«ä¸»æœºæ§åˆ¶ç³»ç»Ÿ");
 
-    window.setWindowState(window.windowState() ^ Qt::WindowFullScreen);
+    //window.setWindowState(window.windowState() ^ Qt::WindowFullScreen);
     window.show();
     return app.exec();
 }

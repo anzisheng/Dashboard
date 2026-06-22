@@ -386,7 +386,14 @@ MainWindow::MainWindow(QWidget* parent)
     , ui(new Ui::MainWindow)
     , m_timer(nullptr)
 {
+    // 设置窗口标题（标题栏将显示此文本）
+    setWindowTitle("火主机控制系统");
+
+    // 设置窗口固定大小为 800x600
+    setFixedSize(800, 600);
+
     ui->setupUi(this);
+
     bool b = InitInstance();
     m_bCheckTimer = true;
     PacketType = 0X00;
