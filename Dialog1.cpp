@@ -30,18 +30,21 @@ Dialog1::Dialog1(QWidget* parent)
     layout->addRow(tr("邮箱:"), m_emailEdit);*/
 
     m_fltEditPressAlmH = new QLineEdit(this);
+    m_fltEditPressAlmH->installEventFilter(this);
     layout->addRow(tr("&压力告警高限:"), m_fltEditPressAlmH);
 
     m_fltEditPressAlmL = new QLineEdit(this);
     //m_fltEditPressAlmH->setPlaceholderText(QStringLiteral("压力告警高限"));
+    m_fltEditPressAlmL->installEventFilter(this);
     layout->addRow(tr("&压力告警低限:"), m_fltEditPressAlmL);
 
     m_fltEditParaP = new QLineEdit(this);// ->setPlaceholderText();
     //   layout->addWidget(m_fltEditParaP);
-    //m_fltEditParaP->installEventFilter(this);
+    m_fltEditParaP->installEventFilter(this);
     layout->addRow(tr("&P参数"), m_fltEditParaP);
 
     m_fltEditParaI = new QLineEdit(this);// ->setPlaceholderText();
+    m_fltEditParaI->installEventFilter(this);
     //   layout->addWidget(m_fltEditParaP);
     //m_fltEditParaP->installEventFilter(this);
     layout->addRow(tr("&I参数"), m_fltEditParaI);
@@ -49,7 +52,8 @@ Dialog1::Dialog1(QWidget* parent)
     m_fltEditParaD = new QLineEdit(this);// ->setPlaceholderText();
     //   layout->addWidget(m_fltEditParaP);
     //m_fltEditParaP->installEventFilter(this);
-    layout->addRow(tr("&D参数"), m_fltEditParaD);
+    m_fltEditParaD->installEventFilter(this);
+    layout->addRow(tr("&D参数"), m_fltEditParaP);
 
 /*
 
