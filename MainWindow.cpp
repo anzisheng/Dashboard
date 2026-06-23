@@ -544,7 +544,7 @@ void MainWindow::on_pressParaButton_2_clicked()
 	Dialog1 dialog1(this);
 	dialog1.exec();
     qDebug() << "hello";
-    m_fPressAlmH = dialog1.m_fltEditPressAlmH->text().toFloat();;
+    m_fPressAlmH = dialog1.m_fltEditPressAlmH->text().toFloat();
     m_fPressAlmL = dialog1.m_fltEditPressAlmL->text().toFloat();
     m_fPidParaP = dialog1.m_fltEditParaP->text().toFloat();
     m_fPidParaI = dialog1.m_fltEditParaI->text().toFloat();

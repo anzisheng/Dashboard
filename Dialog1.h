@@ -2,6 +2,7 @@
 #define DIALOG1_H
 
 #include <QDialog>
+#include <QLabel>
 
 class QLineEdit;
 class QPushButton;
@@ -25,13 +26,20 @@ private slots:
 //private:
     public:
     QLineEdit* m_fltEditPressAlmH = nullptr;
+    QLabel* m_fltLabelPressAlmH = nullptr;
     QLineEdit* m_fltEditPressAlmL = nullptr;
+    QLabel* m_fltLabelPressAlmL = nullptr;
 	QLineEdit* m_fltEditParaP = nullptr;
+	QLabel* m_fltLabelParaP = nullptr;
 	QLineEdit* m_fltEditParaI = nullptr;
+	QLabel* m_fltQLabelParaI = nullptr;
 	QLineEdit* m_fltEditParaD = nullptr;
+	QLabel* m_fltLabelParaI = nullptr;
     QPushButton* m_okButton = nullptr;
     NumPadDialog* m_dialog = nullptr; // 数字键盘对话框指针
     QLineEdit* m_currentEdit = nullptr;
+    QLineEdit* m_nameEdit;
+    QLineEdit* m_emailEdit;
 };
 
 

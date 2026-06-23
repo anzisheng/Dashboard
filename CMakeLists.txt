@@ -40,7 +40,7 @@ add_executable(DashboardApp
     numpad.h
     numpaddialog.cpp
     numpaddialog.h
-    
+    MyDialog.ui 
 )
 target_compile_features(DashboardApp PRIVATE cxx_std_17)
 
