@@ -134,13 +134,14 @@ Dialog1::Dialog1(QWidget* parent)
     m_personalInfoLayout->setContentsMargins(15, 15, 15, 15);
 
     // 创建标签和输入框 - Name
-    m_labelName = new QLabel("Name:", m_personalInfoGroupBox);
+    m_labelName = new QLabel("压力高限", m_personalInfoGroupBox);
     m_labelName->setMinimumWidth(80);
     m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    m_lineEditName = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditName->setPlaceholderText("Enter your name");
-    m_lineEditName->setMinimumHeight(25);
+    m_fltEditPressAlmH = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditPressAlmH->setPlaceholderText("输入压力高限");
+    m_fltEditPressAlmH->setMinimumHeight(25);
+	m_fltEditPressAlmH->installEventFilter(this); // 安装事件过滤器以捕获点击事件
 
     // 创建标签和输入框 - Email
     m_labelEmail = new QLabel("Email:", m_personalInfoGroupBox);
@@ -184,7 +185,7 @@ Dialog1::Dialog1(QWidget* parent)
 
     // 将控件添加到网格布局（5行）
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
-    m_personalInfoLayout->addWidget(m_lineEditName, 0, 1);
+    m_personalInfoLayout->addWidget(m_fltEditPressAlmH, 0, 1);
     m_personalInfoLayout->addWidget(m_labelEmail, 1, 0);
     m_personalInfoLayout->addWidget(m_lineEditEmail, 1, 1);
     m_personalInfoLayout->addWidget(m_labelPhone, 2, 0);
