@@ -144,14 +144,15 @@ Dialog1::Dialog1(QWidget* parent)
 	m_fltEditPressAlmH->installEventFilter(this); // 安装事件过滤器以捕获点击事件
 
     // 创建标签和输入框 - Email
-    m_labelEmail = new QLabel("Email:", m_personalInfoGroupBox);
+    m_labelEmail = new QLabel("压力低限:", m_personalInfoGroupBox);
     m_labelEmail->setMinimumWidth(80);
     m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    m_lineEditEmail = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditEmail->setPlaceholderText("Enter your email");
-    m_lineEditEmail->setMinimumHeight(25);
-    m_lineEditEmail->setInputMethodHints(Qt::ImhEmailCharactersOnly);
+    m_fltEditPressAlmL = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditPressAlmL->setPlaceholderText("输入压力低限");
+    m_fltEditPressAlmL->setMinimumHeight(25);
+    m_fltEditPressAlmL->setInputMethodHints(Qt::ImhEmailCharactersOnly);
+    m_fltEditPressAlmL->installEventFilter(this);
 
     // 创建标签和输入框 - Phone
     m_labelPhone = new QLabel("Phone:", m_personalInfoGroupBox);
@@ -187,7 +188,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
     m_personalInfoLayout->addWidget(m_fltEditPressAlmH, 0, 1);
     m_personalInfoLayout->addWidget(m_labelEmail, 1, 0);
-    m_personalInfoLayout->addWidget(m_lineEditEmail, 1, 1);
+    m_personalInfoLayout->addWidget(m_fltEditPressAlmL, 1, 1);
     m_personalInfoLayout->addWidget(m_labelPhone, 2, 0);
     m_personalInfoLayout->addWidget(m_lineEditPhone, 2, 1);
     m_personalInfoLayout->addWidget(m_labelBirthday, 3, 0);
