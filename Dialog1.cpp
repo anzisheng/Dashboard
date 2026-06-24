@@ -167,13 +167,14 @@ Dialog1::Dialog1(QWidget* parent)
 
 
     // 创建标签和输入框 - Birthday
-    m_labelBirthday = new QLabel("Birthday:", m_personalInfoGroupBox);
+    m_labelBirthday = new QLabel("生日:", m_personalInfoGroupBox);
     m_labelBirthday->setMinimumWidth(80);
     m_labelBirthday->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    m_lineEditBirthday = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditBirthday->setPlaceholderText("YYYY-MM-DD");
-    m_lineEditBirthday->setMinimumHeight(25);
+    m_fltEditParaI = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditParaI->setPlaceholderText("YYYY-MM-DD");
+    m_fltEditParaI->setMinimumHeight(25);
+	m_fltEditParaI->installEventFilter(this);
 
 
     // 创建标签和输入框 - Occupation
@@ -193,7 +194,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_personalInfoLayout->addWidget(m_labelPhone, 2, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaP, 2, 1);
     m_personalInfoLayout->addWidget(m_labelBirthday, 3, 0);
-    m_personalInfoLayout->addWidget(m_lineEditBirthday, 3, 1);
+    m_personalInfoLayout->addWidget(m_fltEditParaI, 3, 1);
     m_personalInfoLayout->addWidget(m_labelOccupation, 4, 0);
     m_personalInfoLayout->addWidget(m_lineEditOccupation, 4, 1);
 
