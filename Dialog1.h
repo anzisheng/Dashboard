@@ -51,7 +51,7 @@ private:
 	QLineEdit* m_fltEditParaI = nullptr;
 	QLabel* m_fltQLabelParaI = nullptr;
 	QLineEdit* m_fltEditParaD = nullptr;
-	QLabel* m_fltLabelParaI = nullptr;
+	QLabel* m_fltLabelParaD = nullptr;
     QPushButton* m_okButton = nullptr;
     NumPadDialog* m_dialog = nullptr; // 数字键盘对话框指针
     QLineEdit* m_currentEdit = nullptr;

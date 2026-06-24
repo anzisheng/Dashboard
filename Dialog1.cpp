@@ -110,7 +110,7 @@ Dialog1::Dialog1(QWidget* parent)
 
 
     // ---------- 左侧：个人信息 GroupBox（5对） ----------
-    m_personalInfoGroupBox = new QGroupBox("Personal Information", this);
+    m_personalInfoGroupBox = new QGroupBox("设置压力表参数", this);
     m_personalInfoGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_personalInfoGroupBox->setStyleSheet(
         "QGroupBox {"
@@ -134,7 +134,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_personalInfoLayout->setContentsMargins(15, 15, 15, 15);
 
     // 创建标签和输入框 - Name
-    m_labelName = new QLabel("压力高限", m_personalInfoGroupBox);
+    m_labelName = new QLabel("压力高限:", m_personalInfoGroupBox);
     m_labelName->setMinimumWidth(80);
     m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
@@ -155,35 +155,35 @@ Dialog1::Dialog1(QWidget* parent)
     m_fltEditPressAlmL->installEventFilter(this);
 
     // 创建标签和输入框 - Phone
-    m_labelPhone = new QLabel("电话:", m_personalInfoGroupBox);
-    m_labelPhone->setMinimumWidth(80);
-    m_labelPhone->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltLabelParaP = new QLabel("P参数:", m_personalInfoGroupBox);
+    m_fltLabelParaP->setMinimumWidth(80);
+    m_fltLabelParaP->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditParaP = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditParaP->setPlaceholderText("输入电话号码");
+    m_fltEditParaP->setPlaceholderText("输入P参数");
     m_fltEditParaP->setMinimumHeight(25);
     m_fltEditParaP->setInputMethodHints(Qt::ImhDialableCharactersOnly);
     m_fltEditParaP->installEventFilter(this);
 
 
     // 创建标签和输入框 - Birthday
-    m_labelBirthday = new QLabel("生日:", m_personalInfoGroupBox);
-    m_labelBirthday->setMinimumWidth(80);
-    m_labelBirthday->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltQLabelParaI = new QLabel("I参数:", m_personalInfoGroupBox);
+    m_fltQLabelParaI->setMinimumWidth(80);
+    m_fltQLabelParaI->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditParaI = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditParaI->setPlaceholderText("YYYY-MM-DD");
+    m_fltEditParaI->setPlaceholderText("输入I参数");
     m_fltEditParaI->setMinimumHeight(25);
 	m_fltEditParaI->installEventFilter(this);
 
 
     // 创建标签和输入框 - Occupation
-    m_labelOccupation = new QLabel("Occupation:", m_personalInfoGroupBox);
-    m_labelOccupation->setMinimumWidth(80);
-    m_labelOccupation->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltLabelParaD = new QLabel("D参数:", m_personalInfoGroupBox);
+    m_fltLabelParaD->setMinimumWidth(80);
+    m_fltLabelParaD->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditParaD = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditParaD->setPlaceholderText("Enter your occupation");
+    m_fltEditParaD->setPlaceholderText("输入D参数");
     m_fltEditParaD->setMinimumHeight(25);
 	m_fltEditParaD->installEventFilter(this);
 
@@ -192,11 +192,11 @@ Dialog1::Dialog1(QWidget* parent)
     m_personalInfoLayout->addWidget(m_fltEditPressAlmH, 0, 1);
     m_personalInfoLayout->addWidget(m_labelEmail, 1, 0);
     m_personalInfoLayout->addWidget(m_fltEditPressAlmL, 1, 1);
-    m_personalInfoLayout->addWidget(m_labelPhone, 2, 0);
+    m_personalInfoLayout->addWidget(m_fltLabelParaP, 2, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaP, 2, 1);
-    m_personalInfoLayout->addWidget(m_labelBirthday, 3, 0);
+    m_personalInfoLayout->addWidget(m_fltQLabelParaI, 3, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaI, 3, 1);
-    m_personalInfoLayout->addWidget(m_labelOccupation, 4, 0);
+    m_personalInfoLayout->addWidget(m_fltLabelParaD, 4, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaD, 4, 1);
 
     // 设置网格列比例
