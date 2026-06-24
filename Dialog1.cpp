@@ -155,14 +155,15 @@ Dialog1::Dialog1(QWidget* parent)
     m_fltEditPressAlmL->installEventFilter(this);
 
     // 创建标签和输入框 - Phone
-    m_labelPhone = new QLabel("Phone:", m_personalInfoGroupBox);
+    m_labelPhone = new QLabel("电话:", m_personalInfoGroupBox);
     m_labelPhone->setMinimumWidth(80);
     m_labelPhone->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    m_lineEditPhone = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditPhone->setPlaceholderText("Enter your phone number");
-    m_lineEditPhone->setMinimumHeight(25);
-    m_lineEditPhone->setInputMethodHints(Qt::ImhDialableCharactersOnly);
+    m_fltEditParaP = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditParaP->setPlaceholderText("输入电话号码");
+    m_fltEditParaP->setMinimumHeight(25);
+    m_fltEditParaP->setInputMethodHints(Qt::ImhDialableCharactersOnly);
+    m_fltEditParaP->installEventFilter(this);
 
 
     // 创建标签和输入框 - Birthday
@@ -190,7 +191,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_personalInfoLayout->addWidget(m_labelEmail, 1, 0);
     m_personalInfoLayout->addWidget(m_fltEditPressAlmL, 1, 1);
     m_personalInfoLayout->addWidget(m_labelPhone, 2, 0);
-    m_personalInfoLayout->addWidget(m_lineEditPhone, 2, 1);
+    m_personalInfoLayout->addWidget(m_fltEditParaP, 2, 1);
     m_personalInfoLayout->addWidget(m_labelBirthday, 3, 0);
     m_personalInfoLayout->addWidget(m_lineEditBirthday, 3, 1);
     m_personalInfoLayout->addWidget(m_labelOccupation, 4, 0);
