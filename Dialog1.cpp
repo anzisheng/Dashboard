@@ -182,9 +182,10 @@ Dialog1::Dialog1(QWidget* parent)
     m_labelOccupation->setMinimumWidth(80);
     m_labelOccupation->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    m_lineEditOccupation = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditOccupation->setPlaceholderText("Enter your occupation");
-    m_lineEditOccupation->setMinimumHeight(25);
+    m_fltEditParaD = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditParaD->setPlaceholderText("Enter your occupation");
+    m_fltEditParaD->setMinimumHeight(25);
+	m_fltEditParaD->installEventFilter(this);
 
     // 将控件添加到网格布局（5行）
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
@@ -196,7 +197,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_personalInfoLayout->addWidget(m_labelBirthday, 3, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaI, 3, 1);
     m_personalInfoLayout->addWidget(m_labelOccupation, 4, 0);
-    m_personalInfoLayout->addWidget(m_lineEditOccupation, 4, 1);
+    m_personalInfoLayout->addWidget(m_fltEditParaD, 4, 1);
 
     // 设置网格列比例
     m_personalInfoLayout->setColumnStretch(0, 0);
