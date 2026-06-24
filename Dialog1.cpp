@@ -205,7 +205,7 @@ Dialog1::Dialog1(QWidget* parent)
 
 
     // ---------- 右侧：地址信息 GroupBox（3对） ----------
-    m_addressGroupBox = new QGroupBox("Address Information", this);
+    m_addressGroupBox = new QGroupBox("误差信息", this);
     m_addressGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_addressGroupBox->setStyleSheet(
         "QGroupBox {"
@@ -227,33 +227,33 @@ Dialog1::Dialog1(QWidget* parent)
     m_addressLayout->setContentsMargins(15, 15, 15, 15);
 
     // 创建标签和输入框 - Address
-    m_labelAddress = new QLabel("Address:", m_addressGroupBox);
+    m_labelAddress = new QLabel("偏差容限:", m_addressGroupBox);
     m_labelAddress->setMinimumWidth(70);
     m_labelAddress->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
 
     m_lineEditAddress = new QLineEdit(m_addressGroupBox);
-    m_lineEditAddress->setPlaceholderText("Enter street address");
+    m_lineEditAddress->setPlaceholderText("偏差容限");
     m_lineEditAddress->setMinimumHeight(25);
 
     // 创建标签和输入框 - City
-    m_labelCity = new QLabel("City:", m_addressGroupBox);
+    m_labelCity = new QLabel("积分偏差", m_addressGroupBox);
     m_labelCity->setMinimumWidth(70);
     m_labelCity->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
 
     m_lineEditCity = new QLineEdit(m_addressGroupBox);
-    m_lineEditCity->setPlaceholderText("Enter city");
+    m_lineEditCity->setPlaceholderText("积分偏差");
     m_lineEditCity->setMinimumHeight(25);
 
 
     // 创建标签和输入框 - Zip Code
-    m_labelZipCode = new QLabel("Zip Code:", m_addressGroupBox);
+    m_labelZipCode = new QLabel("设定压力", m_addressGroupBox);
     m_labelZipCode->setMinimumWidth(70);
     m_labelZipCode->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_lineEditZipCode = new QLineEdit(m_addressGroupBox);
-    m_lineEditZipCode->setPlaceholderText("Enter zip code");
+    m_lineEditZipCode->setPlaceholderText("设定压力");
     m_lineEditZipCode->setMinimumHeight(25);
     m_lineEditZipCode->setInputMethodHints(Qt::ImhDigitsOnly);
 
