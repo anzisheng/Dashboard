@@ -3,7 +3,23 @@
 
 #include <QDialog>
 #include <QLabel>
+#include <QGraphicsView>
+#include <QDialog>
+#include <QString>
+#include <QPixmap>
+class QGroupBox;
+class QLabel;
+class QLineEdit;
+class QGroupBox;
+class QDialogButtonBox;
+class QGridLayout;
+class QVBoxLayout;
+class QHBoxLayout;
+class QGraphicsView;
+class QGraphicsScene;
+class QPushButton;
 
+class QGraphicsView;
 class QLineEdit;
 class QPushButton;
 class NumPadDialog;
@@ -23,7 +39,8 @@ private slots:
     void onLineEditClicked();    // ② 点击编辑框时调用的槽
     void onDialogAccepted();     // ③ 数字键盘确认时调用的槽
 
-//private:
+private:
+    void setupImageScene();
     public:
     QLineEdit* m_fltEditPressAlmH = nullptr;
     QLabel* m_fltLabelPressAlmH = nullptr;
@@ -40,6 +57,52 @@ private slots:
     QLineEdit* m_currentEdit = nullptr;
     QLineEdit* m_nameEdit;
     QLineEdit* m_emailEdit;
+
+    QGraphicsView *graphicsView;
+
+    // UI组件 - 图像显示区域（顶部）
+    QGroupBox* m_imageGroupBox;
+    QGraphicsView* m_graphicsView;
+    //QGraphicsScene* m_graphicsScene;
+    QGraphicsScene* m_graphicsScene;
+    QPushButton* m_loadImageBtn;
+    QPushButton* m_clearImageBtn;
+    QPushButton* m_fitImageBtn;
+    QPixmap m_currentPixmap;
+
+    // UI组件 - 个人信息区域（左下，5对）
+    QGroupBox* m_personalInfoGroupBox;
+    QLabel* m_labelName;
+    QLabel* m_labelEmail;
+    QLabel* m_labelPhone;
+    QLabel* m_labelBirthday;
+    QLabel* m_labelOccupation;
+    QLineEdit* m_lineEditName;
+    QLineEdit* m_lineEditEmail;
+    QLineEdit* m_lineEditPhone;
+    QLineEdit* m_lineEditBirthday;
+    QLineEdit* m_lineEditOccupation;
+
+    QDialogButtonBox* m_buttonBox;
+
+    // UI组件 - 地址信息区域（右下，3对）
+    QGroupBox* m_addressGroupBox;
+    QLabel* m_labelAddress;
+    QLabel* m_labelCity;
+    QLabel* m_labelZipCode;
+    QLineEdit* m_lineEditAddress;
+    QLineEdit* m_lineEditCity;
+    QLineEdit* m_lineEditZipCode;
+
+    //QDialogButtonBox* m_buttonBox;
+
+    // 布局
+    QVBoxLayout* m_mainLayout;
+    QHBoxLayout* m_bottomLayout;
+    QVBoxLayout* m_imageLayout;
+    QHBoxLayout* m_imageButtonLayout;
+    QGridLayout* m_personalInfoLayout;
+    QGridLayout* m_addressLayout;
 };
 
 
