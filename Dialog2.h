@@ -2,10 +2,14 @@
 #define DIALOG2_H
 
 #include <QDialog>
-
+#include <QGroupBox>
+#include <QVBoxLayout>
+#include <QDialogButtonBox>
 class QLineEdit;
+class QLabel;
 class QPushButton;
 class NumPadDialog;
+class QCheckBox;
 class Dialog2 : public QDialog
 {
     Q_OBJECT
@@ -33,7 +37,27 @@ private slots:
     void onOkClicked();
 
 private:
+    void setupUI();
+    void setupConnections();
+    // UI组件
+    QGroupBox* m_groupBox;
+    QLabel* m_label1;
+    QLabel* m_label2;
+    QLabel* m_label3;
+    QLabel* m_label4;
+    QLineEdit* m_lineEdit1;
+    QLineEdit* m_lineEdit2;
+    QLineEdit* m_lineEdit3;
+    QLineEdit* m_lineEdit4;
+    QCheckBox* m_checkBox;
+    QDialogButtonBox* m_buttonBox;
+
+    // 布局
+    //QVBoxLayout* m_mainLayout;
+    QGridLayout* m_gridLayout;
 public:
+    // 布局
+    QVBoxLayout* m_mainLayout;
 
     QPushButton* m_okButton = nullptr;
 };
