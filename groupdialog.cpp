@@ -76,12 +76,12 @@ void GroupDialog::setupUI()
     m_gridLayout->setContentsMargins(15, 15, 15, 15);
 
     // ---------- 第一对：Field 1 ----------
-    m_label1 = new QLabel("Field 1:", m_groupBox);
+    m_label1 = new QLabel("液位高限报警阈值:", m_groupBox);
     m_label1->setMinimumWidth(70);
     m_label1->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     
     m_lineEdit1 = new QLineEdit(m_groupBox);
-    m_lineEdit1->setPlaceholderText("Enter field 1");
+    m_lineEdit1->setPlaceholderText("高限报警阈值");
     m_lineEdit1->setMinimumHeight(25);
 
     // ---------- 第二对：Field 2 ----------
