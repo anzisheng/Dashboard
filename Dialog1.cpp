@@ -235,6 +235,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_lineEditAddress = new QLineEdit(m_addressGroupBox);
     m_lineEditAddress->setPlaceholderText("偏差容限");
     m_lineEditAddress->setMinimumHeight(25);
+	m_lineEditAddress->installEventFilter(this); // 安装事件过滤器以捕获点击事件
 
     // 创建标签和输入框 - City
     m_labelCity = new QLabel("积分偏差", m_addressGroupBox);
@@ -245,7 +246,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_lineEditCity = new QLineEdit(m_addressGroupBox);
     m_lineEditCity->setPlaceholderText("积分偏差");
     m_lineEditCity->setMinimumHeight(25);
-
+	m_lineEditCity->installEventFilter(this); // 安装事件过滤器以捕获点击事件
 
     // 创建标签和输入框 - Zip Code
     m_labelZipCode = new QLabel("设定压力", m_addressGroupBox);
@@ -256,6 +257,7 @@ Dialog1::Dialog1(QWidget* parent)
     m_lineEditZipCode->setPlaceholderText("设定压力");
     m_lineEditZipCode->setMinimumHeight(25);
     m_lineEditZipCode->setInputMethodHints(Qt::ImhDigitsOnly);
+	m_lineEditZipCode->installEventFilter(this); // 安装事件过滤器以捕获点击事件
 
     // 将控件添加到网格布局（3行）
     m_addressLayout->addWidget(m_labelAddress, 0, 0);
@@ -469,7 +471,8 @@ bool Dialog1::eventFilter(QObject* obj, QEvent* event)
 
     if (event->type() == QEvent::MouseButtonPress) {
         // 判断点击的是否是我们关心的编辑框
-        if (obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL|| obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD)
+        if (obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL|| obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD 
+            || obj == m_lineEditCity || obj == m_lineEditAddress || obj == m_lineEditZipCode)
         {
             m_currentEdit = qobject_cast<QLineEdit*>(obj);  // 记录当前编辑框
             onLineEditClicked();
