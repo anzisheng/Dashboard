@@ -276,8 +276,8 @@ Dialog1::Dialog1(QWidget* parent)
     m_addressLayout->setRowStretch(3, 1);
 
     // 将两个GroupBox添加到底部水平布局
-    m_bottomLayout->addWidget(m_personalInfoGroupBox, 2);
-    m_bottomLayout->addWidget(m_addressGroupBox, 1);
+ /*   m_bottomLayout->addWidget(m_personalInfoGroupBox, 2);
+    m_bottomLayout->addWidget(m_addressGroupBox, 1);*/
 
     // 将底部布局添加到主布局
     m_mainLayout->addLayout(m_bottomLayout);

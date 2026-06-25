@@ -206,18 +206,19 @@ DialogX::DialogX(QWidget* parent)
 
 
     // ---------- 右侧：地址信息 GroupBox（3对） ----------
-    m_addressGroupBox = new QGroupBox("误差信息", this);
+    m_addressGroupBox = new QGroupBox("", this);
     m_addressGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_addressGroupBox->setStyleSheet(
         "QGroupBox {"
         "    font-weight: bold;"
-        "    border: 2px solid #8f8f8f;"
+        "    border: none;"
         "    border-radius: 5px;"
         "    margin-top: 10px;"
         "    padding-top: 10px;"
         "}"
         "QGroupBox::title {"
         "    subcontrol-origin: margin;"
+        "    display: none; "
         "    left: 10px;"
         "    padding: 0 5px 0 5px;"
         "}"
@@ -278,7 +279,7 @@ DialogX::DialogX(QWidget* parent)
 
     // 将两个GroupBox添加到底部水平布局
     m_bottomLayout->addWidget(m_personalInfoGroupBox, 2);
-    m_bottomLayout->addWidget(m_addressGroupBox, 1);
+    //m_bottomLayout->addWidget(m_addressGroupBox, 1);
 
     // 将底部布局添加到主布局
     m_mainLayout->addLayout(m_bottomLayout);
