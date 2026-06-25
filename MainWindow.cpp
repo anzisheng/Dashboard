@@ -527,14 +527,17 @@ void MainWindow::on_MMXParaButton_4_clicked()
 	dialog3.exec();
 
 }
+#include "DialogX.h"
 void MainWindow::on_ywParaButton_5_clicked()
 {
-    Dialog2 dialog2(this);
-    dialog2.exec();
+    DialogX dialogx(this);
+    dialogx.exec();
+    /*
     m_fYwAlmH = dialog2.m_fltEditYwAlmH->text().toFloat();
     m_fYwAlmL = dialog2.m_fltEditYwAlmL->text().toFloat();
     m_fYwWorkH = dialog2.m_fltEditYwWorkH->text().toFloat();
     m_fYwWorkL = dialog2.m_fltEditYwWorkL->text().toFloat();
+    */
 
 
 }

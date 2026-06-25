@@ -31,6 +31,8 @@ add_executable(DashboardApp
     MyDialog.cpp
 	Dialog1.h
 	Dialog1.cpp
+    DialogX.h
+    DialogX.cpp
 	Dialog2.h
 	Dialog2.cpp
     MyDialog.h
