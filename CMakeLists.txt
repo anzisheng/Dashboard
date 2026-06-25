@@ -38,6 +38,8 @@ add_executable(DashboardApp
     MyDialog_press.h
     numpad.cpp
     numpad.h
+    groupdialog.h
+    groupdialog.cpp
     numpaddialog.cpp
     numpaddialog.h
     MyDialog.ui 
