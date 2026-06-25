@@ -28,6 +28,7 @@ DialogX::DialogX(QWidget* parent)
     // ============================================
 // 顶部：图像显示 GroupBox（占一整行）
 // ============================================
+    /*
     m_imageGroupBox = new QGroupBox("Image Display", this);
     m_imageGroupBox->setStyleSheet(
         "QGroupBox {"
@@ -101,7 +102,7 @@ DialogX::DialogX(QWidget* parent)
     // 将图像GroupBox添加到主布局
     m_mainLayout->addWidget(m_imageGroupBox);
 
-
+*/
     // ============================================
     // 下部：水平布局，包含两个GroupBox
     // ============================================
