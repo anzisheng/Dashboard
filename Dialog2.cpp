@@ -10,6 +10,7 @@
 #include <QGroupBox>
 #include <QCheckBox>
 #include <QDialogButtonBox>
+//#include <GroupDialog>
 
 Dialog2::Dialog2(QWidget* parent)
     : QDialog(parent), m_dialog(nullptr)
@@ -94,10 +95,10 @@ void Dialog2::setupUI()
     m_label1->setMinimumWidth(70);
     m_label1->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    m_lineEdit1 = new QLineEdit(m_groupBox);
-    m_lineEdit1->setPlaceholderText("输入液位高限报警阈值");
-    m_lineEdit1->setMinimumHeight(25);
-	m_lineEdit1->installEventFilter(this); // 安装事件过滤器
+    m_fltEditYwAlmH = new QLineEdit(m_groupBox);
+    m_fltEditYwAlmH->setPlaceholderText("输入液位高限报警阈值");
+    m_fltEditYwAlmH->setMinimumHeight(25);
+    m_fltEditYwAlmH->installEventFilter(this); // 安装事件过滤器
 
 
     // ---------- 第二对：Field 2 ----------
@@ -199,27 +200,50 @@ void Dialog2::setupUI()
 
 }
 
+void Dialog2::onInputChanged()
+{
+    // 验证所有4个字段是否都已填写
+    bool allFilled = !m_lineEdit1->text().trimmed().isEmpty() &&
+        !m_lineEdit2->text().trimmed().isEmpty() &&
+        !m_lineEdit3->text().trimmed().isEmpty() &&
+        !m_lineEdit4->text().trimmed().isEmpty();
+
+    // 获取OK按钮并启用/禁用
+    QPushButton* okButton = m_buttonBox->button(QDialogButtonBox::Ok);
+    if (okButton) {
+        okButton->setEnabled(allFilled);
+    }
+
+    // 根据CheckBox状态输出调试信息
+    if (m_checkBox->isChecked()) {
+        qDebug() << "CheckBox is checked - additional options enabled";
+    }
+    else {
+        qDebug() << "CheckBox is unchecked - additional options disabled";
+    }
+}
+
 void Dialog2::setupConnections()
 {
     // 连接输入变化信号
-    /*
+    
     connect(m_lineEdit1, &QLineEdit::textChanged,
-        this, &GroupDialog::onInputChanged);
+        this, &Dialog2::onInputChanged);
     connect(m_lineEdit2, &QLineEdit::textChanged,
-        this, &GroupDialog::onInputChanged);
+        this, &Dialog2::onInputChanged);
     connect(m_lineEdit3, &QLineEdit::textChanged,
-        this, &GroupDialog::onInputChanged);
+        this, &Dialog2::onInputChanged);
     connect(m_lineEdit4, &QLineEdit::textChanged,
-        this, &GroupDialog::onInputChanged);
+        this, &Dialog2::onInputChanged);
     connect(m_checkBox, &QCheckBox::stateChanged,
-        this, &GroupDialog::onInputChanged);
+        this, &Dialog2::onInputChanged);
 
     // 连接对话框按钮
     connect(m_buttonBox, &QDialogButtonBox::accepted,
         this, &QDialog::accept);
     connect(m_buttonBox, &QDialogButtonBox::rejected,
         this, &QDialog::reject);
-        */
+        
 }
 
 void Dialog2::onOkClicked()
@@ -234,7 +258,8 @@ bool Dialog2::eventFilter(QObject* obj, QEvent* event)
         if (obj == m_fltEditYwWorkH ||
             obj == m_fltEditYwWorkL ||
             obj == m_fltEditYwAlmL  ||
-            obj == m_lineEdit1 || obj == m_lineEdit2 || obj == m_lineEdit3 || obj == m_lineEdit4) {
+            obj == m_fltEditYwAlmH )//|| obj == m_lineEdit2 || obj == m_lineEdit3 || obj == m_lineEdit4)
+        {
             m_currentEdit = qobject_cast<QLineEdit*>(obj);
             onLineEditClicked();
             return true;   // 拦截事件，阻止焦点移动

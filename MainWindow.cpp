@@ -539,7 +539,6 @@ void MainWindow::on_ywParaButton_5_clicked()
     m_fYwWorkL = dialog2.m_fltEditYwWorkL->text().toFloat();
     */
 
-
 }
 
 void MainWindow::on_pressParaButton_2_clicked()

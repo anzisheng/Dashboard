@@ -20,6 +20,8 @@ public:
 protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
 private slots:
+    void onInputChanged();
+private slots:
     void onLineEditClicked();      // 点击任意编辑框时调用
     void onDialogAccepted();       // 数字键盘确认时回填
 
