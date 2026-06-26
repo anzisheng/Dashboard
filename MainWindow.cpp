@@ -514,13 +514,13 @@ void MainWindow::on_MMXParaButton_4_clicked()
 	qDebug() << "on_MMXParaButton_4_clicked";
     Dialog3 dialog3(this);
     //if(m_bCheckStopIn == 1)
-	    dialog3.m_bCheckStopIn->setChecked(m_bCheckStopIn);
-    //else 
-		//dialog3.m_bCheckStopIn->setChecked(false);
-        dialog3.m_bCheckOverPressure->setChecked(m_bCheckOverPressure);
-        dialog3.m_bCheckRelief->setChecked(m_bCheckRelief);
-        dialog3.m_bCheckBeep->setChecked(m_bCheckBeep);
-        dialog3.m_bCheckPump->setChecked(m_bCheckPump);
+	 //   dialog3.m_bCheckStopIn->setChecked(m_bCheckStopIn);
+  //  //else 
+		////dialog3.m_bCheckStopIn->setChecked(false);
+  //      dialog3.m_bCheckOverPressure->setChecked(m_bCheckOverPressure);
+  //      dialog3.m_bCheckRelief->setChecked(m_bCheckRelief);
+  //      dialog3.m_bCheckBeep->setChecked(m_bCheckBeep);
+  //      dialog3.m_bCheckPump->setChecked(m_bCheckPump);
 
 
 
@@ -861,16 +861,16 @@ void MainWindow::Rdpressworkpara()
 }
 void MainWindow::on_StopLoopoilButton_clicked()
 {
-    if (ui->StopLoopoil->text() == "停止补油")
-    {
-        ui->StopLoopoil->setText("启动补油");
-        // 停止补油相关操作
-    }
-    else
-    {
-        ui->StopLoopoil->setText("停止补油");
-        // 启动补油相关操作
-    }
+    //if (ui->StopLoopoil->text() == "停止补油")
+    //{
+    //    ui->StopLoopoil->setText("启动补油");
+    //    // 停止补油相关操作
+    //}
+    //else
+    //{
+    //    ui->StopLoopoil->setText("停止补油");
+    //    // 启动补油相关操作
+    //}
     // TODO: Add your control notification handler code here
     switch (WorkCmd)
     {
@@ -1285,12 +1285,12 @@ void MainWindow::Rdywpara()
             if (r_buf[21])
             {
                 m_bCheckAutoOilEnable = 1;                
-                ui->checkBox->setChecked(true);
+               // ui->checkBox->setChecked(true);
             }
             else
             {
                 m_bCheckAutoOilEnable = 0;
-                ui->checkBox->setChecked(true);
+                //ui->checkBox->setChecked(true);
             }
 
            //UpdateData(FALSE);

@@ -80,7 +80,7 @@
                 <rect>
                  <x>0</x>
                  <y>90</y>
-                 <width>241</width>
+                 <width>571</width>
                  <height>41</height>
                 </rect>
                </property>
@@ -163,7 +163,7 @@
                 </rect>
                </property>
                <property name="text">
-                <string>输出压力：</string>
+                <string>设定压力：</string>
                </property>
               </widget>
               <widget class="QLineEdit" name="lineEdit_5">
@@ -272,32 +272,6 @@
                 <string>DMX参数</string>
                </property>
               </widget>
-              <widget class="QGroupBox" name="groupBox">
-               <property name="geometry">
-                <rect>
-                 <x>150</x>
-                 <y>70</y>
-                 <width>131</width>
-                 <height>51</height>
-                </rect>
-               </property>
-               <property name="title">
-                <string/>
-               </property>
-               <widget class="QCheckBox" name="checkBox">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>10</y>
-                  <width>101</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="text">
-                 <string>自动补油使能</string>
-                </property>
-               </widget>
-              </widget>
               <widget class="QPushButton" name="pushButton_3">
                <property name="geometry">
                 <rect>
@@ -309,6 +283,52 @@
                </property>
                <property name="text">
                 <string>故障记录</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="label">
+               <property name="geometry">
+                <rect>
+                 <x>3</x>
+                 <y>110</y>
+                 <width>31</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>DI:</string>
+               </property>
+              </widget>
+              <widget class="QLabel" name="label_2">
+               <property name="geometry">
+                <rect>
+                 <x>130</x>
+                 <y>110</y>
+                 <width>21</width>
+                 <height>16</height>
+                </rect>
+               </property>
+               <property name="text">
+                <string>DO:</string>
+               </property>
+              </widget>
+              <widget class="QLineEdit" name="lineEdit">
+               <property name="geometry">
+                <rect>
+                 <x>20</x>
+                 <y>110</y>
+                 <width>101</width>
+                 <height>23</height>
+                </rect>
+               </property>
+              </widget>
+              <widget class="QLineEdit" name="lineEdit_2">
+               <property name="geometry">
+                <rect>
+                 <x>162</x>
+                 <y>110</y>
+                 <width>111</width>
+                 <height>23</height>
+                </rect>
                </property>
               </widget>
              </widget>
