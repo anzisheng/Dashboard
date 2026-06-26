@@ -18,6 +18,7 @@ class QHBoxLayout;
 class QGraphicsView;
 class QGraphicsScene;
 class QPushButton;
+class QCheckBox;
 
 class QGraphicsView;
 class QLineEdit;
@@ -82,7 +83,7 @@ private:
     QLineEdit* m_lineEditPhone;
     QLineEdit* m_lineEditBirthday;
     QLineEdit* m_lineEditOccupation;
-
+    QCheckBox* m_checkBox;
     QDialogButtonBox* m_buttonBox;
 
     // UI组件 - 地址信息区域（右下，3对）

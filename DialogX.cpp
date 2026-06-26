@@ -15,6 +15,7 @@
 #include "NumpadDialog.h"
 #include <QFormLayout>
 #include <QGroupBox>
+#include <QCheckBox>
 DialogX::DialogX(QWidget* parent)
     : QDialog(parent), m_currentEdit(nullptr)
 {
@@ -307,8 +308,25 @@ DialogX::DialogX(QWidget* parent)
         "}"
     );
 
+    // ============================================
+   // 创建 CheckBox
+   // ============================================
+    m_checkBox = new QCheckBox("自动补油使能", this);
+    m_checkBox->setStyleSheet(
+        "QCheckBox {"
+        "    spacing: 8px;"
+        "    font-weight: normal;"
+        "}"
+        "QCheckBox::indicator {"
+        "    width: 18px;"
+        "    height: 18px;"
+        "}"
+    );
+    // 添加到主布局
+    m_mainLayout->addWidget(m_checkBox);
     // 添加到主布局
     m_mainLayout->addWidget(m_buttonBox);
+   
 
 
 
