@@ -3,286 +3,807 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QGroupBox>
-#include <QCheckBox>
 #include <QDialogButtonBox>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QGridLayout>
 #include <QPushButton>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsTextItem>
+#include <QGraphicsLineItem>
+#include <QGraphicsEllipseItem>
 #include <QMessageBox>
-#include <QDebug>
+#include <QFileDialog>
+#include <QApplication>
+#include <QStyle>
+#include <QDir>
+#include <QPen>
+#include <QPainterPath>
+#include <QPolygonF>
+#include <QRandomGenerator>
+#include <cmath>
 
-GroupDialog::GroupDialog(QWidget *parent)
+GroupDialog::GroupDialog(QWidget* parent)
     : QDialog(parent)
-    , m_groupBox(nullptr)
-    , m_label1(nullptr)
-    , m_label2(nullptr)
-    , m_label3(nullptr)
-    , m_label4(nullptr)
-    , m_lineEdit1(nullptr)
-    , m_lineEdit2(nullptr)
-    , m_lineEdit3(nullptr)
-    , m_lineEdit4(nullptr)
-    , m_checkBox(nullptr)
+    , m_imageGroupBox(nullptr)
+    , m_graphicsView(nullptr)
+    , m_graphicsScene(nullptr)
+    , m_loadImageBtn(nullptr)
+    , m_clearImageBtn(nullptr)
+    , m_startStopBtn(nullptr)
+    , m_personalInfoGroupBox(nullptr)
+    , m_labelName(nullptr)
+    , m_labelEmail(nullptr)
+    , m_labelPhone(nullptr)
+    , m_labelBirthday(nullptr)
+    , m_labelOccupation(nullptr)
+    , m_lineEditName(nullptr)
+    , m_lineEditEmail(nullptr)
+    , m_lineEditPhone(nullptr)
+    , m_lineEditBirthday(nullptr)
+    , m_lineEditOccupation(nullptr)
+    , m_addressGroupBox(nullptr)
+    , m_labelAddress(nullptr)
+    , m_labelCity(nullptr)
+    , m_labelZipCode(nullptr)
+    , m_lineEditAddress(nullptr)
+    , m_lineEditCity(nullptr)
+    , m_lineEditZipCode(nullptr)
     , m_buttonBox(nullptr)
     , m_mainLayout(nullptr)
-    , m_gridLayout(nullptr)
+    , m_bottomLayout(nullptr)
+    , m_imageLayout(nullptr)
+    , m_imageButtonLayout(nullptr)
+    , m_personalInfoLayout(nullptr)
+    , m_addressLayout(nullptr)
+    , m_timer(nullptr)
+    , m_isRunning(false)
+    , m_maxDataPoints(100)
+    , m_currentTime(-30.0)
+    , m_displayDuration(30.0)
 {
-    setupUI();
-    setupConnections();
-    
-    // 设置窗口属性
-    setWindowTitle("Information Dialog");
-    setModal(true);
-    setMinimumSize(450, 300);
+    // 先创建定时器
+    m_timer = new QTimer(this);
+    m_timer->setInterval(1000);
 
-    // 初始化时更新按钮状态
+    // 创建UI
+    setupUI();
+
+    // 建立连接
+    setupConnections();
+
+    setWindowTitle("User Information with Real-time Plot");
+    setModal(true);
+    setMinimumSize(700, 600);
+
     onInputChanged();
+
+    // 生成初始数据
+    generateInitialData();
+
+    // 默认绘制坐标系和曲线
+    drawCoordinateSystem();
+    drawCurves();
 }
 
 GroupDialog::~GroupDialog()
 {
-    // Qt会自动清理子控件
+    if (m_timer) {
+        m_timer->stop();
+    }
 }
 
 void GroupDialog::setupUI()
 {
-    // 创建主布局
     m_mainLayout = new QVBoxLayout(this);
-    m_mainLayout->setSpacing(12);
-    m_mainLayout->setContentsMargins(15, 15, 15, 15);
+    m_mainLayout->setSpacing(10);
+    m_mainLayout->setContentsMargins(10, 10, 10, 10);
 
     // ============================================
-    // 创建 GroupBox
+    // 顶部：图像显示 GroupBox
     // ============================================
-    m_groupBox = new QGroupBox("输入液位信息", this);
-    m_groupBox->setStyleSheet(
-        "QGroupBox {"
-        "    font-weight: bold;"
-        "    border: 2px solid #8f8f8f;"
-        "    border-radius: 5px;"
-        "    margin-top: 10px;"
-        "    padding-top: 10px;"
-        "}"
-        "QGroupBox::title {"
-        "    subcontrol-origin: margin;"
-        "    left: 10px;"
-        "    padding: 0 5px 0 5px;"
-        "}"
-    );
+    m_imageGroupBox = new QGroupBox("Real-time Plot", this);
 
-    // 创建网格布局用于GroupBox内部
-    m_gridLayout = new QGridLayout(m_groupBox);
-    m_gridLayout->setSpacing(10);
-    m_gridLayout->setContentsMargins(15, 15, 15, 15);
+    m_imageLayout = new QVBoxLayout(m_imageGroupBox);
+    m_imageLayout->setSpacing(6);
+    m_imageLayout->setContentsMargins(8, 8, 8, 8);
 
-    // ---------- 第一对：Field 1 ----------
-    m_label1 = new QLabel("液位高限报警阈值:", m_groupBox);
-    m_label1->setMinimumWidth(70);
-    m_label1->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    
-    m_lineEdit1 = new QLineEdit(m_groupBox);
-    m_lineEdit1->setPlaceholderText("高限报警阈值");
-    m_lineEdit1->setMinimumHeight(25);
+    m_graphicsView = new QGraphicsView(m_imageGroupBox);
+    m_graphicsView->setMinimumHeight(250);
+    m_graphicsView->setAlignment(Qt::AlignCenter);
+    m_graphicsView->setBackgroundBrush(QBrush(Qt::white));
+    m_graphicsView->setFrameShape(QFrame::StyledPanel);
+    m_graphicsView->setRenderHint(QPainter::Antialiasing);
+    m_graphicsView->setRenderHint(QPainter::SmoothPixmapTransform);
 
-    // ---------- 第二对：Field 2 ----------
-    m_label2 = new QLabel("Field 2:", m_groupBox);
-    m_label2->setMinimumWidth(70);
-    m_label2->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    
-    m_lineEdit2 = new QLineEdit(m_groupBox);
-    m_lineEdit2->setPlaceholderText("Enter field 2");
-    m_lineEdit2->setMinimumHeight(25);
+    setupImageScene();
 
-    // ---------- 第三对：Field 3 ----------
-    m_label3 = new QLabel("Field 3:", m_groupBox);
-    m_label3->setMinimumWidth(70);
-    m_label3->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    
-    m_lineEdit3 = new QLineEdit(m_groupBox);
-    m_lineEdit3->setPlaceholderText("Enter field 3");
-    m_lineEdit3->setMinimumHeight(25);
+    m_imageButtonLayout = new QHBoxLayout();
+    m_imageButtonLayout->setSpacing(6);
 
-    // ---------- 第四对：Field 4 ----------
-    m_label4 = new QLabel("Field 4:", m_groupBox);
-    m_label4->setMinimumWidth(70);
-    m_label4->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    
-    m_lineEdit4 = new QLineEdit(m_groupBox);
-    m_lineEdit4->setPlaceholderText("Enter field 4");
-    m_lineEdit4->setMinimumHeight(25);
+    m_loadImageBtn = new QPushButton("Load Image", m_imageGroupBox);
+    m_loadImageBtn->setMinimumHeight(26);
 
-    // 将控件添加到网格布局（4行）
-    m_gridLayout->addWidget(m_label1, 0, 0);
-    m_gridLayout->addWidget(m_lineEdit1, 0, 1);
-    m_gridLayout->addWidget(m_label2, 1, 0);
-    m_gridLayout->addWidget(m_lineEdit2, 1, 1);
-    m_gridLayout->addWidget(m_label3, 2, 0);
-    m_gridLayout->addWidget(m_lineEdit3, 2, 1);
-    m_gridLayout->addWidget(m_label4, 3, 0);
-    m_gridLayout->addWidget(m_lineEdit4, 3, 1);
+    m_clearImageBtn = new QPushButton("Clear", m_imageGroupBox);
+    m_clearImageBtn->setMinimumHeight(26);
+    m_clearImageBtn->setEnabled(false);
 
-    // 设置网格列比例
-    m_gridLayout->setColumnStretch(0, 0);
-    m_gridLayout->setColumnStretch(1, 1);
+    m_startStopBtn = new QPushButton("Start", m_imageGroupBox);
+    m_startStopBtn->setMinimumHeight(26);
+    m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
 
-    // 将GroupBox添加到主布局
-    m_mainLayout->addWidget(m_groupBox);
+    m_imageButtonLayout->addWidget(m_loadImageBtn);
+    m_imageButtonLayout->addWidget(m_clearImageBtn);
+    m_imageButtonLayout->addWidget(m_startStopBtn);
+    m_imageButtonLayout->addStretch();
+
+    m_imageLayout->addWidget(m_graphicsView);
+    m_imageLayout->addLayout(m_imageButtonLayout);
+
+    m_mainLayout->addWidget(m_imageGroupBox);
 
     // ============================================
-    // 创建 CheckBox
+    // 下部：水平布局，包含两个GroupBox
     // ============================================
-    m_checkBox = new QCheckBox("Enable additional options", this);
-    m_checkBox->setStyleSheet(
-        "QCheckBox {"
-        "    spacing: 8px;"
-        "    font-weight: normal;"
-        "}"
-        "QCheckBox::indicator {"
-        "    width: 18px;"
-        "    height: 18px;"
-        "}"
-    );
+    m_bottomLayout = new QHBoxLayout();
+    m_bottomLayout->setSpacing(10);
 
-    // 添加到主布局
-    m_mainLayout->addWidget(m_checkBox);
+    // ---------- 左侧：个人信息 GroupBox（5对） ----------
+    m_personalInfoGroupBox = new QGroupBox("Personal Information", this);
+    m_personalInfoGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    m_personalInfoLayout = new QGridLayout(m_personalInfoGroupBox);
+    m_personalInfoLayout->setSpacing(8);
+    m_personalInfoLayout->setContentsMargins(10, 10, 10, 10);
+
+    m_labelName = new QLabel("Name:", m_personalInfoGroupBox);
+    m_labelName->setMinimumWidth(70);
+    m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditName = new QLineEdit(m_personalInfoGroupBox);
+    m_lineEditName->setPlaceholderText("Enter name");
+
+    m_labelEmail = new QLabel("Email:", m_personalInfoGroupBox);
+    m_labelEmail->setMinimumWidth(70);
+    m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditEmail = new QLineEdit(m_personalInfoGroupBox);
+    m_lineEditEmail->setPlaceholderText("Enter email");
+
+    m_labelPhone = new QLabel("Phone:", m_personalInfoGroupBox);
+    m_labelPhone->setMinimumWidth(70);
+    m_labelPhone->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditPhone = new QLineEdit(m_personalInfoGroupBox);
+    m_lineEditPhone->setPlaceholderText("Enter phone");
+
+    m_labelBirthday = new QLabel("Birthday:", m_personalInfoGroupBox);
+    m_labelBirthday->setMinimumWidth(70);
+    m_labelBirthday->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditBirthday = new QLineEdit(m_personalInfoGroupBox);
+    m_lineEditBirthday->setPlaceholderText("YYYY-MM-DD");
+
+    m_labelOccupation = new QLabel("Occupation:", m_personalInfoGroupBox);
+    m_labelOccupation->setMinimumWidth(70);
+    m_labelOccupation->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditOccupation = new QLineEdit(m_personalInfoGroupBox);
+    m_lineEditOccupation->setPlaceholderText("Enter occupation");
+
+    m_personalInfoLayout->addWidget(m_labelName, 0, 0);
+    m_personalInfoLayout->addWidget(m_lineEditName, 0, 1);
+    m_personalInfoLayout->addWidget(m_labelEmail, 1, 0);
+    m_personalInfoLayout->addWidget(m_lineEditEmail, 1, 1);
+    m_personalInfoLayout->addWidget(m_labelPhone, 2, 0);
+    m_personalInfoLayout->addWidget(m_lineEditPhone, 2, 1);
+    m_personalInfoLayout->addWidget(m_labelBirthday, 3, 0);
+    m_personalInfoLayout->addWidget(m_lineEditBirthday, 3, 1);
+    m_personalInfoLayout->addWidget(m_labelOccupation, 4, 0);
+    m_personalInfoLayout->addWidget(m_lineEditOccupation, 4, 1);
+
+    m_personalInfoLayout->setColumnStretch(0, 0);
+    m_personalInfoLayout->setColumnStretch(1, 1);
+
+    // ---------- 右侧：地址信息 GroupBox（3对） ----------
+    m_addressGroupBox = new QGroupBox("Address Information", this);
+    m_addressGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    m_addressLayout = new QGridLayout(m_addressGroupBox);
+    m_addressLayout->setSpacing(8);
+    m_addressLayout->setContentsMargins(10, 10, 10, 10);
+
+    m_labelAddress = new QLabel("Address:", m_addressGroupBox);
+    m_labelAddress->setMinimumWidth(70);
+    m_labelAddress->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditAddress = new QLineEdit(m_addressGroupBox);
+    m_lineEditAddress->setPlaceholderText("Enter address");
+
+    m_labelCity = new QLabel("City:", m_addressGroupBox);
+    m_labelCity->setMinimumWidth(70);
+    m_labelCity->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditCity = new QLineEdit(m_addressGroupBox);
+    m_lineEditCity->setPlaceholderText("Enter city");
+
+    m_labelZipCode = new QLabel("Zip Code:", m_addressGroupBox);
+    m_labelZipCode->setMinimumWidth(70);
+    m_labelZipCode->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_lineEditZipCode = new QLineEdit(m_addressGroupBox);
+    m_lineEditZipCode->setPlaceholderText("Enter zip code");
+
+    m_addressLayout->addWidget(m_labelAddress, 0, 0);
+    m_addressLayout->addWidget(m_lineEditAddress, 0, 1);
+    m_addressLayout->addWidget(m_labelCity, 1, 0);
+    m_addressLayout->addWidget(m_lineEditCity, 1, 1);
+    m_addressLayout->addWidget(m_labelZipCode, 2, 0);
+    m_addressLayout->addWidget(m_lineEditZipCode, 2, 1);
+
+    m_addressLayout->setColumnStretch(0, 0);
+    m_addressLayout->setColumnStretch(1, 1);
+    m_addressLayout->setRowStretch(3, 1);
+
+    m_bottomLayout->addWidget(m_personalInfoGroupBox, 2);
+    m_bottomLayout->addWidget(m_addressGroupBox, 1);
+
+    m_mainLayout->addLayout(m_bottomLayout);
 
     // ============================================
-    // 创建对话框按钮
+    // 对话框按钮
     // ============================================
     m_buttonBox = new QDialogButtonBox(
         QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
         Qt::Horizontal,
         this
     );
-    
-    m_buttonBox->setStyleSheet(
-        "QPushButton {"
-        "    padding: 6px 25px;"
-        "    min-height: 28px;"
-        "    font-weight: bold;"
-        "}"
-        "QPushButton:hover {"
-        "    background-color: #e0e0e0;"
-        "}"
-        "QPushButton:pressed {"
-        "    background-color: #c0c0c0;"
-        "}"
-    );
 
-    // 添加到主布局
     m_mainLayout->addWidget(m_buttonBox);
+}
+
+void GroupDialog::setupImageScene()
+{
+    m_graphicsScene = new QGraphicsScene(this);
+    m_graphicsScene->setBackgroundBrush(Qt::white);
+    m_graphicsView->setScene(m_graphicsScene);
 }
 
 void GroupDialog::setupConnections()
 {
     // 连接输入变化信号
-    connect(m_lineEdit1, &QLineEdit::textChanged, 
-            this, &GroupDialog::onInputChanged);
-    connect(m_lineEdit2, &QLineEdit::textChanged, 
-            this, &GroupDialog::onInputChanged);
-    connect(m_lineEdit3, &QLineEdit::textChanged, 
-            this, &GroupDialog::onInputChanged);
-    connect(m_lineEdit4, &QLineEdit::textChanged, 
-            this, &GroupDialog::onInputChanged);
-    connect(m_checkBox, &QCheckBox::stateChanged, 
-            this, &GroupDialog::onInputChanged);
+    connect(m_lineEditName, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+    connect(m_lineEditEmail, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+    connect(m_lineEditPhone, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+    connect(m_lineEditBirthday, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+    connect(m_lineEditOccupation, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+    connect(m_lineEditAddress, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+    connect(m_lineEditCity, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+    connect(m_lineEditZipCode, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
+
+    // 连接按钮信号
+    connect(m_loadImageBtn, &QPushButton::clicked, this, &GroupDialog::onLoadImageClicked);
+    connect(m_clearImageBtn, &QPushButton::clicked, this, &GroupDialog::onClearImageClicked);
+    connect(m_startStopBtn, &QPushButton::clicked, this, &GroupDialog::onStartStopClicked);
+
+    // 连接定时器信号 - 此时 m_timer 已经创建
+    connect(m_timer, &QTimer::timeout, this, &GroupDialog::onTimerTimeout);
 
     // 连接对话框按钮
-    connect(m_buttonBox, &QDialogButtonBox::accepted, 
-            this, &QDialog::accept);
-    connect(m_buttonBox, &QDialogButtonBox::rejected, 
-            this, &QDialog::reject);
+    connect(m_buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+    connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
 // ============================================
-// Getter 方法
+// 数据生成方法
 // ============================================
 
-QString GroupDialog::getField1() const
+void GroupDialog::generateInitialData()
 {
-    return m_lineEdit1->text().trimmed();
+    m_randomData.clear();
+    m_constData.clear();
+
+    m_currentTime = -m_displayDuration;  // 从 -30 秒开始
+
+    // 生成初始的随机数据（填充历史数据）
+    QRandomGenerator* gen = QRandomGenerator::global();
+    int initialPoints = m_maxDataPoints;
+
+    double timeStep = m_displayDuration / initialPoints;
+
+    for (int i = 0; i < initialPoints; ++i) {
+        double x = m_currentTime + i * timeStep;
+        double y = CONST_VALUE + (gen->generateDouble() - 0.5) * 0.8;
+        m_randomData.append(QPointF(x, y));
+    }
+    m_currentTime = m_currentTime + initialPoints * timeStep;
+
+    // 生成恒定值数据（与随机数据相同的x范围）
+    m_constData.clear();
+    for (int i = 0; i < m_randomData.size(); ++i) {
+        double x = m_randomData[i].x();
+        m_constData.append(QPointF(x, CONST_VALUE));
+    }
 }
 
-QString GroupDialog::getField2() const
+void GroupDialog::addRandomDataPoint()
 {
-    return m_lineEdit2->text().trimmed();
-}
+    // 增加当前时间（每秒增加1）
+    m_currentTime += 1.0;
 
-QString GroupDialog::getField3() const
-{
-    return m_lineEdit3->text().trimmed();
-}
+    // 生成随机值（在0.2到1.5之间）
+    QRandomGenerator* gen = QRandomGenerator::global();
+    double y = 0.2 + (1.5 - 0.2) * gen->generateDouble();
 
-QString GroupDialog::getField4() const
-{
-    return m_lineEdit4->text().trimmed();
-}
+    // 添加新数据点
+    m_randomData.append(QPointF(m_currentTime, y));
 
-bool GroupDialog::getCheckBoxState() const
-{
-    return m_checkBox->isChecked();
+    // 如果数据点超过最大数量，移除最早的点
+    while (m_randomData.size() > m_maxDataPoints) {
+        m_randomData.removeFirst();
+    }
+
+    // 更新恒定值数据（保持与随机数据相同的x范围）
+    m_constData.clear();
+    for (int i = 0; i < m_randomData.size(); ++i) {
+        double x = m_randomData[i].x();
+        m_constData.append(QPointF(x, CONST_VALUE));
+    }
 }
 
 // ============================================
-// Setter 方法
+// 坐标系绘制方法
 // ============================================
 
-void GroupDialog::setField1(const QString &value)
+void GroupDialog::drawCoordinateSystem()
 {
-    m_lineEdit1->setText(value);
+    // 清除场景
+    m_graphicsScene->clear();
+
+    // 获取视图大小
+    QRectF sceneRect = m_graphicsView->sceneRect();
+    if (sceneRect.isEmpty()) {
+        sceneRect = QRectF(0, 0, 600, 350);
+    }
+
+    qreal width = sceneRect.width();
+    qreal height = sceneRect.height();
+
+    qreal margin = 50;
+    qreal axisLen = 25;
+
+    qreal originX = margin;
+    qreal originY = height - margin;
+    qreal xAxisEnd = width - margin;
+    qreal yAxisEnd = margin;
+
+    QPen axisPen(Qt::black, 2);
+    QPen arrowPen(Qt::black, 2);
+    QBrush arrowBrush(Qt::black);
+
+    // ---------- 绘制X轴 ----------
+    m_graphicsScene->addLine(originX, originY, xAxisEnd, originY, axisPen);
+
+    // X轴箭头
+    QPolygonF xArrow;
+    xArrow << QPointF(xAxisEnd, originY)
+        << QPointF(xAxisEnd - axisLen, originY - axisLen / 2)
+        << QPointF(xAxisEnd - axisLen, originY + axisLen / 2);
+    m_graphicsScene->addPolygon(xArrow, arrowPen, arrowBrush);
+
+    // X轴标签
+    QGraphicsTextItem* xLabel = m_graphicsScene->addText("Time (s)");
+    xLabel->setPos(xAxisEnd - 30, originY - 10);
+    xLabel->setDefaultTextColor(Qt::black);
+    QFont font = xLabel->font();
+    font.setBold(true);
+    font.setPointSize(10);
+    xLabel->setFont(font);
+
+    // ---------- 绘制Y轴 ----------
+    m_graphicsScene->addLine(originX, originY, originX, yAxisEnd, axisPen);
+
+    // Y轴箭头
+    QPolygonF yArrow;
+    yArrow << QPointF(originX, yAxisEnd)
+        << QPointF(originX - axisLen / 2, yAxisEnd + axisLen)
+        << QPointF(originX + axisLen / 2, yAxisEnd + axisLen);
+    m_graphicsScene->addPolygon(yArrow, arrowPen, arrowBrush);
+
+    // Y轴标签
+    QGraphicsTextItem* yLabel = m_graphicsScene->addText("Value");
+    yLabel->setPos(originX + 10, yAxisEnd - 20);
+    yLabel->setDefaultTextColor(Qt::black);
+    yLabel->setFont(font);
+
+    // ---------- 绘制原点 ----------
+    QGraphicsTextItem* originLabel = m_graphicsScene->addText("0");
+    originLabel->setPos(originX - 15, originY + 5);
+    originLabel->setDefaultTextColor(Qt::black);
+
+    // ---------- 绘制网格线 ----------
+    QPen gridPen(Qt::gray, 1, Qt::DashLine);
+    gridPen.setStyle(Qt::DotLine);
+
+    // Y轴刻度（0到2.0，步长0.5）
+    qreal yMax = Y_MAX;
+    qreal yMin = Y_MIN;
+    qreal yStep = 0.5;
+    qreal plotHeight = height - 2 * margin;
+
+    for (qreal y = yMin + yStep; y <= yMax; y += yStep) {
+        qreal yPos = originY - (y / yMax) * plotHeight;
+        if (yPos > yAxisEnd && yPos < originY) {
+            m_graphicsScene->addLine(originX, yPos, xAxisEnd, yPos, gridPen);
+
+            QGraphicsTextItem* label = m_graphicsScene->addText(QString::number(y, 'f', 1));
+            label->setPos(originX - 30, yPos - 8);
+            label->setDefaultTextColor(Qt::gray);
+            QFont smallFont;
+            smallFont.setPointSize(8);
+            label->setFont(smallFont);
+        }
+    }
+
+    // X轴刻度 - 显示从0到displayDuration
+    double xMin = 0.0;
+    double xMax = m_displayDuration;
+    double xRange = xMax - xMin;
+    qreal plotWidth = width - 2 * margin;
+    int step = 5; // 每5秒一个刻度
+
+    for (double x = 0; x <= xMax; x += step) {
+        qreal xPos = originX + ((x - xMin) / xRange) * plotWidth;
+        if (xPos > originX && xPos < xAxisEnd) {
+            m_graphicsScene->addLine(xPos, originY, xPos, originY + 5, axisPen);
+
+            QGraphicsTextItem* label = m_graphicsScene->addText(QString::number(static_cast<int>(x)));
+            label->setPos(xPos - 8, originY + 8);
+            label->setDefaultTextColor(Qt::gray);
+            QFont smallFont;
+            smallFont.setPointSize(8);
+            label->setFont(smallFont);
+        }
+    }
 }
 
-void GroupDialog::setField2(const QString &value)
+// ============================================
+// 曲线绘制方法 - 实现真正的滚动
+// ============================================
+
+void GroupDialog::drawCurves()
 {
-    m_lineEdit2->setText(value);
+    // 如果场景中没有坐标系，先绘制坐标系
+    if (m_graphicsScene->items().isEmpty()) {
+        drawCoordinateSystem();
+    }
+
+    // 获取视图大小
+    QRectF sceneRect = m_graphicsView->sceneRect();
+    if (sceneRect.isEmpty()) {
+        sceneRect = QRectF(0, 0, 600, 350);
+    }
+
+    qreal width = sceneRect.width();
+    qreal height = sceneRect.height();
+    qreal margin = 50;
+
+    qreal originX = margin;
+    qreal originY = height - margin;
+    qreal plotWidth = width - 2 * margin;
+    qreal plotHeight = height - 2 * margin;
+
+    // Y轴范围
+    qreal yMax = Y_MAX;
+    qreal yMin = Y_MIN;
+
+    // X轴范围 - 固定显示 0 到 displayDuration
+    double xMin = 0.0;
+    double xMax = m_displayDuration;
+    double xRange = xMax - xMin;
+    if (xRange < 1.0) xRange = 1.0;
+
+    QFont legendFont;
+    legendFont.setPointSize(9);
+
+    // ---------- 绘制恒定值曲线 ----------
+    if (!m_constData.isEmpty()) {
+        QPainterPath constPath;
+        bool first = true;
+        bool hasVisiblePoint = false;
+
+        for (const QPointF& p : m_constData) {
+            // 只绘制在显示范围内的点 (x >= 0 且 x <= displayDuration)
+            if (p.x() < xMin || p.x() > xMax) continue;
+
+            qreal x = originX + ((p.x() - xMin) / xRange) * plotWidth;
+            qreal y = originY - ((p.y() - yMin) / (yMax - yMin)) * plotHeight;
+
+            if (first) {
+                constPath.moveTo(x, y);
+                first = false;
+                hasVisiblePoint = true;
+            }
+            else {
+                constPath.lineTo(x, y);
+            }
+        }
+
+        if (hasVisiblePoint) {
+            QPen constPen(Qt::blue, 2);
+            constPen.setStyle(Qt::DashLine);
+            m_graphicsScene->addPath(constPath, constPen);
+        }
+
+        QGraphicsTextItem* legend1 = m_graphicsScene->addText("Constant (y=0.8)");
+        legend1->setPos(originX + 10, margin + 10);
+        legend1->setDefaultTextColor(Qt::blue);
+        legend1->setFont(legendFont);
+    }
+
+    // ---------- 绘制随机值曲线 ----------
+    if (!m_randomData.isEmpty()) {
+        QPainterPath randomPath;
+        bool first = true;
+        bool hasVisiblePoint = false;
+
+        // 只绘制 x >= 0 的数据点
+        for (const QPointF& p : m_randomData) {
+            if (p.x() < xMin || p.x() > xMax) continue;
+
+            qreal x = originX + ((p.x() - xMin) / xRange) * plotWidth;
+            qreal y = originY - ((p.y() - yMin) / (yMax - yMin)) * plotHeight;
+
+            if (first) {
+                randomPath.moveTo(x, y);
+                first = false;
+                hasVisiblePoint = true;
+            }
+            else {
+                randomPath.lineTo(x, y);
+            }
+        }
+
+        if (hasVisiblePoint) {
+            QPen randomPen(Qt::red, 2);
+            randomPen.setStyle(Qt::SolidLine);
+            m_graphicsScene->addPath(randomPath, randomPen);
+
+            // 绘制数据点
+            QBrush pointBrush(Qt::red);
+            QPen pointPen(Qt::red, 1);
+            for (const QPointF& p : m_randomData) {
+                if (p.x() < xMin || p.x() > xMax) continue;
+
+                qreal x = originX + ((p.x() - xMin) / xRange) * plotWidth;
+                qreal y = originY - ((p.y() - yMin) / (yMax - yMin)) * plotHeight;
+                m_graphicsScene->addEllipse(x - 2, y - 2, 4, 4, pointPen, pointBrush);
+            }
+        }
+
+        QGraphicsTextItem* legend2 = m_graphicsScene->addText("Random Value");
+        legend2->setPos(originX + 10, margin + 28);
+        legend2->setDefaultTextColor(Qt::red);
+        legend2->setFont(legendFont);
+
+        // 显示当前值（最新数据点）
+        if (!m_randomData.isEmpty()) {
+            QPointF lastPoint = m_randomData.last();
+            QGraphicsTextItem* valueLabel = m_graphicsScene->addText(
+                QString("Current: %1").arg(lastPoint.y(), 0, 'f', 3)
+            );
+            valueLabel->setPos(width - 150, margin + 10);
+            valueLabel->setDefaultTextColor(Qt::darkGray);
+            QFont valueFont;
+            valueFont.setPointSize(9);
+            valueFont.setBold(true);
+            valueLabel->setFont(valueFont);
+        }
+    }
 }
 
-void GroupDialog::setField3(const QString &value)
+// ============================================
+// 图像相关方法
+// ============================================
+
+void GroupDialog::setImage(const QPixmap& pixmap)
 {
-    m_lineEdit3->setText(value);
+    m_currentPixmap = pixmap;
+    m_graphicsScene->clear();
+
+    if (pixmap.isNull()) {
+        drawCoordinateSystem();
+        drawCurves();
+        m_clearImageBtn->setEnabled(false);
+        return;
+    }
+
+    QGraphicsPixmapItem* item = m_graphicsScene->addPixmap(pixmap);
+    item->setTransformationMode(Qt::SmoothTransformation);
+    m_graphicsScene->setSceneRect(pixmap.rect());
+    m_graphicsView->fitInView(m_graphicsScene->sceneRect(), Qt::KeepAspectRatio);
+
+    m_clearImageBtn->setEnabled(true);
 }
 
-void GroupDialog::setField4(const QString &value)
+void GroupDialog::setImage(const QString& imagePath)
 {
-    m_lineEdit4->setText(value);
+    QPixmap pixmap(imagePath);
+    if (pixmap.isNull()) {
+        QMessageBox::warning(this, "Error", "Failed to load image.");
+        return;
+    }
+    setImage(pixmap);
 }
 
-void GroupDialog::setCheckBoxState(bool checked)
+void GroupDialog::clearImage()
 {
-    m_checkBox->setChecked(checked);
+    m_currentPixmap = QPixmap();
+    m_graphicsScene->clear();
+    drawCoordinateSystem();
+    drawCurves();
+    m_clearImageBtn->setEnabled(false);
+}
+
+void GroupDialog::onLoadImageClicked()
+{
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        "Select Image",
+        QDir::homePath(),
+        "Images (*.png *.jpg *.jpeg *.bmp *.gif)"
+    );
+
+    if (!filePath.isEmpty()) {
+        setImage(filePath);
+    }
+}
+
+void GroupDialog::onClearImageClicked()
+{
+    clearImage();
+}
+
+void GroupDialog::onStartStopClicked()
+{
+    if (m_isRunning) {
+        m_timer->stop();
+        m_isRunning = false;
+        m_startStopBtn->setText("Start");
+        m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
+    }
+    else {
+        // 重新开始记录时，重置数据
+        generateInitialData();
+        m_timer->start();
+        m_isRunning = true;
+        m_startStopBtn->setText("Stop");
+        m_startStopBtn->setStyleSheet("QPushButton { background-color: #f44336; color: white; font-weight: bold; }");
+
+        // 立即显示
+        drawCoordinateSystem();
+        drawCurves();
+    }
+}
+
+void GroupDialog::onTimerTimeout()
+{
+    // 每秒添加一个新的随机数据点
+    addRandomDataPoint();
+
+    // 重新绘制
+    drawCoordinateSystem();
+    drawCurves();
+}
+
+// ============================================
+// 个人信息 Getter/Setter
+// ============================================
+
+QString GroupDialog::getName() const
+{
+    return m_lineEditName->text().trimmed();
+}
+
+QString GroupDialog::getEmail() const
+{
+    return m_lineEditEmail->text().trimmed();
+}
+
+QString GroupDialog::getPhone() const
+{
+    return m_lineEditPhone->text().trimmed();
+}
+
+QString GroupDialog::getBirthday() const
+{
+    return m_lineEditBirthday->text().trimmed();
+}
+
+QString GroupDialog::getOccupation() const
+{
+    return m_lineEditOccupation->text().trimmed();
+}
+
+void GroupDialog::setName(const QString& name)
+{
+    m_lineEditName->setText(name);
+}
+
+void GroupDialog::setEmail(const QString& email)
+{
+    m_lineEditEmail->setText(email);
+}
+
+void GroupDialog::setPhone(const QString& phone)
+{
+    m_lineEditPhone->setText(phone);
+}
+
+void GroupDialog::setBirthday(const QString& birthday)
+{
+    m_lineEditBirthday->setText(birthday);
+}
+
+void GroupDialog::setOccupation(const QString& occupation)
+{
+    m_lineEditOccupation->setText(occupation);
+}
+
+// ============================================
+// 地址信息 Getter/Setter
+// ============================================
+
+QString GroupDialog::getAddress() const
+{
+    return m_lineEditAddress->text().trimmed();
+}
+
+QString GroupDialog::getCity() const
+{
+    return m_lineEditCity->text().trimmed();
+}
+
+QString GroupDialog::getZipCode() const
+{
+    return m_lineEditZipCode->text().trimmed();
+}
+
+void GroupDialog::setAddress(const QString& address)
+{
+    m_lineEditAddress->setText(address);
+}
+
+void GroupDialog::setCity(const QString& city)
+{
+    m_lineEditCity->setText(city);
+}
+
+void GroupDialog::setZipCode(const QString& zipCode)
+{
+    m_lineEditZipCode->setText(zipCode);
 }
 
 void GroupDialog::clearInputs()
 {
-    m_lineEdit1->clear();
-    m_lineEdit2->clear();
-    m_lineEdit3->clear();
-    m_lineEdit4->clear();
-    m_checkBox->setChecked(false);
+    m_lineEditName->clear();
+    m_lineEditEmail->clear();
+    m_lineEditPhone->clear();
+    m_lineEditBirthday->clear();
+    m_lineEditOccupation->clear();
+    m_lineEditAddress->clear();
+    m_lineEditCity->clear();
+    m_lineEditZipCode->clear();
+    clearImage();
 }
-
-// ============================================
-// 槽函数
-// ============================================
 
 void GroupDialog::onInputChanged()
 {
-    // 验证所有4个字段是否都已填写
-    bool allFilled = !m_lineEdit1->text().trimmed().isEmpty() &&
-                     !m_lineEdit2->text().trimmed().isEmpty() &&
-                     !m_lineEdit3->text().trimmed().isEmpty() &&
-                     !m_lineEdit4->text().trimmed().isEmpty();
+    bool allFilled = !m_lineEditName->text().trimmed().isEmpty() &&
+        !m_lineEditEmail->text().trimmed().isEmpty() &&
+        !m_lineEditPhone->text().trimmed().isEmpty() &&
+        !m_lineEditBirthday->text().trimmed().isEmpty() &&
+        !m_lineEditOccupation->text().trimmed().isEmpty() &&
+        !m_lineEditAddress->text().trimmed().isEmpty() &&
+        !m_lineEditCity->text().trimmed().isEmpty() &&
+        !m_lineEditZipCode->text().trimmed().isEmpty();
 
-    // 获取OK按钮并启用/禁用
-    QPushButton *okButton = m_buttonBox->button(QDialogButtonBox::Ok);
+    QPushButton* okButton = m_buttonBox->button(QDialogButtonBox::Ok);
     if (okButton) {
         okButton->setEnabled(allFilled);
-    }
-
-    // 根据CheckBox状态输出调试信息
-    if (m_checkBox->isChecked()) {
-        qDebug() << "CheckBox is checked - additional options enabled";
-    } else {
-        qDebug() << "CheckBox is unchecked - additional options disabled";
     }
 }
