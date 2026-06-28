@@ -158,23 +158,23 @@ void GroupDialog::setupUI()
     m_personalInfoLayout->setSpacing(8);
     m_personalInfoLayout->setContentsMargins(10, 10, 10, 10);
 
-    m_labelName = new QLabel("Name:", m_personalInfoGroupBox);
+    m_labelName = new QLabel("压力高限:", m_personalInfoGroupBox);
     m_labelName->setMinimumWidth(70);
     m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditName = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditName->setPlaceholderText("Enter name");
+    m_lineEditName->setPlaceholderText("输入压力高限");
 
-    m_labelEmail = new QLabel("Email:", m_personalInfoGroupBox);
+    m_labelEmail = new QLabel("压力低限:", m_personalInfoGroupBox);
     m_labelEmail->setMinimumWidth(70);
     m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditEmail = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditEmail->setPlaceholderText("Enter email");
+    m_lineEditEmail->setPlaceholderText("输入压力低限");
 
-    m_labelPhone = new QLabel("Phone:", m_personalInfoGroupBox);
+    m_labelPhone = new QLabel("P参数:", m_personalInfoGroupBox);
     m_labelPhone->setMinimumWidth(70);
     m_labelPhone->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditPhone = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditPhone->setPlaceholderText("Enter phone");
+    m_lineEditPhone->setPlaceholderText("输入P参数");
 
     m_labelBirthday = new QLabel("Birthday:", m_personalInfoGroupBox);
     m_labelBirthday->setMinimumWidth(70);
