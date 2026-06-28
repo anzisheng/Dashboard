@@ -176,17 +176,17 @@ void GroupDialog::setupUI()
     m_lineEditPhone = new QLineEdit(m_personalInfoGroupBox);
     m_lineEditPhone->setPlaceholderText("输入P参数");
 
-    m_labelBirthday = new QLabel("Birthday:", m_personalInfoGroupBox);
+    m_labelBirthday = new QLabel("I参数:", m_personalInfoGroupBox);
     m_labelBirthday->setMinimumWidth(70);
     m_labelBirthday->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditBirthday = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditBirthday->setPlaceholderText("YYYY-MM-DD");
+    m_lineEditBirthday->setPlaceholderText("输入I参数");
 
-    m_labelOccupation = new QLabel("Occupation:", m_personalInfoGroupBox);
+    m_labelOccupation = new QLabel("D参数",m_personalInfoGroupBox);
     m_labelOccupation->setMinimumWidth(70);
     m_labelOccupation->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditOccupation = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditOccupation->setPlaceholderText("Enter occupation");
+    m_lineEditOccupation->setPlaceholderText("输入D参数");
 
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
     m_personalInfoLayout->addWidget(m_lineEditName, 0, 1);
