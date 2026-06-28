@@ -24,6 +24,17 @@
 #include <QPolygonF>
 #include <QRandomGenerator>
 #include <cmath>
+#include "NumpadDialog.h"
+
+void GroupDialog::onDialogAccepted()
+{
+    if (!m_currentEdit) return;
+    // 从对话框获取输入结果，回填到编辑框
+     // 从对话框获取输入，回填到当前编辑框
+    QString newText = m_dialog->getText();
+    m_currentEdit->setText(newText);
+}
+
 
 GroupDialog::GroupDialog(QWidget* parent)
     : QDialog(parent)
@@ -163,7 +174,7 @@ void GroupDialog::setupUI()
     m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditName = new QLineEdit(m_personalInfoGroupBox);
     m_lineEditName->setPlaceholderText("输入压力高限");
-
+    m_lineEditName->installEventFilter(this);
     m_labelEmail = new QLabel("压力低限:", m_personalInfoGroupBox);
     m_labelEmail->setMinimumWidth(70);
     m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -262,6 +273,43 @@ void GroupDialog::setupImageScene()
     m_graphicsScene->setBackgroundBrush(Qt::white);
     m_graphicsView->setScene(m_graphicsScene);
 }
+
+bool GroupDialog::eventFilter(QObject* obj, QEvent* event)
+{
+
+    if (event->type() == QEvent::MouseButtonPress) {
+        // 判断点击的是否是我们关心的编辑框
+        if (/*obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL || obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD
+            ||*/ obj == m_lineEditName || obj == m_lineEditAddress || obj == m_lineEditZipCode)
+        {
+            m_currentEdit = qobject_cast<QLineEdit*>(obj);  // 记录当前编辑框
+            onLineEditClicked();
+            return true;   // 事件已处理，阻止默认行为（焦点移动）
+        }
+    }
+    return QDialog::eventFilter(obj, event);
+
+}
+void GroupDialog::onLineEditClicked()
+{
+    if (!m_currentEdit) return;  // 安全保护
+
+
+
+    // 延迟创建对话框（只创建一次）
+    if (!m_dialog) {
+        m_dialog = new NumPadDialog(this);
+        connect(m_dialog, &QDialog::accepted, this, &GroupDialog::onDialogAccepted);
+    }
+
+    // 将当前编辑框的内容作为初始文本
+    m_dialog->setText(m_currentEdit->text());
+
+    // 模态弹出数字键盘
+    m_dialog->exec();
+}
+
+
 
 void GroupDialog::setupConnections()
 {
@@ -793,14 +841,14 @@ void GroupDialog::clearInputs()
 
 void GroupDialog::onInputChanged()
 {
-    bool allFilled = !m_lineEditName->text().trimmed().isEmpty() &&
+    bool allFilled = true;/*!m_lineEditName->text().trimmed().isEmpty() &&
         !m_lineEditEmail->text().trimmed().isEmpty() &&
         !m_lineEditPhone->text().trimmed().isEmpty() &&
         !m_lineEditBirthday->text().trimmed().isEmpty() &&
         !m_lineEditOccupation->text().trimmed().isEmpty() &&
         !m_lineEditAddress->text().trimmed().isEmpty() &&
         !m_lineEditCity->text().trimmed().isEmpty() &&
-        !m_lineEditZipCode->text().trimmed().isEmpty();
+        !m_lineEditZipCode->text().trimmed().isEmpty();*/
 
     QPushButton* okButton = m_buttonBox->button(QDialogButtonBox::Ok);
     if (okButton) {
