@@ -210,23 +210,23 @@ void GroupDialog::setupUI()
     m_addressLayout->setSpacing(8);
     m_addressLayout->setContentsMargins(10, 10, 10, 10);
 
-    m_labelAddress = new QLabel("Address:", m_addressGroupBox);
+    m_labelAddress = new QLabel("偏差容限:", m_addressGroupBox);
     m_labelAddress->setMinimumWidth(70);
     m_labelAddress->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditAddress = new QLineEdit(m_addressGroupBox);
-    m_lineEditAddress->setPlaceholderText("Enter address");
+    m_lineEditAddress->setPlaceholderText("偏差容限");
 
-    m_labelCity = new QLabel("City:", m_addressGroupBox);
+    m_labelCity = new QLabel("积分偏差:", m_addressGroupBox);
     m_labelCity->setMinimumWidth(70);
     m_labelCity->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditCity = new QLineEdit(m_addressGroupBox);
-    m_lineEditCity->setPlaceholderText("Enter city");
+    m_lineEditCity->setPlaceholderText("积分偏差");
 
-    m_labelZipCode = new QLabel("Zip Code:", m_addressGroupBox);
+    m_labelZipCode = new QLabel("设定压力:", m_addressGroupBox);
     m_labelZipCode->setMinimumWidth(70);
     m_labelZipCode->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditZipCode = new QLineEdit(m_addressGroupBox);
-    m_lineEditZipCode->setPlaceholderText("Enter zip code");
+    m_lineEditZipCode->setPlaceholderText("设定压力");
 
     m_addressLayout->addWidget(m_labelAddress, 0, 0);
     m_addressLayout->addWidget(m_lineEditAddress, 0, 1);
