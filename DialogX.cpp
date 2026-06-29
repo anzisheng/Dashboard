@@ -179,15 +179,15 @@ DialogX::DialogX(QWidget* parent)
 	m_fltEditParaI->installEventFilter(this);
 
 
-    // 创建标签和输入框 - Occupation
-    m_fltLabelParaD = new QLabel("D参数:", m_personalInfoGroupBox);
-    m_fltLabelParaD->setMinimumWidth(80);
-    m_fltLabelParaD->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+ //   // 创建标签和输入框 - Occupation
+ //   m_fltLabelParaD = new QLabel("D参数:", m_personalInfoGroupBox);
+ //   m_fltLabelParaD->setMinimumWidth(80);
+ //   m_fltLabelParaD->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
-    m_fltEditParaD = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditParaD->setPlaceholderText("输入D参数");
-    m_fltEditParaD->setMinimumHeight(25);
-	m_fltEditParaD->installEventFilter(this);
+ //   m_fltEditParaD = new QLineEdit(m_personalInfoGroupBox);
+ //   m_fltEditParaD->setPlaceholderText("输入D参数");
+ //   m_fltEditParaD->setMinimumHeight(25);
+	//m_fltEditParaD->installEventFilter(this);
 
     // 将控件添加到网格布局（5行）
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
@@ -198,8 +198,8 @@ DialogX::DialogX(QWidget* parent)
     m_personalInfoLayout->addWidget(m_fltEditParaP, 2, 1);
     m_personalInfoLayout->addWidget(m_fltQLabelParaI, 3, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaI, 3, 1);
-    m_personalInfoLayout->addWidget(m_fltLabelParaD, 4, 0);
-    m_personalInfoLayout->addWidget(m_fltEditParaD, 4, 1);
+    //m_personalInfoLayout->addWidget(m_fltLabelParaD, 4, 0);
+    //m_personalInfoLayout->addWidget(m_fltEditParaD, 4, 1);
 
     // 设置网格列比例
     m_personalInfoLayout->setColumnStretch(0, 0);
