@@ -136,45 +136,45 @@ DialogX::DialogX(QWidget* parent)
     m_personalInfoLayout->setContentsMargins(15, 15, 15, 15);
 
     // 创建标签和输入框 - Name
-    m_labelName = new QLabel("压力高限:", m_personalInfoGroupBox);
+    m_labelName = new QLabel("液位高限:", m_personalInfoGroupBox);
     m_labelName->setMinimumWidth(80);
     m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditPressAlmH = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditPressAlmH->setPlaceholderText("输入压力高限");
+    m_fltEditPressAlmH->setPlaceholderText("输入液位高限");
     m_fltEditPressAlmH->setMinimumHeight(25);
 	m_fltEditPressAlmH->installEventFilter(this); // 安装事件过滤器以捕获点击事件
 
     // 创建标签和输入框 - Email
-    m_labelEmail = new QLabel("压力低限:", m_personalInfoGroupBox);
+    m_labelEmail = new QLabel("液位低限报警值:", m_personalInfoGroupBox);
     m_labelEmail->setMinimumWidth(80);
     m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditPressAlmL = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditPressAlmL->setPlaceholderText("输入压力低限");
+    m_fltEditPressAlmL->setPlaceholderText("输入低限报警值");
     m_fltEditPressAlmL->setMinimumHeight(25);
     m_fltEditPressAlmL->setInputMethodHints(Qt::ImhEmailCharactersOnly);
     m_fltEditPressAlmL->installEventFilter(this);
 
     // 创建标签和输入框 - Phone
-    m_fltLabelParaP = new QLabel("P参数:", m_personalInfoGroupBox);
+    m_fltLabelParaP = new QLabel("液位高限停止值:", m_personalInfoGroupBox);
     m_fltLabelParaP->setMinimumWidth(80);
     m_fltLabelParaP->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditParaP = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditParaP->setPlaceholderText("输入P参数");
+    m_fltEditParaP->setPlaceholderText("输入液位高限停止值");
     m_fltEditParaP->setMinimumHeight(25);
     m_fltEditParaP->setInputMethodHints(Qt::ImhDialableCharactersOnly);
     m_fltEditParaP->installEventFilter(this);
 
 
     // 创建标签和输入框 - Birthday
-    m_fltQLabelParaI = new QLabel("I参数:", m_personalInfoGroupBox);
+    m_fltQLabelParaI = new QLabel("液位低限启动值:", m_personalInfoGroupBox);
     m_fltQLabelParaI->setMinimumWidth(80);
     m_fltQLabelParaI->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditParaI = new QLineEdit(m_personalInfoGroupBox);
-    m_fltEditParaI->setPlaceholderText("输入I参数");
+    m_fltEditParaI->setPlaceholderText("输入液位低限启动值");
     m_fltEditParaI->setMinimumHeight(25);
 	m_fltEditParaI->installEventFilter(this);
 
