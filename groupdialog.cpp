@@ -180,24 +180,29 @@ void GroupDialog::setupUI()
     m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditEmail = new QLineEdit(m_personalInfoGroupBox);
     m_lineEditEmail->setPlaceholderText("输入压力低限");
+	m_lineEditEmail->installEventFilter(this);
+
 
     m_labelPhone = new QLabel("P参数:", m_personalInfoGroupBox);
     m_labelPhone->setMinimumWidth(70);
     m_labelPhone->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditPhone = new QLineEdit(m_personalInfoGroupBox);
     m_lineEditPhone->setPlaceholderText("输入P参数");
+	m_lineEditPhone->installEventFilter(this);
 
     m_labelBirthday = new QLabel("I参数:", m_personalInfoGroupBox);
     m_labelBirthday->setMinimumWidth(70);
     m_labelBirthday->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditBirthday = new QLineEdit(m_personalInfoGroupBox);
     m_lineEditBirthday->setPlaceholderText("输入I参数");
+	m_lineEditBirthday->installEventFilter(this);
 
     m_labelOccupation = new QLabel("D参数",m_personalInfoGroupBox);
     m_labelOccupation->setMinimumWidth(70);
     m_labelOccupation->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditOccupation = new QLineEdit(m_personalInfoGroupBox);
     m_lineEditOccupation->setPlaceholderText("输入D参数");
+	m_lineEditOccupation->installEventFilter(this);
 
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
     m_personalInfoLayout->addWidget(m_lineEditName, 0, 1);
@@ -226,18 +231,21 @@ void GroupDialog::setupUI()
     m_labelAddress->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditAddress = new QLineEdit(m_addressGroupBox);
     m_lineEditAddress->setPlaceholderText("偏差容限");
+	m_lineEditAddress->installEventFilter(this);
 
     m_labelCity = new QLabel("积分偏差:", m_addressGroupBox);
     m_labelCity->setMinimumWidth(70);
     m_labelCity->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditCity = new QLineEdit(m_addressGroupBox);
     m_lineEditCity->setPlaceholderText("积分偏差");
+	m_lineEditCity->installEventFilter(this);
 
     m_labelZipCode = new QLabel("设定压力:", m_addressGroupBox);
     m_labelZipCode->setMinimumWidth(70);
     m_labelZipCode->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditZipCode = new QLineEdit(m_addressGroupBox);
     m_lineEditZipCode->setPlaceholderText("设定压力");
+	m_lineEditZipCode->installEventFilter(this);
 
     m_addressLayout->addWidget(m_labelAddress, 0, 0);
     m_addressLayout->addWidget(m_lineEditAddress, 0, 1);
@@ -279,8 +287,10 @@ bool GroupDialog::eventFilter(QObject* obj, QEvent* event)
 
     if (event->type() == QEvent::MouseButtonPress) {
         // 判断点击的是否是我们关心的编辑框
-        if (/*obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL || obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD
-            ||*/ obj == m_lineEditName || obj == m_lineEditAddress || obj == m_lineEditZipCode)
+        if (/*obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL || obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD*/
+            obj == m_lineEditName || obj == m_lineEditEmail || obj == m_lineEditOccupation
+			||obj == m_lineEditBirthday || obj == m_lineEditPhone
+            || obj == m_lineEditAddress ||obj == m_lineEditCity || obj == m_lineEditZipCode)
         {
             m_currentEdit = qobject_cast<QLineEdit*>(obj);  // 记录当前编辑框
             onLineEditClicked();
