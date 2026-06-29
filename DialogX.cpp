@@ -112,7 +112,7 @@ DialogX::DialogX(QWidget* parent)
 
 
     // ---------- 左侧：个人信息 GroupBox（5对） ----------
-    m_personalInfoGroupBox = new QGroupBox("设置压力表参数", this);
+    m_personalInfoGroupBox = new QGroupBox("设置液位表参数", this);
     m_personalInfoGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_personalInfoGroupBox->setStyleSheet(
         "QGroupBox {"

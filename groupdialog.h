@@ -153,7 +153,7 @@ private:
     static constexpr int MARGIN = 50;
     static constexpr double Y_MIN = 0.0;
     static constexpr double Y_MAX = 2.0;
-    static constexpr double CONST_VALUE = 0.8;
+    /*static constexpr*/ double CONST_VALUE = 0.8;
 };
 
 #endif // GROUPDIALOG_H

@@ -362,6 +362,7 @@ void GroupDialog::generateInitialData()
     int initialPoints = m_maxDataPoints;
 
     double timeStep = m_displayDuration / initialPoints;
+    CONST_VALUE = m_lineEditZipCode->text().trimmed().toFloat();
 
     for (int i = 0; i < initialPoints; ++i) {
         double x = m_currentTime + i * timeStep;
