@@ -91,6 +91,7 @@ public:
     int		m_intEditDmxIn3;
     float	m_fltEditPressureCurr;
     float	m_fltEditPressureSet;
+    QVector<float> m_vecPressures; 
     //float   m_fPressureSet;	//压力设定值
     CString	m_strEditStatus;
     float	m_fltEditYwAlmH;
