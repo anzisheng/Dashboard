@@ -1,5 +1,6 @@
 #ifndef GROUPDIALOG_H
 #define GROUPDIALOG_H
+#include "MainWindow.h"
 
 #include <QDialog>
 #include <QString>
@@ -86,6 +87,7 @@ private:
     void setupConnections();
     void setupImageScene();
     void generateInitialData();
+	MainWindow* original = nullptr ;
 
     // UI组件 - 图像显示区域（顶部）
     QGroupBox* m_imageGroupBox;

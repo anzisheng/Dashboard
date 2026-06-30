@@ -38,6 +38,7 @@ void GroupDialog::onDialogAccepted()
 
 GroupDialog::GroupDialog(QWidget* parent)
     : QDialog(parent)
+   
     , m_imageGroupBox(nullptr)
     , m_graphicsView(nullptr)
     , m_graphicsScene(nullptr)
@@ -75,6 +76,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_currentTime(-30.0)
     , m_displayDuration(30.0)
 {
+    original = (MainWindow*)parent;
     // 先创建定时器
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
@@ -385,9 +387,9 @@ void GroupDialog::addRandomDataPoint()
     m_currentTime += 1.0;
 
     // 生成随机值（在0.2到1.5之间）
-    QRandomGenerator* gen = QRandomGenerator::global();
-    double y = 0.2 + (1.5 - 0.2) * gen->generateDouble();
-
+    //QRandomGenerator* gen = QRandomGenerator::global();
+    int index = (int)m_currentTime;
+    double y = original->m_vecPressures[index];
     // 添加新数据点
     m_randomData.append(QPointF(m_currentTime, y));
 
