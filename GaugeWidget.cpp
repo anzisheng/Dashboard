@@ -131,7 +131,7 @@ void GaugeWidget::resizeEvent(QResizeEvent* event)
 {
     Q_UNUSED(event);
     int side = qMin(width(), height());
-    m_radius = side * 9 / 20;
+    m_radius = side * 9 / 20 + 2;
     m_center = QPointF(width() / 2.0, height() * 0.6);
 }
 
@@ -231,7 +231,7 @@ void GaugeWidget::drawScaleNumbers(QPainter* painter)
         double value = m_minValue + (m_maxValue - m_minValue) * i / (double)m_majorTickCount;
         value = m_maxValue - value;
         float tickValue = (value);
-        QString label = QString::number(tickValue,'f',2);
+        QString label = QString::number(tickValue,'f',1); //小数位数
 
         // 数字紧贴刻度线外侧（偏移2像素）
         int labelRadius = m_radius - 15;// 2 + 2;

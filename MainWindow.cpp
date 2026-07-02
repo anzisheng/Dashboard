@@ -417,7 +417,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     // 液位表，同样设置
     ui->gaugeRpm->setAngleRange(270.0 - 45, 180.0 - 45);
-    ui->gaugeRpm->setRange(0, 2.5);
+    ui->gaugeRpm->setRange(0, 99);
     ui->gaugeRpm->setUnit("%");
     ui->gaugeRpm->setGaugeColor(QColor(100, 180, 100));
     ui->gaugeRpm->setNeedleColor(QColor(255, 120, 50));
@@ -427,8 +427,8 @@ MainWindow::MainWindow(QWidget* parent)
     ui->gaugeRpm->setValue(0);
     //ui->speedValueLabel->setText("0 MPa");
     //ui->rpmValueLabel->setText("0 MPa");
-    ui->statusLabel->setText("正常");
-    ui->statusLabel->setStyleSheet("color: green;");
+//    ui->statusLabel->setText("正常");
+//    ui->statusLabel->setStyleSheet("color: green;");
     m_bCheckAutoOilEnable = false;
     m_fltEditPressAlmH = 0.0f;
     //ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
@@ -443,7 +443,7 @@ MainWindow::MainWindow(QWidget* parent)
  //   ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
 
     // 连接手动更新按钮
-    connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
+    //connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_pressUpdateButton_clicked);
     connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_pressParaButton_2_clicked);
     //void on_pressParaButton_2_clicked();//pushButton_2
@@ -834,10 +834,10 @@ void MainWindow::Rdpressworkpara()
 			m_fPidParaD = Fconverter.f;
 
 			m_fltEditPressAlmH = m_fPressAlmH;
-            ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
+            //ui->speedValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditPressAlmH));
             //speedValueLabel_2
 			m_fltEditPressAlmL = m_fPressAlmL;
-            ui->speedValueLabel_3->setText(QString("%1 MPa").arg(m_fltEditPressAlmL));
+            //ui->speedValueLabel_3->setText(QString("%1 MPa").arg(m_fltEditPressAlmL));
 
 			m_fltEditParaP = m_fPidParaP;
 			m_fltEditParaI = m_fPidParaI;
@@ -1252,7 +1252,7 @@ void MainWindow::Rdywpara()
             Fconverter.b[1] = r_buf[7];		//32位数据，四个字节浮点数
             Fconverter.b[0] = r_buf[8];		//32位数据，四个字节浮点数
             m_fYwAlmH = Fconverter.f;
-            ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
+           // ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fYwAlmH));
             //根据此数值，确定表的指针摆幅范围。
             //仪表盘的告警高限
 
@@ -1262,7 +1262,7 @@ void MainWindow::Rdywpara()
             Fconverter.b[1] = r_buf[11];	//32位数据，四个字节浮点数
             Fconverter.b[0] = r_buf[12];	//32位数据，四个字节浮点数
             m_fYwAlmL = Fconverter.f;
-            ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
+           // ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
 
 
             Fconverter.b[3] = r_buf[13];	//32位数据，四个字节浮点数
@@ -1278,7 +1278,7 @@ void MainWindow::Rdywpara()
             m_fYwWorkL = Fconverter.f;
 
             m_fltEditYwAlmH = m_fYwAlmH;
-            ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
+          //  ui->rpmValueLabel_2->setText(QString("%1 MPa").arg(m_fltEditYwWorkL));
             m_fltEditYwAlmL = m_fYwAlmL;
             m_fltEditYwWorkH = m_fYwWorkH;
             m_fltEditYwWorkL = m_fYwWorkL;
