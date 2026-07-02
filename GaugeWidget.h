@@ -46,7 +46,7 @@ protected:
 private:
     void drawBackground(QPainter* painter);
     void drawScale(QPainter* painter);
-    void drawScaleNumbers(QPainter* painter);
+    void drawScaleNumbers(QPainter* painter, enum PRECISION P);
     void drawNeedle(QPainter* painter);
     void drawCenterCircle(QPainter* painter);
     void drawValueDisplay(QPainter* painter);

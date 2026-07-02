@@ -144,7 +144,7 @@ void GaugeWidget::paintEvent(QPaintEvent* event)
     drawBackground(&painter);
     drawZoneRing(&painter);
     drawScale(&painter);
-    drawScaleNumbers(&painter);
+    drawScaleNumbers(&painter, PRECISION::PRECISION_0);
     drawNeedle(&painter);
     drawCenterCircle(&painter);
     drawValueDisplay(&painter);
@@ -213,7 +213,7 @@ void GaugeWidget::drawScale(QPainter* painter)
     painter->restore();
 }
 
-void GaugeWidget::drawScaleNumbers(QPainter* painter)
+void GaugeWidget::drawScaleNumbers(QPainter* painter, enum PRECISION P)
 {
     painter->save();
     painter->setPen(m_textColor);
@@ -231,7 +231,7 @@ void GaugeWidget::drawScaleNumbers(QPainter* painter)
         double value = m_minValue + (m_maxValue - m_minValue) * i / (double)m_majorTickCount;
         value = m_maxValue - value;
         float tickValue = (value);
-        QString label = QString::number(tickValue,'f',1); //小数位数
+        QString label = QString::number(tickValue,'f',0); //小数位数 //
 
         // 数字紧贴刻度线外侧（偏移2像素）
         int labelRadius = m_radius - 15;// 2 + 2;

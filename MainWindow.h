@@ -11,6 +11,12 @@
 #include "numpaddialog.h"
 class NumPadDialog;
 
+enum class  PRECISION {
+    PRECISION_0 = 0,
+    PRECISION_1 = 1,
+    PRECISION_2 = 2,
+    PRECISION_3 = 3
+};
 // 在这里定义全局的变量、常量、函数
 #define DEFAULT_IP0		192
 #define DEFAULT_IP1		168

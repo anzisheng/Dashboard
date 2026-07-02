@@ -418,7 +418,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     // 液位表，同样设置
     ui->gaugeRpm->setAngleRange(270.0 - 45, 180.0 - 45);
-    ui->gaugeRpm->setRange(0, 99);
+    ui->gaugeRpm->setRange(0, 100);
     ui->gaugeRpm->setUnit("%");
     ui->gaugeRpm->setGaugeColor(QColor(100, 180, 100));
     ui->gaugeRpm->setNeedleColor(QColor(255, 120, 50));
