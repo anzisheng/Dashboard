@@ -144,10 +144,10 @@ void GaugeWidget::paintEvent(QPaintEvent* event)
     drawBackground(&painter);
     drawZoneRing(&painter);
     drawScale(&painter);
-    drawScaleNumbers(&painter, PRECISION::PRECISION_0);
+    drawScaleNumbers(&painter,enum PRECISION::PRECISION_0);
     drawNeedle(&painter);
     drawCenterCircle(&painter);
-    drawValueDisplay(&painter);
+    drawValueDisplay(&painter); 
 }
 
 void GaugeWidget::drawBackground(QPainter* painter)
