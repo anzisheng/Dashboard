@@ -443,7 +443,7 @@ MainWindow::MainWindow(QWidget* parent)
  //   ui->rpmValueLabel_3->setText(QString("%1 MPa").arg(m_fYwAlmL));
 
     // 连接手动更新按钮
-    //connect(ui->updateButton, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
+    connect(ui->updateButton_2, &QPushButton::clicked, this, &MainWindow::on_updateButton_clicked);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::on_pressUpdateButton_clicked);
     connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::on_pressParaButton_2_clicked);
     //void on_pressParaButton_2_clicked();//pushButton_2
@@ -544,8 +544,8 @@ void MainWindow::on_ywParaButton_5_clicked()
 
 void MainWindow::on_pressParaButton_2_clicked()
 {
-    GroupDialog dialog1(this);
-	dialog1.exec();
+   /* GroupDialog dialog1(this);
+	dialog1.exec();*/
     qDebug() << "hello";
     //m_fPressAlmH = dialog1.m_fltEditPressAlmH->text().toFloat();
     //m_fPressAlmL = dialog1.m_fltEditPressAlmL->text().toFloat();
@@ -633,6 +633,7 @@ void clearLayout(QLayout* layout) {
 
 void MainWindow::on_updateButton_clicked()
 {
+    ui->textEdit->clear();
     //updateInfo();
     //QLayout* layout = &infoGroup.layout();
     //clearLayout(&infoGroup);
