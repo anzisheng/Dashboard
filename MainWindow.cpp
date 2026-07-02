@@ -401,6 +401,7 @@ MainWindow::MainWindow(QWidget* parent)
     RandomNum = 10;
 
     WorkCmd = 0;		//进入待机状态
+    ui->textEdit->append("test for clear as an error");
 
     //dialog = new MyDialog(this);
     //dialog1 = new MyDialog_press(this);
