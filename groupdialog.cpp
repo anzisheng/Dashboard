@@ -590,7 +590,7 @@ void GroupDialog::drawCurves()
             m_graphicsScene->addPath(constPath, constPen);
         }
 
-        QGraphicsTextItem* legend1 = m_graphicsScene->addText("Constant (y=0.8)");
+        QGraphicsTextItem* legend1 = m_graphicsScene->addText("恒定值 ");
         legend1->setPos(originX + 10, margin + 10);
         legend1->setDefaultTextColor(Qt::blue);
         legend1->setFont(legendFont);
@@ -636,7 +636,7 @@ void GroupDialog::drawCurves()
             }
         }
 
-        QGraphicsTextItem* legend2 = m_graphicsScene->addText("Random Value");
+        QGraphicsTextItem* legend2 = m_graphicsScene->addText("变化值");
         legend2->setPos(originX + 10, margin + 28);
         legend2->setDefaultTextColor(Qt::red);
         legend2->setFont(legendFont);
@@ -645,7 +645,7 @@ void GroupDialog::drawCurves()
         if (!m_randomData.isEmpty()) {
             QPointF lastPoint = m_randomData.last();
             QGraphicsTextItem* valueLabel = m_graphicsScene->addText(
-                QString("Current: %1").arg(lastPoint.y(), 0, 'f', 3)
+                QString("当前值: %1").arg(lastPoint.y(), 0, 'f', 3)
             );
             valueLabel->setPos(width - 150, margin + 10);
             valueLabel->setDefaultTextColor(Qt::darkGray);
@@ -724,7 +724,7 @@ void GroupDialog::onStartStopClicked()
     if (m_isRunning) {
         m_timer->stop();
         m_isRunning = false;
-        m_startStopBtn->setText("Start");
+        m_startStopBtn->setText("开始");
         m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
     }
     else {
@@ -732,7 +732,7 @@ void GroupDialog::onStartStopClicked()
         generateInitialData();
         m_timer->start();
         m_isRunning = true;
-        m_startStopBtn->setText("Stop");
+        m_startStopBtn->setText("结束");
         m_startStopBtn->setStyleSheet("QPushButton { background-color: #f44336; color: white; font-weight: bold; }");
 
         // 立即显示

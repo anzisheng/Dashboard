@@ -74,16 +74,16 @@ Dialog1::Dialog1(QWidget* parent)
     m_imageButtonLayout = new QHBoxLayout();
     m_imageButtonLayout->setSpacing(6);
 
-    m_loadImageBtn = new QPushButton("Load Image", m_imageGroupBox);
+    m_loadImageBtn = new QPushButton("加载图像", m_imageGroupBox);
     //m_loadImageBtn->setIcon(QApplication::style()->standardIcon(QStyle::SP_FileDialogStart));
     m_loadImageBtn->setMinimumHeight(28);
 
-    m_clearImageBtn = new QPushButton("Clear", m_imageGroupBox);
+    m_clearImageBtn = new QPushButton("清除", m_imageGroupBox);
     //m_clearImageBtn->setIcon(QApplication::style()->standardIcon(QStyle::SP_DialogResetButton));
     m_clearImageBtn->setMinimumHeight(28);
     m_clearImageBtn->setEnabled(false);
 
-    m_fitImageBtn = new QPushButton("Fit", m_imageGroupBox);
+    m_fitImageBtn = new QPushButton("拟合", m_imageGroupBox);
     //m_fitImageBtn->setIcon(QApplication::style()->standardIcon(QStyle::SP_FileDialogDetailedView));
     m_fitImageBtn->setMinimumHeight(28);
     m_fitImageBtn->setEnabled(false);
