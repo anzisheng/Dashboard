@@ -545,8 +545,8 @@ void MainWindow::on_ywParaButton_5_clicked()
 
 void MainWindow::on_pressParaButton_2_clicked()
 {
-   /* GroupDialog dialog1(this);
-	dialog1.exec();*/
+    GroupDialog dialog1(this);
+	dialog1.exec();
     qDebug() << "hello";
     //m_fPressAlmH = dialog1.m_fltEditPressAlmH->text().toFloat();
     //m_fPressAlmL = dialog1.m_fltEditPressAlmL->text().toFloat();
