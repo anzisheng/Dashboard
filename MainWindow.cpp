@@ -279,32 +279,69 @@ void MainWindow::ReadData()
             //DI部分
             DiTemp = r_buf[5];
             if (0x01 == (DiTemp & 0x01))	//急停输入
+            {
                 m_bCheckStopIn = 1;
+				ui->m_bCheckStopIn->setChecked(true);
+            }               
             else
+            {
                 m_bCheckStopIn = 0;
+				ui->m_bCheckStopIn->setChecked(false);
+            }
+             
 
             if (0x02 == (DiTemp & 0x02))	//过压开关输入
-                m_bCheckOverPressure = 1;
+            {
+				m_bCheckOverPressure = 1;
+				ui->m_bCheckOverPressure->setChecked(true);
+
+            }                
             else
+            {
                 m_bCheckOverPressure = 0;
+                ui->m_bCheckOverPressure->setChecked(false);
+            }
+                          
 
             //DO部分
             DoTemp = r_buf[6];
             if (0x01 == (DoTemp & 0x01))	//泄压阀
-                m_bCheckRelief = 1;
+            {
+				m_bCheckRelief = 1;
+                ui->m_bCheckRelief->setChecked(true);// = 0;
+               
+            }
             else
+            {
+
                 m_bCheckRelief = 0;
+				ui->m_bCheckRelief->setChecked(false);
+            }
+                
 
             if (0x02 == (DoTemp & 0x02))	//BEEP报警器
+            {
                 m_bCheckBeep = 1;
+				ui->m_bCheckBeep->setChecked(true) ;
+            }                
             else
+            {
                 m_bCheckBeep = 0;
+				ui->m_bCheckBeep->setChecked(false);               
+            }
+               
 
             if (0x04 == (DoTemp & 0x04))	//补油泵
+            {
                 m_bCheckPump = 1;
-            else
-                m_bCheckPump = 0;
+                ui->m_bCheckPump->setChecked(true);
 
+            }               
+            else
+            {
+                m_bCheckPump = 0;
+				ui->m_bCheckPump->setChecked(false);
+            }
             //液位部分，r_buf[7]-r_buf[10]是液位的传感器电流，不需要显示
             Fconverter.b[3] = r_buf[11];		//32位数据，四个字节浮点数
             Fconverter.b[2] = r_buf[12];		//32位数据，四个字节浮点数
