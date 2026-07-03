@@ -598,7 +598,7 @@ void MainWindow::updateTime()
         ReadData();
     ui->gaugeSpeed->setValue(m_fltEditPressureCurr);
     m_vecPressures.push_back(m_fltEditPressureCurr);
-	qDebug() << "m_fltEditPressureCurr size : " << m_vecPressures.size();
+	//qDebug() << "m_fltEditPressureCurr size : " << m_vecPressures.size();
     ui->gaugeRpm->setValue(m_fltEditYwCurr);
     
     // 在这里添加你需要周期性执行的任务，例如刷新界面
