@@ -1,8 +1,9 @@
 #include "GaugeWidget.h"
 #include <QRadialGradient>
+#include "MainWindow.h"
 #include <QFontMetrics>
 
-GaugeWidget::GaugeWidget(QWidget* parent)
+GaugeWidget::GaugeWidget(QWidget* parent, int t )
     : QWidget(parent)
     , m_minValue(0.0)
     , m_maxValue(100.0)
@@ -19,7 +20,7 @@ GaugeWidget::GaugeWidget(QWidget* parent)
     , m_minorTickCount(4)
     , m_warningLow(0.6)   // 默认警告低限 20
     , m_alarmHigh(2.2)    // 默认警报高限 80
-
+	, type(t)
 {
     setMinimumSize(100, 100);
     setBackgroundRole(QPalette::Window);
@@ -144,7 +145,7 @@ void GaugeWidget::paintEvent(QPaintEvent* event)
     drawBackground(&painter);
     drawZoneRing(&painter);
     drawScale(&painter);
-    drawScaleNumbers(&painter,enum PRECISION::PRECISION_0);
+    drawScaleNumbers(&painter);
     drawNeedle(&painter);
     drawCenterCircle(&painter);
     drawValueDisplay(&painter); 
@@ -213,7 +214,7 @@ void GaugeWidget::drawScale(QPainter* painter)
     painter->restore();
 }
 
-void GaugeWidget::drawScaleNumbers(QPainter* painter, enum PRECISION P)
+void GaugeWidget::drawScaleNumbers(QPainter* painter)
 {
     painter->save();
     painter->setPen(m_textColor);
@@ -231,7 +232,20 @@ void GaugeWidget::drawScaleNumbers(QPainter* painter, enum PRECISION P)
         double value = m_minValue + (m_maxValue - m_minValue) * i / (double)m_majorTickCount;
         value = m_maxValue - value;
         float tickValue = (value);
-        QString label = QString::number(tickValue,'f',0); //小数位数 //
+        QString label = QString::number(tickValue, 'f', 0); //小数位数 //
+        if (type == 2)
+        {
+             label = QString::number(tickValue, 'f', 2); //小数位数 //
+        }
+        else if (type == 0)
+        {
+             label = QString::number(tickValue, 'f', 0); //小数位数 //
+        }
+        else
+        {
+             label = QString::number(tickValue, 'f', 1); //小数位数 //
+		}
+       
 
         // 数字紧贴刻度线外侧（偏移2像素）
         int labelRadius = m_radius - 15;// 2 + 2;

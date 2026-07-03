@@ -14,7 +14,7 @@ class GaugeWidget : public QWidget
         Q_PROPERTY(QString unit READ unit WRITE setUnit)
 
 public:
-    explicit GaugeWidget(QWidget* parent = nullptr);
+    explicit GaugeWidget(QWidget* parent = nullptr, int t = 0);
     ~GaugeWidget();
 
     double minValue() const { return m_minValue; }
@@ -46,7 +46,7 @@ protected:
 private:
     void drawBackground(QPainter* painter);
     void drawScale(QPainter* painter);
-    void drawScaleNumbers(QPainter* painter, enum PRECISION P);
+    void drawScaleNumbers(QPainter* painter);
     void drawNeedle(QPainter* painter);
     void drawCenterCircle(QPainter* painter);
     void drawValueDisplay(QPainter* painter);
@@ -72,6 +72,7 @@ private:
 
     int m_majorTickCount;
     int m_minorTickCount;
+    int type;
 };
 
 #endif // GAUGEWIDGET_H
