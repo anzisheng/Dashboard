@@ -136,14 +136,14 @@ void GroupDialog::setupUI()
     m_imageButtonLayout = new QHBoxLayout();
     m_imageButtonLayout->setSpacing(6);
 
-    m_loadImageBtn = new QPushButton("Load Image", m_imageGroupBox);
+    m_loadImageBtn = new QPushButton("加载图片", m_imageGroupBox);
     m_loadImageBtn->setMinimumHeight(26);
 
-    m_clearImageBtn = new QPushButton("Clear", m_imageGroupBox);
+    m_clearImageBtn = new QPushButton("清除", m_imageGroupBox);
     m_clearImageBtn->setMinimumHeight(26);
     m_clearImageBtn->setEnabled(false);
 
-    m_startStopBtn = new QPushButton("Start", m_imageGroupBox);
+    m_startStopBtn = new QPushButton("开始", m_imageGroupBox);
     m_startStopBtn->setMinimumHeight(26);
     m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
 
