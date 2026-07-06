@@ -22,6 +22,14 @@ GaugeWidget::GaugeWidget(QWidget* parent, int t )
     , m_alarmHigh(2.2)    // 默认警报高限 80
 	, type(t)
 {
+    if (t == 1) {
+        m_warningLow = 0.8;
+        m_alarmHigh = 2.2;
+    }
+    else {
+        m_warningLow = 25;
+        m_alarmHigh = 80;
+    }
     setMinimumSize(100, 100);
     setBackgroundRole(QPalette::Window);
     setAutoFillBackground(true);
