@@ -432,7 +432,7 @@ MainWindow::MainWindow(QWidget* parent)
     setFixedSize(1024, 768);
 
     ui->setupUi(this);
-    //ui->lineEdit_5->setText("0.8");
+    ui->lineEdit_5->setText("0.8");
 
     bool b = InitInstance();
     m_bCheckTimer = true;
