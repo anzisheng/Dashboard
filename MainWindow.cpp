@@ -432,6 +432,19 @@ MainWindow::MainWindow(QWidget* parent)
     setFixedSize(1024, 768);
 
     ui->setupUi(this);
+    //gaugeSpeed
+    //ui->gaugeRpm->type = 0;
+   // //if (t == 1)
+   // {
+   //     ui->gaugeRpm->m_warningLow = 0.8;
+   //     ui->gaugeRpm->m_alarmHigh = 2.2;
+   // }
+   // ui->gaugeSpeed->type = 1;    
+   //{
+   //     ui->gaugeSpeed->m_warningLow = 25;
+   //     ui->gaugeSpeed->m_alarmHigh = 80;
+   // }
+   
     ui->lineEdit_5->setText("0.8");
 
     bool b = InitInstance();
@@ -518,7 +531,25 @@ MainWindow::MainWindow(QWidget* parent)
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
+void MainWindow::setupGauge(QPushButton* button, int param)
+{
+    // 根据参数设置仪表的范围和单位
+    switch (param) {
+    case 0: // 压力
+		ui->gaugeRpm->type = 0;
+        ui->gaugeSpeed->setRange(0, 2.5);
+        ui->gaugeSpeed->setUnit("MPa");
+        break;
+    case 1: // 液位
+		ui->gaugeSpeed->type = 1;
+        ui->gaugeRpm->setRange(0, 100);
+        ui->gaugeRpm->setUnit("%");
+        break;
+    default:
+        break;
+	}
 
+}
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
     // 当 lineEdit 收到鼠标按下事件时，弹出数字键盘对话框
