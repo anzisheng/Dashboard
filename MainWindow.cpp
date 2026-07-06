@@ -154,7 +154,9 @@ void MainWindow::SetPressWorkStatus()
     //UpdateData(TRUE);
     //m_fltEditPressureSet得到编辑框内的值 
     //m_fltEditPressureSet;
+    //
     QString Number_Two = ui->lineEdit_5->text();
+    
     m_fPressureSet = Number_Two.toFloat();
 
 
@@ -427,9 +429,10 @@ MainWindow::MainWindow(QWidget* parent)
     setWindowTitle("火主机控制系统");
 
     // 设置窗口固定大小为 800x600
-    setFixedSize(800, 600);
+    setFixedSize(1024, 768);
 
     ui->setupUi(this);
+    //ui->lineEdit_5->setText("0.8");
 
     bool b = InitInstance();
     m_bCheckTimer = true;

@@ -87,7 +87,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     // 建立连接
     setupConnections();
 
-    setWindowTitle("User Information with Real-time Plot");
+    setWindowTitle("压力实时曲线图");
     setModal(true);
     setMinimumSize(700, 600);
 
@@ -117,7 +117,7 @@ void GroupDialog::setupUI()
     // ============================================
     // 顶部：图像显示 GroupBox
     // ============================================
-    m_imageGroupBox = new QGroupBox("Real-time Plot", this);
+    m_imageGroupBox = new QGroupBox("曲线图", this);
 
     m_imageLayout = new QVBoxLayout(m_imageGroupBox);
     m_imageLayout->setSpacing(6);
@@ -164,7 +164,7 @@ void GroupDialog::setupUI()
     m_bottomLayout->setSpacing(10);
 
     // ---------- 左侧：个人信息 GroupBox（5对） ----------
-    m_personalInfoGroupBox = new QGroupBox("Personal Information", this);
+    m_personalInfoGroupBox = new QGroupBox("压力参数", this);
     m_personalInfoGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_personalInfoLayout = new QGridLayout(m_personalInfoGroupBox);
@@ -221,7 +221,7 @@ void GroupDialog::setupUI()
     m_personalInfoLayout->setColumnStretch(1, 1);
 
     // ---------- 右侧：地址信息 GroupBox（3对） ----------
-    m_addressGroupBox = new QGroupBox("Address Information", this);
+    m_addressGroupBox = new QGroupBox("误差信息", this);
     m_addressGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_addressLayout = new QGridLayout(m_addressGroupBox);
