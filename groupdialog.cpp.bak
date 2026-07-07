@@ -76,6 +76,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_displayDuration(30.0)
     , m_coordinateSystemDrawn(false)
 {
+    original = (MainWindow*)parent;
     // 先创建定时器
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
@@ -86,7 +87,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     // 建立连接
     setupConnections();
 
-    setWindowTitle("User Information with Real-time Plot");
+    setWindowTitle("压力实时曲线图");
     setModal(true);
     setMinimumSize(700, 600);
 
@@ -137,14 +138,14 @@ void GroupDialog::setupUI()
     m_imageButtonLayout = new QHBoxLayout();
     m_imageButtonLayout->setSpacing(6);
 
-    m_loadImageBtn = new QPushButton("Load Image", m_imageGroupBox);
+    m_loadImageBtn = new QPushButton("加载图片", m_imageGroupBox);
     m_loadImageBtn->setMinimumHeight(26);
 
-    m_clearImageBtn = new QPushButton("Clear", m_imageGroupBox);
+    m_clearImageBtn = new QPushButton("清除", m_imageGroupBox);
     m_clearImageBtn->setMinimumHeight(26);
     m_clearImageBtn->setEnabled(false);
 
-    m_startStopBtn = new QPushButton("Start", m_imageGroupBox);
+    m_startStopBtn = new QPushButton("开始", m_imageGroupBox);
     m_startStopBtn->setMinimumHeight(26);
     m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
 
