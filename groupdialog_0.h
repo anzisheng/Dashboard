@@ -73,6 +73,7 @@ public:
     // 曲线绘制方法
     void drawCoordinateSystem();
     void drawCurves();
+    void clearCurves();
     void addRandomDataPoint();
 
 private slots:
@@ -150,6 +151,7 @@ private:
     int m_maxDataPoints;               // 最大数据点数
     double m_currentTime;              // 当前时间（秒）
     double m_displayDuration;          // 显示的时间范围（秒）
+    bool m_coordinateSystemDrawn;      // 坐标系是否已绘制
 
     // 坐标系参数
     static constexpr int MARGIN = 50;
