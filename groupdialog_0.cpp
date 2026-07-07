@@ -73,8 +73,9 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_timer(nullptr)
     , m_isRunning(false)
     , m_maxDataPoints(100)
-    , m_currentTime(-30.0)
+    , m_currentTime(0.0)
     , m_displayDuration(30.0)
+    , m_coordinateSystemDrawn(false)
 {
     original = (MainWindow*)parent;
     // 先创建定时器
@@ -117,7 +118,7 @@ void GroupDialog::setupUI()
     // ============================================
     // 顶部：图像显示 GroupBox
     // ============================================
-    m_imageGroupBox = new QGroupBox("曲线图", this);
+    m_imageGroupBox = new QGroupBox("Real-time Plot", this);
 
     m_imageLayout = new QVBoxLayout(m_imageGroupBox);
     m_imageLayout->setSpacing(6);

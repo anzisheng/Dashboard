@@ -24,6 +24,17 @@
 #include <QPolygonF>
 #include <QRandomGenerator>
 #include <cmath>
+#include "NumpadDialog.h"
+
+void GroupDialog::onDialogAccepted()
+{
+    if (!m_currentEdit) return;
+    // 从对话框获取输入结果，回填到编辑框
+     // 从对话框获取输入，回填到当前编辑框
+    QString newText = m_dialog->getText();
+    m_currentEdit->setText(newText);
+}
+
 
 GroupDialog::GroupDialog(QWidget* parent)
     : QDialog(parent)
