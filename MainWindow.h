@@ -144,8 +144,13 @@ private:
     QTimer* m_timer;
     NumPadDialog* m_dialog = nullptr;  // 数字键盘对话框
     //unsigned char PacketType;
+//<<<<<<< HEAD
     // 辅助函数：根据参数配置仪表盘
     void setupGauge(GaugeWidget* gauge, int param);
+//=======
+     // 辅助函数：根据参数配置仪表盘
+//    void setupGauge(QPushButton* button, int param);
+//>>>>>>> 6bf51e5d689508087de2ebd464a2782915d22b09
 };
 
 #endif

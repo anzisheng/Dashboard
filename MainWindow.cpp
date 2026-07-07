@@ -432,8 +432,24 @@ MainWindow::MainWindow(QWidget* parent)
     setFixedSize(1024, 768);
 
     ui->setupUi(this);
+//<<<<<<< HEAD
     setupGauge(ui->gaugeSpeed, 1);
 	setupGauge(ui->gaugeRpm, 0);
+//=======
+    //gaugeSpeed
+    //ui->gaugeRpm->type = 0;
+   // //if (t == 1)
+   // {
+   //     ui->gaugeRpm->m_warningLow = 0.8;
+   //     ui->gaugeRpm->m_alarmHigh = 2.2;
+   // }
+   // ui->gaugeSpeed->type = 1;    
+   //{
+   //     ui->gaugeSpeed->m_warningLow = 25;
+   //     ui->gaugeSpeed->m_alarmHigh = 80;
+   // }
+   
+//>>>>>>> 6bf51e5d689508087de2ebd464a2782915d22b09
     ui->lineEdit_5->setText("0.8");
 
     bool b = InitInstance();
@@ -520,6 +536,7 @@ MainWindow::MainWindow(QWidget* parent)
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
+//<<<<<<< HEAD
 // 配置按钮的辅助函数
 void MainWindow::setupGauge(GaugeWidget* gauge, int param)
 {
@@ -546,6 +563,26 @@ void MainWindow::setupGauge(GaugeWidget* gauge, int param)
  /*   connect(button, &QPushButton::clicked, this, [=]() {
         handleButtonClick(param);
         });*/
+//=======
+//void MainWindow::setupGauge(QPushButton* button, int param)
+//{
+//    // 根据参数设置仪表的范围和单位
+//    switch (param) {
+//    case 0: // 压力
+//		ui->gaugeRpm->type = 0;
+//        ui->gaugeSpeed->setRange(0, 2.5);
+//        ui->gaugeSpeed->setUnit("MPa");
+//        break;
+//    case 1: // 液位
+//		ui->gaugeSpeed->type = 1;
+//        ui->gaugeRpm->setRange(0, 100);
+//        ui->gaugeRpm->setUnit("%");
+//        break;
+//    default:
+//        break;
+//	}
+//
+//>>>>>>> 6bf51e5d689508087de2ebd464a2782915d22b09
 }
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
