@@ -432,6 +432,8 @@ MainWindow::MainWindow(QWidget* parent)
     setFixedSize(1024, 768);
 
     ui->setupUi(this);
+    setupGauge(ui->gaugeSpeed, 1);
+	setupGauge(ui->gaugeRpm, 0);
     ui->lineEdit_5->setText("0.8");
 
     bool b = InitInstance();
@@ -518,7 +520,33 @@ MainWindow::MainWindow(QWidget* parent)
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
+// 配置按钮的辅助函数
+void MainWindow::setupGauge(GaugeWidget* gauge, int param)
+{
+    // 根据参数设置按钮文本和样式
+    if (param == 1) {
+        //button->setText("按钮 0 (红色)");
+		gauge->type = 1;
+        //button->setStyleSheet("QPushButton { background-color: #FF6B6B; color: white; }");
 
+       gauge->m_warningLow = 0.8;
+       gauge->m_alarmHigh = 2.2;
+
+    }
+    else if (param == 0) {
+        //button->setText("按钮 1 (蓝色)");
+        //button->setStyleSheet("QPushButton { background-color: #4ECDC4; color: white; }");
+		gauge->type = 0;
+        gauge->m_warningLow = 25;
+        gauge->m_alarmHigh = 80;
+    
+    }
+
+    // 连接点击信号，通过 Lambda 捕获参数
+ /*   connect(button, &QPushButton::clicked, this, [=]() {
+        handleButtonClick(param);
+        });*/
+}
 bool MainWindow::eventFilter(QObject* obj, QEvent* event)
 {
     // 当 lineEdit 收到鼠标按下事件时，弹出数字键盘对话框

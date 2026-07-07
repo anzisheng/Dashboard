@@ -72,6 +72,7 @@ private:
 
     int m_majorTickCount;
     int m_minorTickCount;
+public:
     int type;
 };
 

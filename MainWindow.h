@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <atlstr.h>
 #include "MyDialog.h"
+#include "GaugeWidget.h"
 #include "MyDialog_press.h"
 #include "numpaddialog.h"
 class NumPadDialog;
@@ -143,6 +144,8 @@ private:
     QTimer* m_timer;
     NumPadDialog* m_dialog = nullptr;  // 数字键盘对话框
     //unsigned char PacketType;
+    // 辅助函数：根据参数配置仪表盘
+    void setupGauge(GaugeWidget* gauge, int param);
 };
 
 #endif
