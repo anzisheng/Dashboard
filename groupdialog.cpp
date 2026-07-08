@@ -15,10 +15,7 @@
 #include <QGraphicsLineItem>
 #include <QGraphicsEllipseItem>
 #include <QMessageBox>
-#include <QFileDialog>
 #include <QApplication>
-#include <QStyle>
-#include <QDir>
 #include <QPen>
 #include <QPainterPath>
 #include <QPolygonF>
@@ -30,8 +27,6 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_imageGroupBox(nullptr)
     , m_graphicsView(nullptr)
     , m_graphicsScene(nullptr)
-    , m_loadImageBtn(nullptr)
-    , m_clearImageBtn(nullptr)
     , m_startStopBtn(nullptr)
     , m_writeButton(nullptr)
     , m_personalInfoGroupBox(nullptr)
@@ -80,8 +75,6 @@ GroupDialog::GroupDialog(QWidget* parent)
     setModal(true);
     setMinimumSize(700, 600);
 
-    onInputChanged();
-
     // 生成初始数据
     generateInitialData();
 
@@ -90,6 +83,9 @@ GroupDialog::GroupDialog(QWidget* parent)
 
     // 绘制曲线
     drawCurves();
+
+    // 更新按钮状态 - "读取"按钮始终可用
+    onInputChanged();
 }
 
 GroupDialog::~GroupDialog()
@@ -124,22 +120,14 @@ void GroupDialog::setupUI()
 
     setupImageScene();
 
+    // ---------- 图像操作按钮布局（只保留 Start/Stop 按钮） ----------
     m_imageButtonLayout = new QHBoxLayout();
     m_imageButtonLayout->setSpacing(6);
-
-    m_loadImageBtn = new QPushButton("Load Image", m_imageGroupBox);
-    m_loadImageBtn->setMinimumHeight(26);
-
-    m_clearImageBtn = new QPushButton("Clear", m_imageGroupBox);
-    m_clearImageBtn->setMinimumHeight(26);
-    m_clearImageBtn->setEnabled(false);
 
     m_startStopBtn = new QPushButton("Start", m_imageGroupBox);
     m_startStopBtn->setMinimumHeight(26);
     m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
 
-    m_imageButtonLayout->addWidget(m_loadImageBtn);
-    m_imageButtonLayout->addWidget(m_clearImageBtn);
     m_imageButtonLayout->addWidget(m_startStopBtn);
     m_imageButtonLayout->addStretch();
 
@@ -249,11 +237,11 @@ void GroupDialog::setupUI()
     m_mainLayout->addLayout(m_bottomLayout);
 
     // ============================================
-    // 对话框按钮 - 修改版本
+    // 对话框按钮
     // ============================================
     m_buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
 
-    // 创建 "读取" 按钮（原 OK）
+    // 创建 "读取" 按钮
     QPushButton* readButton = new QPushButton("读取", this);
     readButton->setMinimumHeight(28);
     readButton->setMinimumWidth(60);
@@ -291,7 +279,7 @@ void GroupDialog::setupUI()
         "}"
     );
 
-    // 创建 "放弃" 按钮（原 Cancel）
+    // 创建 "放弃" 按钮
     QPushButton* cancelButton = new QPushButton("放弃", this);
     cancelButton->setMinimumHeight(28);
     cancelButton->setMinimumWidth(60);
@@ -342,8 +330,6 @@ void GroupDialog::setupConnections()
     connect(m_lineEditZipCode, &QLineEdit::textChanged, this, &GroupDialog::onInputChanged);
 
     // 连接按钮信号
-    connect(m_loadImageBtn, &QPushButton::clicked, this, &GroupDialog::onLoadImageClicked);
-    connect(m_clearImageBtn, &QPushButton::clicked, this, &GroupDialog::onClearImageClicked);
     connect(m_startStopBtn, &QPushButton::clicked, this, &GroupDialog::onStartStopClicked);
 
     // 连接定时器信号
@@ -699,72 +685,6 @@ void GroupDialog::drawCurves()
 }
 
 // ============================================
-// 图像相关方法
-// ============================================
-
-void GroupDialog::setImage(const QPixmap& pixmap)
-{
-    m_currentPixmap = pixmap;
-
-    // 清除场景
-    m_graphicsScene->clear();
-    m_coordinateSystemDrawn = false;
-
-    if (pixmap.isNull()) {
-        drawCoordinateSystem();
-        drawCurves();
-        m_clearImageBtn->setEnabled(false);
-        return;
-    }
-
-    QGraphicsPixmapItem* item = m_graphicsScene->addPixmap(pixmap);
-    item->setTransformationMode(Qt::SmoothTransformation);
-    m_graphicsScene->setSceneRect(pixmap.rect());
-    m_graphicsView->fitInView(m_graphicsScene->sceneRect(), Qt::KeepAspectRatio);
-
-    m_clearImageBtn->setEnabled(true);
-}
-
-void GroupDialog::setImage(const QString& imagePath)
-{
-    QPixmap pixmap(imagePath);
-    if (pixmap.isNull()) {
-        QMessageBox::warning(this, "Error", "Failed to load image.");
-        return;
-    }
-    setImage(pixmap);
-}
-
-void GroupDialog::clearImage()
-{
-    m_currentPixmap = QPixmap();
-    m_graphicsScene->clear();
-    m_coordinateSystemDrawn = false;
-    drawCoordinateSystem();
-    drawCurves();
-    m_clearImageBtn->setEnabled(false);
-}
-
-void GroupDialog::onLoadImageClicked()
-{
-    QString filePath = QFileDialog::getOpenFileName(
-        this,
-        "Select Image",
-        QDir::homePath(),
-        "Images (*.png *.jpg *.jpeg *.bmp *.gif)"
-    );
-
-    if (!filePath.isEmpty()) {
-        setImage(filePath);
-    }
-}
-
-void GroupDialog::onClearImageClicked()
-{
-    clearImage();
-}
-
-// ============================================
 // Start/Stop 按钮
 // ============================================
 
@@ -793,6 +713,23 @@ void GroupDialog::onTimerTimeout()
 
     // 只重绘曲线，不重绘坐标系
     drawCurves();
+}
+
+// ============================================
+// 按钮状态更新
+// ============================================
+
+void GroupDialog::onInputChanged()
+{
+    // 废除所有字段必须填写的限制，"读取"按钮始终可用
+    // 获取"读取"按钮并启用
+    QList<QAbstractButton*> buttons = m_buttonBox->buttons();
+    for (QAbstractButton* btn : buttons) {
+        if (btn->text() == "读取") {
+            btn->setEnabled(true);
+            break;
+        }
+    }
 }
 
 // ============================================
@@ -940,26 +877,4 @@ void GroupDialog::clearInputs()
     m_lineEditAddress->clear();
     m_lineEditCity->clear();
     m_lineEditZipCode->clear();
-    clearImage();
-}
-
-void GroupDialog::onInputChanged()
-{
-    bool allFilled = !m_lineEditName->text().trimmed().isEmpty() &&
-        !m_lineEditEmail->text().trimmed().isEmpty() &&
-        !m_lineEditPhone->text().trimmed().isEmpty() &&
-        !m_lineEditBirthday->text().trimmed().isEmpty() &&
-        !m_lineEditOccupation->text().trimmed().isEmpty() &&
-        !m_lineEditAddress->text().trimmed().isEmpty() &&
-        !m_lineEditCity->text().trimmed().isEmpty() &&
-        !m_lineEditZipCode->text().trimmed().isEmpty();
-
-    // 获取"读取"按钮并启用/禁用
-    QList<QAbstractButton*> buttons = m_buttonBox->buttons();
-    for (QAbstractButton* btn : buttons) {
-        if (btn->text() == "读取") {
-            btn->setEnabled(allFilled);
-            break;
-        }
-    }
 }

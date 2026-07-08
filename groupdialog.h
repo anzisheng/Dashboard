@@ -54,11 +54,6 @@ public:
     // 清除所有输入
     void clearInputs();
 
-    // 图像相关方法
-    void setImage(const QPixmap& pixmap);
-    void setImage(const QString& imagePath);
-    void clearImage();
-
     // 曲线绘制方法
     void drawCoordinateSystem();
     void drawCurves();
@@ -67,8 +62,6 @@ public:
 
 private slots:
     void onInputChanged();
-    void onLoadImageClicked();
-    void onClearImageClicked();
     void onStartStopClicked();
     void onTimerTimeout();
     void onWriteButtonClicked();
@@ -83,8 +76,6 @@ private:
     QGroupBox* m_imageGroupBox;
     QGraphicsView* m_graphicsView;
     QGraphicsScene* m_graphicsScene;
-    QPushButton* m_loadImageBtn;
-    QPushButton* m_clearImageBtn;
     QPushButton* m_startStopBtn;
     QPixmap m_currentPixmap;
 
