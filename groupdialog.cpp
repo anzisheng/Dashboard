@@ -384,8 +384,10 @@ void GroupDialog::addRandomDataPoint()
     m_currentTime += 1.0;
 
     // 生成随机值（在0.2到1.5之间）
-    QRandomGenerator* gen = QRandomGenerator::global();
-    double y = 0.2 + (1.5 - 0.2) * gen->generateDouble();
+    //QRandomGenerator* gen = QRandomGenerator::global();
+    //double y = 0.2 + (1.5 - 0.2) * gen->generateDouble();
+    int index = (int)m_currentTime;
+    double y = original->m_vecPressures[index];
 
     // 添加新数据点
     m_randomData.append(QPointF(m_currentTime, y));
