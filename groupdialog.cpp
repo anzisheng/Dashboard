@@ -338,6 +338,45 @@ void GroupDialog::setupImageScene()
     m_graphicsView->setScene(m_graphicsScene);
 }
 
+bool GroupDialog::eventFilter(QObject* obj, QEvent* event)
+{
+
+    if (event->type() == QEvent::MouseButtonPress) {
+        // 判断点击的是否是我们关心的编辑框
+        if (/*obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL || obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD*/
+            obj == m_lineEditName || obj == m_lineEditEmail || obj == m_lineEditOccupation
+			||obj == m_lineEditBirthday || obj == m_lineEditPhone
+            || obj == m_lineEditAddress ||obj == m_lineEditCity || obj == m_lineEditZipCode)
+        {
+            m_currentEdit = qobject_cast<QLineEdit*>(obj);  // 记录当前编辑框
+            onLineEditClicked();
+            return true;   // 事件已处理，阻止默认行为（焦点移动）
+        }
+    }
+    return QDialog::eventFilter(obj, event);
+
+}
+void GroupDialog::onLineEditClicked()
+{
+    if (!m_currentEdit) return;  // 安全保护
+
+
+
+    // 延迟创建对话框（只创建一次）
+    if (!m_dialog) {
+        m_dialog = new NumPadDialog(this);
+        connect(m_dialog, &QDialog::accepted, this, &GroupDialog::onDialogAccepted);
+    }
+
+    // 将当前编辑框的内容作为初始文本
+    m_dialog->setText(m_currentEdit->text());
+
+    // 模态弹出数字键盘
+    m_dialog->exec();
+}
+
+
+
 void GroupDialog::setupConnections()
 {
     // 连接输入变化信号

@@ -27,6 +27,12 @@ class GroupDialog : public QDialog
 public:
     explicit GroupDialog(QWidget* parent = nullptr);
     ~GroupDialog();
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;   // ① 重写事件过滤器
+
+private slots:
+    void onLineEditClicked();    // ② 点击编辑框时调用的槽
+    void onDialogAccepted();     // ③ 数字键盘确认时调用的槽
 
     // 获取用户输入的数据 - 个人信息（5对）
     QString getName() const;
@@ -67,9 +73,9 @@ private slots:
     void onTimerTimeout();
     void onWriteButtonClicked();
 
-private slots:
-    //void onLineEditClicked();    // ② 点击编辑框时调用的槽
-    void onDialogAccepted();     // ③ 数字键盘确认时调用的槽
+//private slots:
+//    //void onLineEditClicked();    // ② 点击编辑框时调用的槽
+//    void onDialogAccepted();     // ③ 数字键盘确认时调用的槽
 
 public:
     NumPadDialog* m_dialog = nullptr; // 数字键盘对话框指针
