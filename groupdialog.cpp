@@ -137,7 +137,7 @@ void GroupDialog::setupUI()
     m_imageButtonLayout = new QHBoxLayout();
     m_imageButtonLayout->setSpacing(6);
 
-    m_startStopBtn = new QPushButton("Start", m_imageGroupBox);
+    m_startStopBtn = new QPushButton("开始", m_imageGroupBox);
     m_startStopBtn->setMinimumHeight(26);
     m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
 
@@ -754,14 +754,14 @@ void GroupDialog::onStartStopClicked()
         // 停止
         m_timer->stop();
         m_isRunning = false;
-        m_startStopBtn->setText("Start");
+        m_startStopBtn->setText("开始");
         m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
     }
     else {
         // 启动 - 直接开始，不重新生成数据
         m_timer->start();
         m_isRunning = true;
-        m_startStopBtn->setText("Stop");
+        m_startStopBtn->setText("停止");
         m_startStopBtn->setStyleSheet("QPushButton { background-color: #f44336; color: white; font-weight: bold; }");
     }
 }
