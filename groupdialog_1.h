@@ -1,5 +1,6 @@
 #ifndef GROUPDIALOG_H
 #define GROUPDIALOG_H
+#include "MainWindow.h"
 
 #include <QDialog>
 #include <QString>
@@ -18,6 +19,7 @@ class QHBoxLayout;
 class QGraphicsView;
 class QGraphicsScene;
 class QPushButton;
+class NumPadDialog;
 
 class GroupDialog : public QDialog
 {
@@ -27,6 +29,15 @@ public:
     explicit GroupDialog(QWidget* parent = nullptr);
     ~GroupDialog();
 
+protected:
+    bool eventFilter(QObject* obj, QEvent* event) override;   // ① 重写事件过滤器
+
+private slots:
+    void onLineEditClicked();    // ② 点击编辑框时调用的槽
+    void onDialogAccepted();     // ③ 数字键盘确认时调用的槽
+
+public:
+    NumPadDialog* m_dialog = nullptr; // 数字键盘对话框指针
     // 获取用户输入的数据 - 个人信息（5对）
     QString getName() const;
     QString getEmail() const;
@@ -71,13 +82,13 @@ private slots:
     void onClearImageClicked();
     void onStartStopClicked();
     void onTimerTimeout();
-    void onWriteButtonClicked();
 
 private:
     void setupUI();
     void setupConnections();
     void setupImageScene();
     void generateInitialData();
+	MainWindow* original = nullptr ;
 
     // UI组件 - 图像显示区域（顶部）
     QGroupBox* m_imageGroupBox;
@@ -100,6 +111,18 @@ private:
     QLineEdit* m_lineEditPhone;
     QLineEdit* m_lineEditBirthday;
     QLineEdit* m_lineEditOccupation;
+
+    QLineEdit* m_fltEditPressAlmH = nullptr;
+    QLabel* m_fltLabelPressAlmH = nullptr;
+    QLineEdit* m_fltEditPressAlmL = nullptr;
+    QLabel* m_fltLabelPressAlmL = nullptr;
+    QLineEdit* m_fltEditParaP = nullptr;
+    QLabel* m_fltLabelParaP = nullptr;
+    QLineEdit* m_fltEditParaI = nullptr;
+    QLabel* m_fltQLabelParaI = nullptr;
+    QLineEdit* m_fltEditParaD = nullptr;
+    QLabel* m_fltLabelParaD = nullptr;
+    QLineEdit* m_currentEdit = nullptr;
 
     // UI组件 - 地址信息区域（右下，3对）
     QGroupBox* m_addressGroupBox;
@@ -135,7 +158,7 @@ private:
     static constexpr int MARGIN = 50;
     static constexpr double Y_MIN = 0.0;
     static constexpr double Y_MAX = 2.0;
-    static constexpr double CONST_VALUE = 0.8;
+    /*static constexpr*/ double CONST_VALUE = 0.8;
 };
 
 #endif // GROUPDIALOG_H

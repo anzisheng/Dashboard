@@ -24,17 +24,6 @@
 #include <QPolygonF>
 #include <QRandomGenerator>
 #include <cmath>
-#include "NumpadDialog.h"
-
-void GroupDialog::onDialogAccepted()
-{
-    if (!m_currentEdit) return;
-    // 从对话框获取输入结果，回填到编辑框
-     // 从对话框获取输入，回填到当前编辑框
-    QString newText = m_dialog->getText();
-    m_currentEdit->setText(newText);
-}
-
 
 GroupDialog::GroupDialog(QWidget* parent)
     : QDialog(parent)
@@ -44,6 +33,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_loadImageBtn(nullptr)
     , m_clearImageBtn(nullptr)
     , m_startStopBtn(nullptr)
+    , m_writeButton(nullptr)
     , m_personalInfoGroupBox(nullptr)
     , m_labelName(nullptr)
     , m_labelEmail(nullptr)
@@ -76,7 +66,6 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_displayDuration(30.0)
     , m_coordinateSystemDrawn(false)
 {
-    original = (MainWindow*)parent;
     // 先创建定时器
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
@@ -87,7 +76,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     // 建立连接
     setupConnections();
 
-    setWindowTitle("压力实时曲线图");
+    setWindowTitle("User Information with Real-time Plot");
     setModal(true);
     setMinimumSize(700, 600);
 
@@ -138,14 +127,14 @@ void GroupDialog::setupUI()
     m_imageButtonLayout = new QHBoxLayout();
     m_imageButtonLayout->setSpacing(6);
 
-    m_loadImageBtn = new QPushButton("加载图片", m_imageGroupBox);
+    m_loadImageBtn = new QPushButton("Load Image", m_imageGroupBox);
     m_loadImageBtn->setMinimumHeight(26);
 
-    m_clearImageBtn = new QPushButton("清除", m_imageGroupBox);
+    m_clearImageBtn = new QPushButton("Clear", m_imageGroupBox);
     m_clearImageBtn->setMinimumHeight(26);
     m_clearImageBtn->setEnabled(false);
 
-    m_startStopBtn = new QPushButton("开始", m_imageGroupBox);
+    m_startStopBtn = new QPushButton("Start", m_imageGroupBox);
     m_startStopBtn->setMinimumHeight(26);
     m_startStopBtn->setStyleSheet("QPushButton { background-color: #4CAF50; color: white; font-weight: bold; }");
 
@@ -166,47 +155,42 @@ void GroupDialog::setupUI()
     m_bottomLayout->setSpacing(10);
 
     // ---------- 左侧：个人信息 GroupBox（5对） ----------
-    m_personalInfoGroupBox = new QGroupBox("压力参数", this);
+    m_personalInfoGroupBox = new QGroupBox("Personal Information", this);
     m_personalInfoGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_personalInfoLayout = new QGridLayout(m_personalInfoGroupBox);
     m_personalInfoLayout->setSpacing(8);
     m_personalInfoLayout->setContentsMargins(10, 10, 10, 10);
 
-    m_labelName = new QLabel("压力高限:", m_personalInfoGroupBox);
+    m_labelName = new QLabel("Name:", m_personalInfoGroupBox);
     m_labelName->setMinimumWidth(70);
     m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditName = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditName->setPlaceholderText("输入压力高限");
-    m_lineEditName->installEventFilter(this);
-    m_labelEmail = new QLabel("压力低限:", m_personalInfoGroupBox);
+    m_lineEditName->setPlaceholderText("Enter name");
+
+    m_labelEmail = new QLabel("Email:", m_personalInfoGroupBox);
     m_labelEmail->setMinimumWidth(70);
     m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditEmail = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditEmail->setPlaceholderText("输入压力低限");
-	m_lineEditEmail->installEventFilter(this);
+    m_lineEditEmail->setPlaceholderText("Enter email");
 
-
-    m_labelPhone = new QLabel("P参数:", m_personalInfoGroupBox);
+    m_labelPhone = new QLabel("Phone:", m_personalInfoGroupBox);
     m_labelPhone->setMinimumWidth(70);
     m_labelPhone->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditPhone = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditPhone->setPlaceholderText("输入P参数");
-	m_lineEditPhone->installEventFilter(this);
+    m_lineEditPhone->setPlaceholderText("Enter phone");
 
-    m_labelBirthday = new QLabel("I参数:", m_personalInfoGroupBox);
+    m_labelBirthday = new QLabel("Birthday:", m_personalInfoGroupBox);
     m_labelBirthday->setMinimumWidth(70);
     m_labelBirthday->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditBirthday = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditBirthday->setPlaceholderText("输入I参数");
-	m_lineEditBirthday->installEventFilter(this);
+    m_lineEditBirthday->setPlaceholderText("YYYY-MM-DD");
 
-    m_labelOccupation = new QLabel("D参数",m_personalInfoGroupBox);
+    m_labelOccupation = new QLabel("Occupation:", m_personalInfoGroupBox);
     m_labelOccupation->setMinimumWidth(70);
     m_labelOccupation->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditOccupation = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditOccupation->setPlaceholderText("输入D参数");
-	m_lineEditOccupation->installEventFilter(this);
+    m_lineEditOccupation->setPlaceholderText("Enter occupation");
 
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
     m_personalInfoLayout->addWidget(m_lineEditName, 0, 1);
@@ -223,33 +207,30 @@ void GroupDialog::setupUI()
     m_personalInfoLayout->setColumnStretch(1, 1);
 
     // ---------- 右侧：地址信息 GroupBox（3对） ----------
-    m_addressGroupBox = new QGroupBox("误差信息", this);
+    m_addressGroupBox = new QGroupBox("Address Information", this);
     m_addressGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_addressLayout = new QGridLayout(m_addressGroupBox);
     m_addressLayout->setSpacing(8);
     m_addressLayout->setContentsMargins(10, 10, 10, 10);
 
-    m_labelAddress = new QLabel("偏差容限:", m_addressGroupBox);
+    m_labelAddress = new QLabel("Address:", m_addressGroupBox);
     m_labelAddress->setMinimumWidth(70);
     m_labelAddress->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditAddress = new QLineEdit(m_addressGroupBox);
-    m_lineEditAddress->setPlaceholderText("偏差容限");
-	m_lineEditAddress->installEventFilter(this);
+    m_lineEditAddress->setPlaceholderText("Enter address");
 
-    m_labelCity = new QLabel("积分偏差:", m_addressGroupBox);
+    m_labelCity = new QLabel("City:", m_addressGroupBox);
     m_labelCity->setMinimumWidth(70);
     m_labelCity->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditCity = new QLineEdit(m_addressGroupBox);
-    m_lineEditCity->setPlaceholderText("积分偏差");
-	m_lineEditCity->installEventFilter(this);
+    m_lineEditCity->setPlaceholderText("Enter city");
 
-    m_labelZipCode = new QLabel("设定压力:", m_addressGroupBox);
+    m_labelZipCode = new QLabel("Zip Code:", m_addressGroupBox);
     m_labelZipCode->setMinimumWidth(70);
     m_labelZipCode->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditZipCode = new QLineEdit(m_addressGroupBox);
-    m_lineEditZipCode->setPlaceholderText("设定压力");
-	m_lineEditZipCode->installEventFilter(this);
+    m_lineEditZipCode->setPlaceholderText("Enter zip code");
 
     m_addressLayout->addWidget(m_labelAddress, 0, 0);
     m_addressLayout->addWidget(m_lineEditAddress, 0, 1);
@@ -268,14 +249,76 @@ void GroupDialog::setupUI()
     m_mainLayout->addLayout(m_bottomLayout);
 
     // ============================================
-    // 对话框按钮
+    // 对话框按钮 - 修改版本
     // ============================================
-    m_buttonBox = new QDialogButtonBox(
-        QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
-        Qt::Horizontal,
-        this
+    m_buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
+
+    // 创建 "读取" 按钮（原 OK）
+    QPushButton* readButton = new QPushButton("读取", this);
+    readButton->setMinimumHeight(28);
+    readButton->setMinimumWidth(60);
+    readButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #e0e0e0;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #c0c0c0;"
+        "}"
     );
 
+    // 创建 "写入" 按钮
+    m_writeButton = new QPushButton("写入", this);
+    m_writeButton->setMinimumHeight(28);
+    m_writeButton->setMinimumWidth(60);
+    m_writeButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #45a049;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #3d8b40;"
+        "}"
+    );
+
+    // 创建 "放弃" 按钮（原 Cancel）
+    QPushButton* cancelButton = new QPushButton("放弃", this);
+    cancelButton->setMinimumHeight(28);
+    cancelButton->setMinimumWidth(60);
+    cancelButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #e0e0e0;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #c0c0c0;"
+        "}"
+    );
+
+    // 添加按钮到按钮框
+    m_buttonBox->addButton(readButton, QDialogButtonBox::AcceptRole);
+    m_buttonBox->addButton(m_writeButton, QDialogButtonBox::ActionRole);
+    m_buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+    // 连接信号
+    connect(readButton, &QPushButton::clicked, this, &QDialog::accept);
+    connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+
+    // 添加到主布局
     m_mainLayout->addWidget(m_buttonBox);
 }
 
@@ -285,45 +328,6 @@ void GroupDialog::setupImageScene()
     m_graphicsScene->setBackgroundBrush(Qt::white);
     m_graphicsView->setScene(m_graphicsScene);
 }
-
-bool GroupDialog::eventFilter(QObject* obj, QEvent* event)
-{
-
-    if (event->type() == QEvent::MouseButtonPress) {
-        // 判断点击的是否是我们关心的编辑框
-        if (/*obj == m_fltEditPressAlmH || obj == m_fltEditPressAlmL || obj == m_fltEditParaP || obj == m_fltEditParaI || obj == m_fltEditParaD*/
-            obj == m_lineEditName || obj == m_lineEditEmail || obj == m_lineEditOccupation
-			||obj == m_lineEditBirthday || obj == m_lineEditPhone
-            || obj == m_lineEditAddress ||obj == m_lineEditCity || obj == m_lineEditZipCode)
-        {
-            m_currentEdit = qobject_cast<QLineEdit*>(obj);  // 记录当前编辑框
-            onLineEditClicked();
-            return true;   // 事件已处理，阻止默认行为（焦点移动）
-        }
-    }
-    return QDialog::eventFilter(obj, event);
-
-}
-void GroupDialog::onLineEditClicked()
-{
-    if (!m_currentEdit) return;  // 安全保护
-
-
-
-    // 延迟创建对话框（只创建一次）
-    if (!m_dialog) {
-        m_dialog = new NumPadDialog(this);
-        connect(m_dialog, &QDialog::accepted, this, &GroupDialog::onDialogAccepted);
-    }
-
-    // 将当前编辑框的内容作为初始文本
-    m_dialog->setText(m_currentEdit->text());
-
-    // 模态弹出数字键盘
-    m_dialog->exec();
-}
-
-
 
 void GroupDialog::setupConnections()
 {
@@ -345,9 +349,8 @@ void GroupDialog::setupConnections()
     // 连接定时器信号
     connect(m_timer, &QTimer::timeout, this, &GroupDialog::onTimerTimeout);
 
-    // 连接对话框按钮
-    connect(m_buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-    connect(m_buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    // 连接"写入"按钮信号
+    connect(m_writeButton, &QPushButton::clicked, this, &GroupDialog::onWriteButtonClicked);
 }
 
 // ============================================
@@ -387,10 +390,8 @@ void GroupDialog::addRandomDataPoint()
     m_currentTime += 1.0;
 
     // 生成随机值（在0.2到1.5之间）
-    //QRandomGenerator* gen = QRandomGenerator::global();
-    //double y = 0.2 + (1.5 - 0.2) * gen->generateDouble();
-    int index = (int)m_currentTime;
-    double y = original->m_vecPressures[index];
+    QRandomGenerator* gen = QRandomGenerator::global();
+    double y = 0.2 + (1.5 - 0.2) * gen->generateDouble();
 
     // 添加新数据点
     m_randomData.append(QPointF(m_currentTime, y));
@@ -795,6 +796,53 @@ void GroupDialog::onTimerTimeout()
 }
 
 // ============================================
+// "写入" 按钮槽函数
+// ============================================
+
+void GroupDialog::onWriteButtonClicked()
+{
+    // 获取所有输入的数据
+    QString name = getName();
+    QString email = getEmail();
+    QString phone = getPhone();
+    QString birthday = getBirthday();
+    QString occupation = getOccupation();
+    QString address = getAddress();
+    QString city = getCity();
+    QString zipCode = getZipCode();
+
+    // 检查是否所有字段都已填写
+    if (name.isEmpty() || email.isEmpty() || phone.isEmpty() ||
+        birthday.isEmpty() || occupation.isEmpty() ||
+        address.isEmpty() || city.isEmpty() || zipCode.isEmpty()) {
+        QMessageBox::warning(this, "Warning", "Please fill in all fields before writing.");
+        return;
+    }
+
+    // 显示写入确认消息
+    QMessageBox::information(this, "Write Data",
+        QString("Data written successfully!\n\n"
+            "Personal Information:\n"
+            "  Name       : %1\n"
+            "  Email      : %2\n"
+            "  Phone      : %3\n"
+            "  Birthday   : %4\n"
+            "  Occupation : %5\n\n"
+            "Address Information:\n"
+            "  Address    : %6\n"
+            "  City       : %7\n"
+            "  Zip Code   : %8")
+        .arg(name)
+        .arg(email)
+        .arg(phone)
+        .arg(birthday)
+        .arg(occupation)
+        .arg(address)
+        .arg(city)
+        .arg(zipCode));
+}
+
+// ============================================
 // 个人信息 Getter/Setter
 // ============================================
 
@@ -906,8 +954,12 @@ void GroupDialog::onInputChanged()
         !m_lineEditCity->text().trimmed().isEmpty() &&
         !m_lineEditZipCode->text().trimmed().isEmpty();
 
-    QPushButton* okButton = m_buttonBox->button(QDialogButtonBox::Ok);
-    if (okButton) {
-        okButton->setEnabled(allFilled);
+    // 获取"读取"按钮并启用/禁用
+    QList<QAbstractButton*> buttons = m_buttonBox->buttons();
+    for (QAbstractButton* btn : buttons) {
+        if (btn->text() == "读取") {
+            btn->setEnabled(allFilled);
+            break;
+        }
     }
 }

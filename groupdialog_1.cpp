@@ -44,6 +44,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_loadImageBtn(nullptr)
     , m_clearImageBtn(nullptr)
     , m_startStopBtn(nullptr)
+    , m_writeButton(nullptr)
     , m_personalInfoGroupBox(nullptr)
     , m_labelName(nullptr)
     , m_labelEmail(nullptr)
@@ -223,7 +224,7 @@ void GroupDialog::setupUI()
     m_personalInfoLayout->setColumnStretch(1, 1);
 
     // ---------- 右侧：地址信息 GroupBox（3对） ----------
-    m_addressGroupBox = new QGroupBox("Address Information", this);
+    m_addressGroupBox = new QGroupBox("误差信息", this);
     m_addressGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_addressLayout = new QGridLayout(m_addressGroupBox);
@@ -244,11 +245,12 @@ void GroupDialog::setupUI()
     m_lineEditCity->setPlaceholderText("积分偏差");
 	m_lineEditCity->installEventFilter(this);
 
-    m_labelZipCode = new QLabel("Zip Code:", m_addressGroupBox);
+    m_labelZipCode = new QLabel("设定压力:", m_addressGroupBox);
     m_labelZipCode->setMinimumWidth(70);
     m_labelZipCode->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditZipCode = new QLineEdit(m_addressGroupBox);
-    m_lineEditZipCode->setPlaceholderText("Enter zip code");
+    m_lineEditZipCode->setPlaceholderText("设定压力");
+	m_lineEditZipCode->installEventFilter(this);
 
     m_addressLayout->addWidget(m_labelAddress, 0, 0);
     m_addressLayout->addWidget(m_lineEditAddress, 0, 1);
@@ -269,10 +271,62 @@ void GroupDialog::setupUI()
     // ============================================
     // 对话框按钮
     // ============================================
-    m_buttonBox = new QDialogButtonBox(
-        QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
-        Qt::Horizontal,
-        this
+    m_buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
+
+    // 创建 "读取" 按钮（原 OK）
+    QPushButton* readButton = new QPushButton("读取", this);
+    readButton->setMinimumHeight(28);
+    readButton->setMinimumWidth(60);
+    readButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #e0e0e0;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #c0c0c0;"
+        "}"
+    );
+
+    // 创建 "写入" 按钮
+    m_writeButton = new QPushButton("写入", this);
+    m_writeButton->setMinimumHeight(28);
+    m_writeButton->setMinimumWidth(60);
+    m_writeButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #45a049;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #3d8b40;"
+        "}"
+    );
+
+    // 创建 "放弃" 按钮（原 Cancel）
+    QPushButton* cancelButton = new QPushButton("放弃", this);
+    cancelButton->setMinimumHeight(28);
+    cancelButton->setMinimumWidth(60);
+    cancelButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #e0e0e0;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #c0c0c0;"
+        "}"
     );
 
     m_mainLayout->addWidget(m_buttonBox);
