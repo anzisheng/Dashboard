@@ -223,7 +223,7 @@ void GroupDialog::setupUI()
     m_personalInfoLayout->setColumnStretch(1, 1);
 
     // ---------- 右侧：地址信息 GroupBox（3对） ----------
-    m_addressGroupBox = new QGroupBox("误差信息", this);
+    m_addressGroupBox = new QGroupBox("Address Information", this);
     m_addressGroupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_addressLayout = new QGridLayout(m_addressGroupBox);
@@ -244,12 +244,11 @@ void GroupDialog::setupUI()
     m_lineEditCity->setPlaceholderText("积分偏差");
 	m_lineEditCity->installEventFilter(this);
 
-    m_labelZipCode = new QLabel("设定压力:", m_addressGroupBox);
+    m_labelZipCode = new QLabel("Zip Code:", m_addressGroupBox);
     m_labelZipCode->setMinimumWidth(70);
     m_labelZipCode->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     m_lineEditZipCode = new QLineEdit(m_addressGroupBox);
-    m_lineEditZipCode->setPlaceholderText("设定压力");
-	m_lineEditZipCode->installEventFilter(this);
+    m_lineEditZipCode->setPlaceholderText("Enter zip code");
 
     m_addressLayout->addWidget(m_labelAddress, 0, 0);
     m_addressLayout->addWidget(m_lineEditAddress, 0, 1);
