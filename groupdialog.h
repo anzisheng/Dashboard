@@ -18,6 +18,7 @@ class QHBoxLayout;
 class QGraphicsView;
 class QGraphicsScene;
 class QPushButton;
+class NumPadDialog;
 
 class GroupDialog : public QDialog
 {
@@ -66,6 +67,13 @@ private slots:
     void onTimerTimeout();
     void onWriteButtonClicked();
 
+private slots:
+    //void onLineEditClicked();    // ② 点击编辑框时调用的槽
+    void onDialogAccepted();     // ③ 数字键盘确认时调用的槽
+
+public:
+    NumPadDialog* m_dialog = nullptr; // 数字键盘对话框指针
+
 private:
     void setupUI();
     void setupConnections();
@@ -79,6 +87,9 @@ private:
     QPushButton* m_startStopBtn;
     QPixmap m_currentPixmap;
 
+
+    QLineEdit* m_currentEdit = nullptr;
+
     // UI组件 - 个人信息区域（左下，5对）
     QGroupBox* m_personalInfoGroupBox;
     QLabel* m_labelName;
@@ -91,6 +102,18 @@ private:
     QLineEdit* m_lineEditPhone;
     QLineEdit* m_lineEditBirthday;
     QLineEdit* m_lineEditOccupation;
+
+    QLineEdit* m_fltEditPressAlmH = nullptr;
+    QLabel* m_fltLabelPressAlmH = nullptr;
+    QLineEdit* m_fltEditPressAlmL = nullptr;
+    QLabel* m_fltLabelPressAlmL = nullptr;
+    QLineEdit* m_fltEditParaP = nullptr;
+    QLabel* m_fltLabelParaP = nullptr;
+    QLineEdit* m_fltEditParaI = nullptr;
+    QLabel* m_fltQLabelParaI = nullptr;
+    QLineEdit* m_fltEditParaD = nullptr;
+    QLabel* m_fltLabelParaD = nullptr;
+//    QLineEdit* m_currentEdit = nullptr;
 
     // UI组件 - 地址信息区域（右下，3对）
     QGroupBox* m_addressGroupBox;
