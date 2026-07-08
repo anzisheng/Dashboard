@@ -531,8 +531,8 @@ MainWindow::MainWindow(QWidget* parent)
     
     // 启动定时器，每秒自动更新随机数据
     m_timer = new QTimer(this);
-    //connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
-    connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);   //定时器响应
+ /*   connect(m_timer, &QTimer::timeout, this, &MainWindow::updateInfo);
+    connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);*/   //定时器响应
     //m_openButton = new QPushButton("设置液位参数", this);
     m_timer->start(1000);
 }
