@@ -633,11 +633,11 @@ void MainWindow::on_MMXParaButton_4_clicked()
 	dialog3.exec();
 
 }
-#include "DialogX.h"
+#include "groupdialogYW.h"// "DialogX.h"
 void MainWindow::on_ywParaButton_5_clicked()
 {
-    DialogX dialogx(this);
-    dialogx.exec();
+    //GroupDialogYW dialogx(this);
+    //dialogx.exec();
     /*
     m_fYwAlmH = dialog2.m_fltEditYwAlmH->text().toFloat();
     m_fYwAlmL = dialog2.m_fltEditYwAlmL->text().toFloat();
@@ -650,8 +650,8 @@ void MainWindow::on_ywParaButton_5_clicked()
 
 void MainWindow::on_pressParaButton_2_clicked()
 {
-    GroupDialog dialog1(this);
-	dialog1.exec();
+ /*   GroupDialog dialog1(this);
+	dialog1.exec();*/
     qDebug() << "hello";
     //m_fPressAlmH = dialog1.m_fltEditPressAlmH->text().toFloat();
     //m_fPressAlmL = dialog1.m_fltEditPressAlmL->text().toFloat();
