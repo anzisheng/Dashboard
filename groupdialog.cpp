@@ -75,7 +75,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     // 先创建定时器
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
-
+	
     // 创建UI
     setupUI();
 
@@ -324,11 +324,21 @@ void GroupDialog::setupUI()
     m_buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
     // 连接信号
-    connect(readButton, &QPushButton::clicked, this, &QDialog::accept);
+    //connect(readButton, &QPushButton::clicked, this, &QDialog::accept);
+
+    connect(readButton, &QPushButton::clicked, this, &GroupDialog::onRdButtonClicked);
+
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 
     // 添加到主布局
     m_mainLayout->addWidget(m_buttonBox);
+}
+void GroupDialog::onRdButtonClicked()
+{
+    // 读取按钮点击事件处理
+    // 在这里添加读取操作的逻辑
+    //QMessageBox::information(this, "读取", "读取操作已执行。");
+	qDebug() << "读取操作已执行。";
 }
 
 void GroupDialog::setupImageScene()

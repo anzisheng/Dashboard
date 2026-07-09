@@ -72,6 +72,7 @@ private slots:
     void onStartStopClicked();
     void onTimerTimeout();
     void onWriteButtonClicked();
+	void onRdButtonClicked();//读取
 
 //private slots:
 //    //void onLineEditClicked();    // ② 点击编辑框时调用的槽
