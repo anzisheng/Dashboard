@@ -288,13 +288,35 @@ DialogX::DialogX(QWidget* parent)
     // ============================================
   // 对话框按钮
   // ============================================
-    m_buttonBox = new QDialogButtonBox(
+  /*  m_buttonBox = new QDialogButtonBox(
         QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
         Qt::Horizontal,
         this
-    );
+    );*/
     
-    m_buttonBox->setStyleSheet(
+ /*   m_buttonBox->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #e0e0e0;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #c0c0c0;"
+        "}"
+    );*/
+    // ============================================
+   // 对话框按钮
+   // ============================================
+    m_buttonBox = new QDialogButtonBox(Qt::Horizontal, this);
+
+    // 创建 "读取" 按钮
+    QPushButton* readButton = new QPushButton("读取", this);
+    readButton->setMinimumHeight(28);
+    readButton->setMinimumWidth(60);
+    readButton->setStyleSheet(
         "QPushButton {"
         "    padding: 6px 25px;"
         "    min-height: 28px;"
@@ -307,6 +329,56 @@ DialogX::DialogX(QWidget* parent)
         "    background-color: #c0c0c0;"
         "}"
     );
+
+    // 创建 "写入" 按钮
+    m_writeButton = new QPushButton("写入", this);
+    m_writeButton->setMinimumHeight(28);
+    m_writeButton->setMinimumWidth(60);
+    m_writeButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "    background-color: #4CAF50;"
+        "    color: white;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #45a049;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #3d8b40;"
+        "}"
+    );
+
+    // 创建 "放弃" 按钮
+    QPushButton* cancelButton = new QPushButton("放弃", this);
+    cancelButton->setMinimumHeight(28);
+    cancelButton->setMinimumWidth(60);
+    cancelButton->setStyleSheet(
+        "QPushButton {"
+        "    padding: 6px 25px;"
+        "    min-height: 28px;"
+        "    font-weight: bold;"
+        "}"
+        "QPushButton:hover {"
+        "    background-color: #e0e0e0;"
+        "}"
+        "QPushButton:pressed {"
+        "    background-color: #c0c0c0;"
+        "}"
+    );
+
+    // 添加按钮到按钮框
+    m_buttonBox->addButton(readButton, QDialogButtonBox::AcceptRole);
+    m_buttonBox->addButton(m_writeButton, QDialogButtonBox::ActionRole);
+    m_buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+    // 连接信号
+    connect(readButton, &QPushButton::clicked, this, &QDialog::accept);
+    connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
+
+    // 添加到主布局
+    m_mainLayout->addWidget(m_buttonBox);
 
     // ============================================
    // 创建 CheckBox

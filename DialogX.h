@@ -96,6 +96,7 @@ private:
     QLineEdit* m_lineEditZipCode;
 
     //QDialogButtonBox* m_buttonBox;
+    QPushButton* m_writeButton;
 
     // ²¼¾Ö
     QVBoxLayout* m_mainLayout;
