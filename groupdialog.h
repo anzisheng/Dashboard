@@ -19,6 +19,7 @@ class QGraphicsView;
 class QGraphicsScene;
 class QPushButton;
 class NumPadDialog;
+#include "mainwindow.h"
 
 class GroupDialog : public QDialog
 {
@@ -27,6 +28,7 @@ class GroupDialog : public QDialog
 public:
     explicit GroupDialog(QWidget* parent = nullptr);
     ~GroupDialog();
+	MainWindow* m_parent = nullptr; // 指向父窗口的指针
 protected:
     bool eventFilter(QObject* obj, QEvent* event) override;   // ① 重写事件过滤器
 

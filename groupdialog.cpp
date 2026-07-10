@@ -72,6 +72,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_displayDuration(30.0)
     , m_coordinateSystemDrawn(false)
 {
+	m_parent = qobject_cast<MainWindow*>(parent);  // 获取父窗口指针
     // 先创建定时器
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
@@ -339,6 +340,13 @@ void GroupDialog::onRdButtonClicked()
     // 在这里添加读取操作的逻辑
     //QMessageBox::information(this, "读取", "读取操作已执行。");
 	qDebug() << "读取操作已执行。";
+
+    if (m_bCheckTimer)
+        PacketType = 0x04;
+    else
+        Rdpressworkpara();
+
+
 
 
 }
