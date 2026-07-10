@@ -339,6 +339,8 @@ void GroupDialog::onRdButtonClicked()
     // 在这里添加读取操作的逻辑
     //QMessageBox::information(this, "读取", "读取操作已执行。");
 	qDebug() << "读取操作已执行。";
+
+
 }
 
 void GroupDialog::setupImageScene()

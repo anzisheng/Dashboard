@@ -80,6 +80,7 @@ private slots:
 
 public:
     NumPadDialog* m_dialog = nullptr; // 数字键盘对话框指针
+    void Rdpressworkpara();
 
 private:
     void setupUI();
