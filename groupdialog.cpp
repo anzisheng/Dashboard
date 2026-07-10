@@ -741,7 +741,7 @@ void GroupDialog::drawCurves()
         if (!m_randomData.isEmpty()) {
             QPointF lastPoint = m_randomData.last();
             QGraphicsTextItem* valueLabel = m_graphicsScene->addText(
-                QString("Current: %1").arg(lastPoint.y(), 0, 'f', 3)
+                QString("").arg(lastPoint.y(), 0, 'f', 3)
             );
             valueLabel->setPos(width - 150, margin + 10);
             valueLabel->setDefaultTextColor(Qt::darkGray);
