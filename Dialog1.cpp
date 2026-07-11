@@ -144,9 +144,9 @@ Dialog1::Dialog1(QWidget* parent)
 	m_fltEditPressAlmH->installEventFilter(this); // 安装事件过滤器以捕获点击事件
 
     // 创建标签和输入框 - Email
-    m_labelEmail = new QLabel("压力低限:", m_personalInfoGroupBox);
-    m_labelEmail->setMinimumWidth(80);
-    m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltLabelPressAlmL = new QLabel("压力低限:", m_personalInfoGroupBox);
+    m_fltLabelPressAlmL->setMinimumWidth(80);
+    m_fltLabelPressAlmL->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditPressAlmL = new QLineEdit(m_personalInfoGroupBox);
     m_fltEditPressAlmL->setPlaceholderText("输入压力低限");
@@ -190,7 +190,7 @@ Dialog1::Dialog1(QWidget* parent)
     // 将控件添加到网格布局（5行）
     m_personalInfoLayout->addWidget(m_labelName, 0, 0);
     m_personalInfoLayout->addWidget(m_fltEditPressAlmH, 0, 1);
-    m_personalInfoLayout->addWidget(m_labelEmail, 1, 0);
+    m_personalInfoLayout->addWidget(m_fltLabelPressAlmL, 1, 0);
     m_personalInfoLayout->addWidget(m_fltEditPressAlmL, 1, 1);
     m_personalInfoLayout->addWidget(m_fltLabelParaP, 2, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaP, 2, 1);

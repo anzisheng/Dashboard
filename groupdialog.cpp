@@ -164,51 +164,52 @@ void GroupDialog::setupUI()
     m_personalInfoLayout->setSpacing(8);
     m_personalInfoLayout->setContentsMargins(10, 10, 10, 10);
 
-    m_labelName = new QLabel("压力高限:", m_personalInfoGroupBox);
-    m_labelName->setMinimumWidth(70);
-    m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    m_lineEditName = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditName->setPlaceholderText("输入压力高限");
-    m_lineEditName->installEventFilter(this);
-    m_labelEmail = new QLabel("压力低限:", m_personalInfoGroupBox);
-    m_labelEmail->setMinimumWidth(70);
-    m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    m_lineEditEmail = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditEmail->setPlaceholderText("输入压力低限");
-	m_lineEditEmail->installEventFilter(this);
+    m_fltLabelPressAlmH = new QLabel("压力高限:", m_personalInfoGroupBox);
+    m_fltLabelPressAlmH->setMinimumWidth(70);
+    m_fltLabelPressAlmH->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltEditPressAlmH = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditPressAlmH->setPlaceholderText("输入压力高限");
+    m_fltEditPressAlmH->installEventFilter(this);
+
+    m_fltLabelPressAlmL = new QLabel("压力低限:", m_personalInfoGroupBox);
+    m_fltLabelPressAlmL->setMinimumWidth(70);
+    m_fltLabelPressAlmL->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltEditPressAlmL = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditPressAlmL->setPlaceholderText("输入压力低限");
+    m_fltEditPressAlmL->installEventFilter(this);
 
 
     m_labelPhone = new QLabel("P参数:", m_personalInfoGroupBox);
     m_labelPhone->setMinimumWidth(70);
     m_labelPhone->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    m_lineEditPhone = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditPhone->setPlaceholderText("输入P参数");
-	m_lineEditPhone->installEventFilter(this);
+    m_fltEditParaP = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditParaP->setPlaceholderText("输入P参数");
+    m_fltEditParaP->installEventFilter(this);
 
-    m_labelBirthday = new QLabel("I参数:", m_personalInfoGroupBox);
-    m_labelBirthday->setMinimumWidth(70);
-    m_labelBirthday->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    m_lineEditBirthday = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditBirthday->setPlaceholderText("输入I参数");
-	m_lineEditBirthday->installEventFilter(this);
+    m_fltQLabelParaI = new QLabel("I参数:", m_personalInfoGroupBox);
+    m_fltQLabelParaI->setMinimumWidth(70);
+    m_fltQLabelParaI->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltEditParaI = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditParaI->setPlaceholderText("输入I参数");
+    m_fltEditParaI->installEventFilter(this);
 
-    m_labelOccupation = new QLabel("D参数",m_personalInfoGroupBox);
-    m_labelOccupation->setMinimumWidth(70);
-    m_labelOccupation->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    m_lineEditOccupation = new QLineEdit(m_personalInfoGroupBox);
-    m_lineEditOccupation->setPlaceholderText("输入D参数");
-	m_lineEditOccupation->installEventFilter(this);
+    m_fltLabelParaD = new QLabel("D参数",m_personalInfoGroupBox);
+    m_fltLabelParaD->setMinimumWidth(70);
+    m_fltLabelParaD->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    m_fltEditParaD = new QLineEdit(m_personalInfoGroupBox);
+    m_fltEditParaD->setPlaceholderText("输入D参数");
+    m_fltEditParaD->installEventFilter(this);
 
-    m_personalInfoLayout->addWidget(m_labelName, 0, 0);
-    m_personalInfoLayout->addWidget(m_lineEditName, 0, 1);
-    m_personalInfoLayout->addWidget(m_labelEmail, 1, 0);
-    m_personalInfoLayout->addWidget(m_lineEditEmail, 1, 1);
+    m_personalInfoLayout->addWidget(m_fltLabelPressAlmH, 0, 0);
+    m_personalInfoLayout->addWidget(m_fltEditPressAlmH, 0, 1);
+    m_personalInfoLayout->addWidget(m_fltLabelPressAlmL, 1, 0);
+    m_personalInfoLayout->addWidget(m_fltEditPressAlmL, 1, 1);
     m_personalInfoLayout->addWidget(m_labelPhone, 2, 0);
-    m_personalInfoLayout->addWidget(m_lineEditPhone, 2, 1);
-    m_personalInfoLayout->addWidget(m_labelBirthday, 3, 0);
-    m_personalInfoLayout->addWidget(m_lineEditBirthday, 3, 1);
-    m_personalInfoLayout->addWidget(m_labelOccupation, 4, 0);
-    m_personalInfoLayout->addWidget(m_lineEditOccupation, 4, 1);
+    m_personalInfoLayout->addWidget(m_fltEditParaP, 2, 1);
+    m_personalInfoLayout->addWidget(m_fltQLabelParaI, 3, 0);
+    m_personalInfoLayout->addWidget(m_fltEditParaI, 3, 1);
+    m_personalInfoLayout->addWidget(m_fltLabelParaD, 4, 0);
+    m_personalInfoLayout->addWidget(m_fltEditParaD, 4, 1);
 
     m_personalInfoLayout->setColumnStretch(0, 0);
     m_personalInfoLayout->setColumnStretch(1, 1);
@@ -341,11 +342,25 @@ void GroupDialog::onRdButtonClicked()
     //QMessageBox::information(this, "读取", "读取操作已执行。");
 	qDebug() << "读取操作已执行。";
 
+    //读出数据后解码
     if (m_parent->m_bCheckTimer)
         m_parent->PacketType = 0x04;
     else
         m_parent->Rdpressworkpara();
+    
+    // 显示 QString text = QString::number(m_value, 'f', 1);
+    QString textH = QString::number(m_parent->m_fPressAlmH, 'f', 1);
+	m_fltEditPressAlmH->setText(textH);
+    QString textL = QString::number(m_parent->m_fPressAlmL, 'f', 1);
+    m_fltEditPressAlmL->setText(textL);
+    QString textP = QString::number(m_parent->m_fPidParaP, 'f', 1);
+    m_fltEditParaP->setText(textP);
 
+    QString textI = QString::number(m_parent->m_fPidParaP, 'f', 1);
+    m_fltEditParaI->setText(textI);
+
+    QString textD = QString::number(m_parent->m_fPidParaP, 'f', 1);
+    m_fltEditParaD->setText(textD);
 
 
 
