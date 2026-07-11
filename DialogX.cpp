@@ -21,6 +21,7 @@ DialogX::DialogX(QWidget* parent)
 {
     //setMinimumSize(300, 350);
 
+	m_parent = qobject_cast<MainWindow*>(parent); // 将父窗口指针转换为 MainWindow 类型
         // 创建主布局
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setSpacing(12);
@@ -374,7 +375,7 @@ DialogX::DialogX(QWidget* parent)
     m_buttonBox->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
     // 连接信号
-    connect(readButton, &QPushButton::clicked, this, &QDialog::accept);
+    //connect(readButton, &QPushButton::clicked, this, &QDialog::accept);
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
 
     // 添加到主布局
@@ -539,6 +540,51 @@ DialogX::DialogX(QWidget* parent)
     scene->setSceneRect(0, 0, 300, 150);
 
     connect(m_okButton, &QPushButton::clicked, this, &Dialog1::onOkClicked);*/
+connect(readButton, &QPushButton::clicked, this, &DialogX::onRdButtonClicked);
+connect(m_writeButton, &QPushButton::clicked, this, &DialogX::onWriteButtonClicked);
+
+}
+
+void DialogX::onWriteButtonClicked()
+{
+ /*   qDebug() << "写入按钮被点击，执行写入操作";
+    if (m_parent->m_bCheckTimer)
+       m_parent->PacketType = 0x01;
+    else
+		m_parent->Wrywpara();*/
+
+    m_parent->m_fYwAlmH = m_fltEditPressAlmH->text().toFloat();
+    m_parent->m_fYwAlmL = m_fltEditPressAlmL->text().toFloat();
+    m_parent->m_fYwWorkH = m_fltEditParaP->text().toFloat();
+    m_parent->m_fYwWorkL = m_fltEditParaI->text().toFloat();
+   // m_parent->m_fPidParaD = m_fltEditParaD->text().toFloat();
+
+
+
+}
+void DialogX::onRdButtonClicked()
+{
+	qDebug() << "读取液位按钮被点击，执行读取操作";
+    if (m_parent->m_bCheckTimer)
+       m_parent->PacketType = 0x02;
+    else
+        m_parent->Rdywpara();
+    // 显示 QString text = QString::number(m_value, 'f', 1);
+    QString textH = QString::number(m_parent->m_fYwAlmH, 'f', 1);
+    m_fltEditPressAlmH->setText(textH);
+    //m_fYwAlmL
+    QString textL = QString::number(m_parent->m_fYwAlmL, 'f', 1);
+    m_fltEditPressAlmL->setText(textL);
+    //m_fYwWorkH
+    QString textWH = QString::number(m_parent->m_fYwWorkH, 'f', 1);
+	m_fltEditParaP->setText(textWH);
+    //m_fYwWorkL
+	QString textWL = QString::number(m_parent->m_fYwWorkL, 'f', 1);
+    m_fltEditParaI->setText(textWL);
+    //QString textWL = QString::number(m_parent->m_fYwWorkL, 'f', 1);
+
+    
+
 
 }
 void DialogX::setupImageScene()

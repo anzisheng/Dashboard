@@ -24,6 +24,7 @@ class QGraphicsView;
 class QLineEdit;
 class QPushButton;
 class NumPadDialog;
+#include "mainwindow.h"
 
 class DialogX : public QDialog
 {
@@ -32,6 +33,7 @@ class DialogX : public QDialog
 public:
     explicit DialogX(QWidget* parent = nullptr);
     ~DialogX() override = default;
+	MainWindow* m_parent = nullptr; // 指向父窗口的指针
 protected:
     bool eventFilter(QObject* obj, QEvent* event) override;   // ① 重写事件过滤器
 private slots:
@@ -105,6 +107,10 @@ private:
     QHBoxLayout* m_imageButtonLayout;
     QGridLayout* m_personalInfoLayout;
     QGridLayout* m_addressLayout;
+public:
+    void onRdButtonClicked();//读取
+    void onWriteButtonClicked();
+
 };
 
 
