@@ -833,45 +833,54 @@ void GroupDialog::onInputChanged()
 
 void GroupDialog::onWriteButtonClicked()
 {
-    // 获取所有输入的数据
-    QString name = getName();
-    QString email = getEmail();
-    QString phone = getPhone();
-    QString birthday = getBirthday();
-    QString occupation = getOccupation();
-    QString address = getAddress();
-    QString city = getCity();
-    QString zipCode = getZipCode();
+
+//	m_parent->m_fPressAlmH = m_fltEditPressAlmH->text().toFloat();
+
+	m_parent->m_fPressAlmL = m_fltEditPressAlmL->text().toFloat();
+	m_parent->m_fPressAlmH = m_fltEditPressAlmH->text().toFloat();
+	m_parent->m_fPidParaP = m_fltEditParaP->text().toFloat();
+	m_parent->m_fPidParaI = m_fltEditParaI->text().toFloat();
+	m_parent->m_fPidParaD = m_fltEditParaD->text().toFloat();
+
+    //// 获取所有输入的数据
+    //QString name = getName();
+    //QString email = getEmail();
+    //QString phone = getPhone();
+    //QString birthday = getBirthday();
+    //QString occupation = getOccupation();
+    //QString address = getAddress();
+    //QString city = getCity();
+    //QString zipCode = getZipCode();
 
     // 检查是否所有字段都已填写
-    if (name.isEmpty() || email.isEmpty() || phone.isEmpty() ||
+  /*  if (name.isEmpty() || email.isEmpty() || phone.isEmpty() ||
         birthday.isEmpty() || occupation.isEmpty() ||
         address.isEmpty() || city.isEmpty() || zipCode.isEmpty()) {
         QMessageBox::warning(this, "Warning", "Please fill in all fields before writing.");
         return;
-    }
+    }*/
 
-    // 显示写入确认消息
-    QMessageBox::information(this, "Write Data",
-        QString("Data written successfully!\n\n"
-            "Personal Information:\n"
-            "  Name       : %1\n"
-            "  Email      : %2\n"
-            "  Phone      : %3\n"
-            "  Birthday   : %4\n"
-            "  Occupation : %5\n\n"
-            "Address Information:\n"
-            "  Address    : %6\n"
-            "  City       : %7\n"
-            "  Zip Code   : %8")
-        .arg(name)
-        .arg(email)
-        .arg(phone)
-        .arg(birthday)
-        .arg(occupation)
-        .arg(address)
-        .arg(city)
-        .arg(zipCode));
+    //// 显示写入确认消息
+    //QMessageBox::information(this, "Write Data",
+    //    QString("Data written successfully!\n\n"
+    //        "Personal Information:\n"
+    //        "  Name       : %1\n"
+    //        "  Email      : %2\n"
+    //        "  Phone      : %3\n"
+    //        "  Birthday   : %4\n"
+    //        "  Occupation : %5\n\n"
+    //        "Address Information:\n"
+    //        "  Address    : %6\n"
+    //        "  City       : %7\n"
+    //        "  Zip Code   : %8")
+    //    .arg(name)
+    //    .arg(email)
+    //    .arg(phone)
+    //    .arg(birthday)
+    //    .arg(occupation)
+    //    .arg(address)
+    //    .arg(city)
+    //    .arg(zipCode));
 }
 
 // ============================================
