@@ -341,10 +341,10 @@ void GroupDialog::onRdButtonClicked()
     //QMessageBox::information(this, "读取", "读取操作已执行。");
 	qDebug() << "读取操作已执行。";
 
-    if (m_bCheckTimer)
-        PacketType = 0x04;
+    if (m_parent->m_bCheckTimer)
+        m_parent->PacketType = 0x04;
     else
-        Rdpressworkpara();
+        m_parent->Rdpressworkpara();
 
 
 
