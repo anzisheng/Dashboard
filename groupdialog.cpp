@@ -22,6 +22,9 @@
 #include <QRandomGenerator>
 #include <cmath>
 #include "NumpadDialog.h"
+// 配置文件名称（保存在应用程序目录下）
+static const QString CONFIG_FILE = "app_settings.ini";
+static const QString SETTINGS_KEY_PREFIX = "edit_";
 
 void GroupDialog::onDialogAccepted()
 {
@@ -80,7 +83,7 @@ GroupDialog::GroupDialog(QWidget* parent)
 	
     // 创建UI
     setupUI();
-
+    loadSettings();
     // 建立连接
     setupConnections();
 
@@ -373,23 +376,37 @@ void GroupDialog::onRdButtonClicked()
 
 }
 
+void GroupDialog::loadSettings()
+{
+    // 
+    QString configPath = QCoreApplication::applicationDirPath() + "/" + CONFIG_FILE;
+    QSettings settings(configPath, QSettings::IniFormat);  // 
+
+    for (int i = 0; i < EDIT_COUNT; ++i)
+    {
+        QString key = SETTINGS_KEY_PREFIX + QString::number(i + 1);
+        QString value = settings.value(key, "").toString();  // 
+        m_edits[i]->setText(value);
+
+        qDebug() << "Loaded" << key << ":" << value;
+    }
+}
+
 void GroupDialog::setupImageScene()
 {
     m_graphicsScene = new QGraphicsScene(this);
     m_graphicsScene->setBackgroundBrush(Qt::white);
     m_graphicsView->setScene(m_graphicsScene);
 }
-#include <QCloseEvent>#include <QCloseEvent>
+#include <QCloseEvent>
 void GroupDialog::closeEvent(QCloseEvent* event)
 {
 	qDebug() << "GroupDialog is closing.";
-    /*saveSettings();
-    event->accept();*/
+    saveSettings();
+    //event->accept();
 }
 
-// 配置文件名称（保存在应用程序目录下）
-static const QString CONFIG_FILE = "app_settings.ini";
-static const QString SETTINGS_KEY_PREFIX = "edit_";
+
 void GroupDialog::saveSettings()
 {
     QString configPath = QCoreApplication::applicationDirPath() + "/" + CONFIG_FILE;
@@ -399,10 +416,10 @@ void GroupDialog::saveSettings()
     {
         QString key = SETTINGS_KEY_PREFIX + QString::number(i + 1);
 
-       // QString value = m_edits[i]->text().toFloat();
-        //QString value = QString::number(m_fYwWorkL, 'f', 1);
+        QString value = m_edits[i]->text();// .toFloat();
+       //QString value = QString::number(m_fYwWorkL, 'f', 1);
         ////
-        // settings.setValue(key, value);  // 
+        settings.setValue(key, value);  // 
 
        // qDebug() << "Saved" << key << ":" << value;
     }
