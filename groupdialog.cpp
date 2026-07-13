@@ -73,6 +73,7 @@ GroupDialog::GroupDialog(QWidget* parent)
     , m_coordinateSystemDrawn(false)
 {
 	m_parent = qobject_cast<MainWindow*>(parent);  // 获取父窗口指针
+	
     // 先创建定时器
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
@@ -210,6 +211,12 @@ void GroupDialog::setupUI()
     m_personalInfoLayout->addWidget(m_fltEditParaI, 3, 1);
     m_personalInfoLayout->addWidget(m_fltLabelParaD, 4, 0);
     m_personalInfoLayout->addWidget(m_fltEditParaD, 4, 1);
+
+    m_edits.append(m_fltEditPressAlmH);
+    m_edits.append(m_fltEditPressAlmL);
+    m_edits.append(m_fltEditParaP);
+    m_edits.append(m_fltEditParaI);
+    m_edits.append(m_fltEditParaD);
 
     m_personalInfoLayout->setColumnStretch(0, 0);
     m_personalInfoLayout->setColumnStretch(1, 1);
@@ -372,6 +379,39 @@ void GroupDialog::setupImageScene()
     m_graphicsScene->setBackgroundBrush(Qt::white);
     m_graphicsView->setScene(m_graphicsScene);
 }
+#include <QCloseEvent>#include <QCloseEvent>
+void GroupDialog::closeEvent(QCloseEvent* event)
+{
+	qDebug() << "GroupDialog is closing.";
+    /*saveSettings();
+    event->accept();*/
+}
+
+// 配置文件名称（保存在应用程序目录下）
+static const QString CONFIG_FILE = "app_settings.ini";
+static const QString SETTINGS_KEY_PREFIX = "edit_";
+void GroupDialog::saveSettings()
+{
+    QString configPath = QCoreApplication::applicationDirPath() + "/" + CONFIG_FILE;
+    QSettings settings(configPath, QSettings::IniFormat);  // 
+
+    for (int i = 0; i < EDIT_COUNT; ++i)
+    {
+        QString key = SETTINGS_KEY_PREFIX + QString::number(i + 1);
+
+       // QString value = m_edits[i]->text().toFloat();
+        //QString value = QString::number(m_fYwWorkL, 'f', 1);
+        ////
+        // settings.setValue(key, value);  // 
+
+       // qDebug() << "Saved" << key << ":" << value;
+    }
+
+    // 强制写入磁盘（可选）
+    settings.sync();
+}
+
+
 
 bool GroupDialog::eventFilter(QObject* obj, QEvent* event)
 {

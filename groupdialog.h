@@ -7,7 +7,7 @@
 #include <QVector>
 #include <QPointF>
 #include <QTimer>
-
+#include <QSettings>
 class QLabel;
 class QLineEdit;
 class QGroupBox;
@@ -31,6 +31,8 @@ public:
 	MainWindow* m_parent = nullptr; // 指向父窗口的指针
 protected:
     bool eventFilter(QObject* obj, QEvent* event) override;   // ① 重写事件过滤器
+protected:
+    void closeEvent(QCloseEvent* event) override;
 
 private slots:
     void onLineEditClicked();    // ② 点击编辑框时调用的槽
@@ -99,6 +101,12 @@ private:
 
 
     QLineEdit* m_currentEdit = nullptr;
+    
+    void loadSettings();
+    void saveSettings();
+
+    QVector<QLineEdit*> m_edits;  // 
+    static const int EDIT_COUNT = 5;
 
     // UI组件 - 个人信息区域（左下，5对）
     QGroupBox* m_personalInfoGroupBox;
