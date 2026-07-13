@@ -106,7 +106,7 @@ private:
     void saveSettings();
 
     QVector<QLineEdit*> m_edits;  // 
-    static const int EDIT_COUNT = 5;
+    static const int EDIT_COUNT = 8;// 5;
 
     // UI组件 - 个人信息区域（左下，5对）
     QGroupBox* m_personalInfoGroupBox;

@@ -260,6 +260,10 @@ void GroupDialog::setupUI()
     m_addressLayout->addWidget(m_labelZipCode, 2, 0);
     m_addressLayout->addWidget(m_lineEditZipCode, 2, 1);
 
+    m_edits.append(m_lineEditAddress);//m_lineEditCity
+    m_edits.append(m_lineEditCity);
+    m_edits.append(m_lineEditZipCode);
+
     m_addressLayout->setColumnStretch(0, 0);
     m_addressLayout->setColumnStretch(1, 1);
     m_addressLayout->setRowStretch(3, 1);
