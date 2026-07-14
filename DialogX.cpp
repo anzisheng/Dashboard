@@ -24,7 +24,7 @@ DialogX::DialogX(QWidget* parent)
     //setMinimumSize(300, 350);
 
 	m_parent = qobject_cast<MainWindow*>(parent); // 将父窗口指针转换为 MainWindow 类型
-    loadSettings();
+    //loadSettings();
         // 创建主布局
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setSpacing(12);
@@ -547,6 +547,7 @@ DialogX::DialogX(QWidget* parent)
     scene->setSceneRect(0, 0, 300, 150);
 
     connect(m_okButton, &QPushButton::clicked, this, &Dialog1::onOkClicked);*/
+    loadSettings();
 connect(readButton, &QPushButton::clicked, this, &DialogX::onRdButtonClicked);
 connect(m_writeButton, &QPushButton::clicked, this, &DialogX::onWriteButtonClicked);
 
@@ -558,14 +559,14 @@ void DialogX::loadSettings()
     QString configPath = QCoreApplication::applicationDirPath() + "/" + CONFIG_FILE;
     QSettings settings(configPath, QSettings::IniFormat);  // 
 
-    //for (int i = 0; i < EDIT_COUNT; ++i)
-    //{
-    //    QString key = SETTINGS_KEY_PREFIX + QString::number(i + 1);
-    //    QString value = settings.value(key, "").toString();  // 
-    //    m_edits[i]->setText(value);
+    for (int i = 0; i < EDIT_COUNT; ++i)
+    {
+        QString key = SETTINGS_KEY_PREFIX + QString::number(i + 1);
+        QString value = settings.value(key, "").toString();  // 
+        m_edits[i]->setText(value);
 
-    //    qDebug() << "Loaded" << key << ":" << value;
-    //}
+        qDebug() << "Loaded" << key << ":" << value;
+    }
 
 }
 void DialogX::closeEvent(QCloseEvent* event)
