@@ -19,6 +19,8 @@ class QGraphicsView;
 class QGraphicsScene;
 class QPushButton;
 class QCheckBox;
+#include <QCloseEvent>
+#include <QSettings>
 
 class QGraphicsView;
 class QLineEdit;
@@ -99,6 +101,12 @@ private:
 
     //QDialogButtonBox* m_buttonBox;
     QPushButton* m_writeButton;
+    void closeEvent(QCloseEvent* event);
+    void loadSettings();
+    void saveSettings();
+
+    QVector<QLineEdit*> m_edits;  // 
+    static const int EDIT_COUNT = 4;// 8;// 5;
 
     // ²¼¾Ö
     QVBoxLayout* m_mainLayout;

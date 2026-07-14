@@ -16,12 +16,15 @@
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QCheckBox>
+static const QString CONFIG_FILE = "app_settings2.ini";
+static const QString SETTINGS_KEY_PREFIX = "edit2_";
 DialogX::DialogX(QWidget* parent)
     : QDialog(parent), m_currentEdit(nullptr)
 {
     //setMinimumSize(300, 350);
 
 	m_parent = qobject_cast<MainWindow*>(parent); // 将父窗口指针转换为 MainWindow 类型
+    loadSettings();
         // 创建主布局
     m_mainLayout = new QVBoxLayout(this);
     m_mainLayout->setSpacing(12);
@@ -142,6 +145,7 @@ DialogX::DialogX(QWidget* parent)
     m_labelName->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditPressAlmH = new QLineEdit(m_personalInfoGroupBox);
+    m_edits.append(m_fltEditPressAlmH);
     m_fltEditPressAlmH->setPlaceholderText("输入液位高限");
     m_fltEditPressAlmH->setMinimumHeight(25);
 	m_fltEditPressAlmH->installEventFilter(this); // 安装事件过滤器以捕获点击事件
@@ -152,6 +156,7 @@ DialogX::DialogX(QWidget* parent)
     m_labelEmail->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditPressAlmL = new QLineEdit(m_personalInfoGroupBox);
+    m_edits.append(m_fltEditPressAlmL);
     m_fltEditPressAlmL->setPlaceholderText("输入低限报警值");
     m_fltEditPressAlmL->setMinimumHeight(25);
     m_fltEditPressAlmL->setInputMethodHints(Qt::ImhEmailCharactersOnly);
@@ -163,6 +168,7 @@ DialogX::DialogX(QWidget* parent)
     m_fltLabelParaP->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditParaP = new QLineEdit(m_personalInfoGroupBox);
+    m_edits.append(m_fltEditParaP);
     m_fltEditParaP->setPlaceholderText("输入液位高限停止值");
     m_fltEditParaP->setMinimumHeight(25);
     m_fltEditParaP->setInputMethodHints(Qt::ImhDialableCharactersOnly);
@@ -175,6 +181,7 @@ DialogX::DialogX(QWidget* parent)
     m_fltQLabelParaI->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 
     m_fltEditParaI = new QLineEdit(m_personalInfoGroupBox);
+    m_edits.append(m_fltEditParaI);
     m_fltEditParaI->setPlaceholderText("输入液位低限启动值");
     m_fltEditParaI->setMinimumHeight(25);
 	m_fltEditParaI->installEventFilter(this);
@@ -542,6 +549,48 @@ DialogX::DialogX(QWidget* parent)
     connect(m_okButton, &QPushButton::clicked, this, &Dialog1::onOkClicked);*/
 connect(readButton, &QPushButton::clicked, this, &DialogX::onRdButtonClicked);
 connect(m_writeButton, &QPushButton::clicked, this, &DialogX::onWriteButtonClicked);
+
+}
+
+void DialogX::loadSettings()
+{
+    // 
+    QString configPath = QCoreApplication::applicationDirPath() + "/" + CONFIG_FILE;
+    QSettings settings(configPath, QSettings::IniFormat);  // 
+
+    //for (int i = 0; i < EDIT_COUNT; ++i)
+    //{
+    //    QString key = SETTINGS_KEY_PREFIX + QString::number(i + 1);
+    //    QString value = settings.value(key, "").toString();  // 
+    //    m_edits[i]->setText(value);
+
+    //    qDebug() << "Loaded" << key << ":" << value;
+    //}
+
+}
+void DialogX::closeEvent(QCloseEvent* event)
+{
+    saveSettings();
+}
+void DialogX::saveSettings()
+{
+    QString configPath = QCoreApplication::applicationDirPath() + "/" + CONFIG_FILE;
+    QSettings settings(configPath, QSettings::IniFormat);  // 
+
+    for (int i = 0; i < EDIT_COUNT; ++i)
+    {
+        QString key = SETTINGS_KEY_PREFIX + QString::number(i + 1);
+
+        QString value = m_edits[i]->text();// .toFloat();
+        //QString value = QString::number(m_fYwWorkL, 'f', 1);
+         ////
+        settings.setValue(key, value);  // 
+
+        // qDebug() << "Saved" << key << ":" << value;
+    }
+
+    // 强制写入磁盘（可选）
+    settings.sync();
 
 }
 
